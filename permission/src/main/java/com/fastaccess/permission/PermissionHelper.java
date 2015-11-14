@@ -74,7 +74,6 @@ public class PermissionHelper implements OnActivityPermissionCallback {
      * internal usage.
      */
     private void handleSingle(String permissionName) {
-        validateCallbacks();
         if (doesNeedPermission(permissionName)) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(context, permissionName)) {
                 permissionCallback.onPermissionNeedExplanation(permissionName);
@@ -133,17 +132,6 @@ public class PermissionHelper implements OnActivityPermissionCallback {
             }
         }
         return true;
-    }
-
-    /**
-     * validates that the context or the listener are not empty;
-     */
-    private void validateCallbacks() {
-        if (context == null) {
-            throw new NullPointerException("Context Can't Be NULL");
-        } else if (permissionCallback == null) {
-            throw new NullPointerException("OnPermissionCallback Can't Be NULL");
-        }
     }
 
     /**
