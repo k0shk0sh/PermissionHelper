@@ -6,7 +6,7 @@ Installation
 =====
 
 ```
-    compile 'com.github.k0shk0sh:PermissionHelper:1.0'
+    compile 'com.github.k0shk0sh:PermissionHelper:1.0.0'
 ```
 
 Usage
