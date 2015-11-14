@@ -104,19 +104,19 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     }
 
     /**
+     * return true if permission is declined, false otherwise.
+     */
+    public boolean doesNeedPermission(String permissionsName) {
+        return ActivityCompat.checkSelfPermission(context, permissionsName) != PackageManager.PERMISSION_GRANTED;
+    }
+
+    /**
      * internal usage.
      */
     private void handleMulti(String[] permissionsName) {
         for (String permission : permissionsName) {
             if (permission != null) handleSingle(permission);
         }
-    }
-
-    /**
-     * return true if permission is granted, false otherwise.
-     */
-    public boolean doesNeedPermission(String permissionsName) {
-        return ActivityCompat.checkSelfPermission(context, permissionsName) != PackageManager.PERMISSION_GRANTED;
     }
 
     /**
@@ -135,10 +135,8 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     }
 
     /**
-     * return null if permission is granted, the permission name otherwise.
-     * <p/>
-     * be aware as it return null (do check if the returned result is not null!)
-     * <p/>
+     * be aware as it might return null (do check if the returned result is not null!)
+     * <p>
      * can be used outside of activity.
      */
     public static String neededPermission(@NonNull Context context, @NonNull String[] permissions) {
@@ -150,6 +148,9 @@ public class PermissionHelper implements OnActivityPermissionCallback {
         return null;
     }
 
+    /**
+     * @return list of permissions that the user declined or not yet granted.
+     */
     public static String[] neededPermissions(@NonNull Context context, @NonNull String[] permissions) {
         List<String> permissionsNeeded = new ArrayList<String>();
         for (String permission : permissions) {
@@ -162,7 +163,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
 
     /**
      * return true if permission is granted, false otherwise.
-     * <p/>
+     * <p>
      * can be used outside of activity.
      */
     public static boolean needsPermission(@NonNull Context context, @NonNull String permission) {
