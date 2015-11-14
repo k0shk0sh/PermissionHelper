@@ -74,7 +74,7 @@ public class SampleActivity extends AppCompatActivity implements OnPermissionCal
     public void onPermissionNeedExplanation(String permissionName) {
         Log.i("NeedExplanation", "Permission( " + permissionName + " ) needs Explanation");
         if (!isSingle) {
-            neededPermission = PermissionHelper.neededPermissions(this, MULTI_PERMISSIONS);
+            neededPermission = PermissionHelper.declinedPermissions(this, MULTI_PERMISSIONS);
             StringBuilder builder = new StringBuilder(neededPermission.length);
             if (neededPermission.length > 0) {
                 for (String permission : neededPermission) {

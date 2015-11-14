@@ -63,7 +63,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
                 permissionCallback.onPermissionGranted(permissions);
             } else {
                 if (forceAccepting) {
-                    requestAfterExplanation(neededPermission(context, permissions));
+                    requestAfterExplanation(declinedPermissions(context, permissions));
                 }
                 permissionCallback.onPermissionDeclined(permissions);
             }
@@ -74,7 +74,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
      * internal usage.
      */
     private void handleSingle(String permissionName) {
-        if (doesNeedPermission(permissionName)) {
+        if (isPermissionDeclined(permissionName)) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(context, permissionName)) {
                 permissionCallback.onPermissionNeedExplanation(permissionName);
             } else {
@@ -85,17 +85,23 @@ public class PermissionHelper implements OnActivityPermissionCallback {
         }
     }
 
+    /**
+     * to be called when explanation is presented to the user
+     */
     public void requestAfterExplanation(String permissionName) {
-        if (doesNeedPermission(permissionName)) {
+        if (isPermissionDeclined(permissionName)) {
             ActivityCompat.requestPermissions(context, new String[]{permissionName}, REQUEST_PERMISSIONS);
         } else {
             permissionCallback.onPermissionPreGranted(permissionName);
         }
     }
 
+    /**
+     * to be called when explanation is presented to the user
+     */
     public void requestAfterExplanation(String[] permissions) {
         for (String permissionName : permissions) {
-            if (doesNeedPermission(permissionName)) {
+            if (isPermissionDeclined(permissionName)) {
                 ActivityCompat.requestPermissions(context, new String[]{permissionName}, REQUEST_PERMISSIONS);
             } else {
                 permissionCallback.onPermissionPreGranted(permissionName);
@@ -106,7 +112,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     /**
      * return true if permission is declined, false otherwise.
      */
-    public boolean doesNeedPermission(String permissionsName) {
+    public boolean isPermissionDeclined(String permissionsName) {
         return ActivityCompat.checkSelfPermission(context, permissionsName) != PackageManager.PERMISSION_GRANTED;
     }
 
@@ -136,10 +142,10 @@ public class PermissionHelper implements OnActivityPermissionCallback {
 
     /**
      * be aware as it might return null (do check if the returned result is not null!)
-     * <p>
+     * <p/>
      * can be used outside of activity.
      */
-    public static String neededPermission(@NonNull Context context, @NonNull String[] permissions) {
+    public static String declinedPermission(@NonNull Context context, @NonNull String[] permissions) {
         for (String permission : permissions) {
             if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
                 return permission;
@@ -151,7 +157,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     /**
      * @return list of permissions that the user declined or not yet granted.
      */
-    public static String[] neededPermissions(@NonNull Context context, @NonNull String[] permissions) {
+    public static String[] declinedPermissions(@NonNull Context context, @NonNull String[] permissions) {
         List<String> permissionsNeeded = new ArrayList<String>();
         for (String permission : permissions) {
             if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
@@ -163,11 +169,11 @@ public class PermissionHelper implements OnActivityPermissionCallback {
 
     /**
      * return true if permission is granted, false otherwise.
-     * <p>
+     * <p/>
      * can be used outside of activity.
      */
-    public static boolean needsPermission(@NonNull Context context, @NonNull String permission) {
-        return ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED;
+    public static boolean isPermissionGranted(@NonNull Context context, @NonNull String permission) {
+        return ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
     }
 
 }
