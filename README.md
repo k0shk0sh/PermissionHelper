@@ -12,8 +12,8 @@ Installation
 Usage
 =====
 
-Please checkout the <a href="https://github.com/k0shk0sh/PermissionHelper/tree/master/app/src/main/java/com/fastaccess/permission/sample">sample app</a>
-as it provide an example of how you could request permissions.
+Please go through the <a href="https://github.com/k0shk0sh/PermissionHelper/tree/master/app/src/main/java/com/fastaccess/permission/sample">sample 
+app</a>
 
 Dependency
 ======
