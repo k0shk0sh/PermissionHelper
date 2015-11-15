@@ -44,7 +44,7 @@ public class SampleActivity extends AppCompatActivity implements OnPermissionCal
         result = (TextView) findViewById(R.id.result);
         single.setOnClickListener(this);
         multi.setOnClickListener(this);
-        permissionHelper = new PermissionHelper(this, this);
+        permissionHelper = PermissionHelper.getInstance(this);
     }
 
     @Override
