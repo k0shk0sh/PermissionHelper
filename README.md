@@ -75,7 +75,7 @@ Why this library?
 
 * Its small (three classes)
 * Its simple to use
-* And finally its there because there might be someone who's suffering copying the same code again and agains in many projects.
+* And finally its there because there might be someone who's suffering copying the same code again and again in many projects.
 
 Dependency
 ======
