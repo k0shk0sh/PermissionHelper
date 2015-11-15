@@ -17,15 +17,26 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     private final int REQUEST_PERMISSIONS = 1;
     private boolean forceAccepting;
 
-    /**
-     * @param context
-     *         (Activity context -MUST BE ACTIVITY-)
-     * @param permissionCallback
-     *         (that returns the results to you)
-     */
-    public PermissionHelper(@NonNull Activity context, @NonNull OnPermissionCallback permissionCallback) {
+    private PermissionHelper(@NonNull Activity context) {
+        this.context = context;
+        if (permissionCallback instanceof Activity) {
+            this.permissionCallback = (OnPermissionCallback) context;
+        } else {
+            throw new IllegalArgumentException("Activity must implement (OnPermissionCallback)");
+        }
+    }
+
+    private PermissionHelper(@NonNull Activity context, @NonNull OnPermissionCallback permissionCallback) {
         this.context = context;
         this.permissionCallback = permissionCallback;
+    }
+
+    public static PermissionHelper getInstance(@NonNull Activity context) {
+        return new PermissionHelper(context);
+    }
+
+    public static PermissionHelper getInstance(@NonNull Activity context, @NonNull OnPermissionCallback permissionCallback) {
+        return new PermissionHelper(context, permissionCallback);
     }
 
     /**
