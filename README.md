@@ -12,7 +12,7 @@ Installation
 Usage
 =====
 
-Your Activity must implement ```OnPermissionCallback``` which in return will give you access to
+Your ```Activity/Presenter``` must should implement ```OnPermissionCallback``` which in return will give you access to
 
 ```
     void onPermissionGranted(String[] permissionName);
