@@ -19,7 +19,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
 
     private PermissionHelper(@NonNull Activity context) {
         this.context = context;
-        if (permissionCallback instanceof Activity) {
+        if (context instanceof OnPermissionCallback) {
             this.permissionCallback = (OnPermissionCallback) context;
         } else {
             throw new IllegalArgumentException("Activity must implement (OnPermissionCallback)");
