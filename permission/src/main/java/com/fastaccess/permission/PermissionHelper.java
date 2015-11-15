@@ -142,7 +142,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
 
     /**
      * be aware as it might return null (do check if the returned result is not null!)
-     * <p/>
+     * <p>
      * can be used outside of activity.
      */
     public static String declinedPermission(@NonNull Context context, @NonNull String[] permissions) {
@@ -169,7 +169,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
 
     /**
      * return true if permission is granted, false otherwise.
-     * <p/>
+     * <p>
      * can be used outside of activity.
      */
     public static boolean isPermissionGranted(@NonNull Context context, @NonNull String permission) {
