@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.fastaccess.permission.base.fragment.PermissionFragment;
 import com.fastaccess.permission.base.model.PermissionModel;
 
 import java.util.List;
@@ -22,11 +23,11 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return null;
+        return PermissionFragment.newInstance(permissions.get(position));
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return permissions.size();
     }
 }

@@ -1,6 +1,7 @@
 package com.fastaccess.permission.base.fragment;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,7 +29,6 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
     private TextView text;
     private ImageButton skip;
     private ImageButton request;
-
 
     @Override
     public void onAttach(Context context) {
@@ -76,6 +76,7 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
         text = (TextView) view.findViewById(R.id.text);
         skip = (ImageButton) view.findViewById(R.id.skip);
         request = (ImageButton) view.findViewById(R.id.request);
+        request.setVisibility(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP ? View.GONE : View.VISIBLE);
         background_layout.setBackgroundColor(permissionModel.getLayoutColor());
         image.setImageResource(permissionModel.getImageResourceId());
         text.setText(permissionModel.getExplanationText());
@@ -92,8 +93,12 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
         if (isSkip) {
             callback.onSkip(true, permissionModel.getPermissionName());
         } else {
-
+            callback.onPermissionRequest(permissionModel.getPermissionName());
         }
 
+    }
+
+    public PermissionModel getPermissionModel() {
+        return permissionModel;
     }
 }

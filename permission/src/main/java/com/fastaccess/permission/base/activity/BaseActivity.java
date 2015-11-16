@@ -16,6 +16,7 @@ import com.fastaccess.permission.base.PermissionHelper;
 import com.fastaccess.permission.base.adapter.PagerAdapter;
 import com.fastaccess.permission.base.callback.BaseCallback;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
+import com.fastaccess.permission.base.fragment.PermissionFragment;
 import com.fastaccess.permission.base.model.PermissionModel;
 import com.fastaccess.permission.base.widget.CirclePageIndicator;
 
@@ -44,7 +45,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnPermis
         if (theme() != 0) setTheme(theme());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
-        if (permissions().size() == 0) {
+        if (permissions().isEmpty()) {
             throw new NullPointerException("permissions() is empty");
         }
         pager = (ViewPager) findViewById(R.id.pager);
@@ -60,34 +61,39 @@ public abstract class BaseActivity extends AppCompatActivity implements OnPermis
 
     @Override
     public void onPermissionGranted(String[] permissionName) {
-
+        onSkip(false, permissionName[0]);
     }
 
     @Override
     public void onPermissionDeclined(String[] permissionName) {
+        PermissionFragment fragment = getFragment(pager.getCurrentItem());
+        if (fragment != null) {
 
+        }
     }
 
     @Override
     public void onPermissionPreGranted(String permissionsName) {
-
+        onSkip(false, permissionsName);
     }
 
     @Override
     public void onPermissionNeedExplanation(String permissionName) {
-
+        PermissionFragment fragment = getFragment(pager.getCurrentItem());
+        if (fragment != null) {
+            // blink the textView perhaps?
+        }
     }
 
     @Override
     public void onPermissionReallyDeclined(String permissionName) {
-
+        onSkip(true, permissionName);
     }
 
     @Override
     public void onNoPermissionNeeded() {
         if (mainActivity() == null) {
             finish();
-            return;
         }
     }
 
@@ -112,11 +118,15 @@ public abstract class BaseActivity extends AppCompatActivity implements OnPermis
 
     @Override
     public void onPermissionRequest(@NonNull String permissionName) {
-
+        permissionHelper.request(permissionName);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private PermissionFragment getFragment(int index) {
+        return (PermissionFragment) pager.getAdapter().instantiateItem(pager, index);
     }
 }
