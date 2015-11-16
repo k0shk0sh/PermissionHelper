@@ -233,8 +233,11 @@ public class PermissionHelper implements OnActivityPermissionCallback {
         return ActivityCompat.shouldShowRequestPermissionRationale(context, permissionName);
     }
 
+    /**
+     * open android settings screen for your app.
+     */
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
-    public static void openSettingsScreen(Context context) {
+    public static void openSettingsScreen(@NonNull Context context) {
         Intent intent = new Intent();
         intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         Uri uri = Uri.parse("package:" + context.getPackageName());

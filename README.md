@@ -6,7 +6,7 @@ Installation
 =====
 
 ```
-    compile 'com.github.k0shk0sh:PermissionHelper:1.0.2'
+    compile 'com.github.k0shk0sh:PermissionHelper:1.0.3'
 ```
 
 Usage
@@ -22,6 +22,8 @@ Your ```Activity/Presenter```  should implement ```OnPermissionCallback``` which
     void onPermissionPreGranted(String permissionsName);
 
     void onPermissionNeedExplanation(String permissionName);  
+    
+    void onPermissionReallyDeclined(String permissionName);//user has ticked don't show again and deny the permission
 
     void onNoPermissionNeeded(); // fallback to api < M
 ```
@@ -59,12 +61,29 @@ public static boolean isPermissionGranted(@NonNull Context context, @NonNull Str
 ```
 
 ```
+public static boolean isPermissionDeclined(@NonNull Context context, @NonNull String permission)
+```
+
+```
+public static boolean isExplanationNeeded(@NonNull Activity context, @NonNull String permissionName)
+```
+
+```
+public static void openSettingsScreen(Context context)
+```
+
+```
 public void requestAfterExplanation(String permissionName)// to be used if the permission needs explanation
 ```
 
 ```
 public void requestAfterExplanation(String[] permissions)//to be used if the permission needs explanation
 ```
+
+```
+public boolean isExplanationNeeded(@NonNull String permissionName)
+```
+
 
 To understand more please go through the <a href="https://github
 .com/k0shk0sh/PermissionHelper/tree/master/app/src/main/java/com/fastaccess/permission/sample">sample 
