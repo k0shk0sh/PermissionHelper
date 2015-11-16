@@ -1,6 +1,7 @@
 package com.fastaccess.permission.sample;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -90,6 +91,13 @@ public class SampleActivity extends AppCompatActivity implements OnPermissionCal
             result.setText("Permission( " + permissionName + " ) needs Explanation");
             getAlertDialog(permissionName).show();
         }
+    }
+
+    @Override
+    public void onPermissionReallyDeclined(String permissionName) {
+        result.setText("Permission " + permissionName + " can only be granted from SettingsScreen");
+        Log.i("ReallyDeclined", "Permission " + permissionName + " can only be granted from settingsScreen");
+        /** you can call  {@link PermissionHelper#openSettingsScreen(Context)} to open the settings screen */
     }
 
     @Override

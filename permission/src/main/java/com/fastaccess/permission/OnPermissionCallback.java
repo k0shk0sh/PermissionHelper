@@ -10,5 +10,7 @@ public interface OnPermissionCallback {
 
     void onPermissionNeedExplanation(String permissionName);
 
+    void onPermissionReallyDeclined(String permissionName);
+
     void onNoPermissionNeeded();
 }

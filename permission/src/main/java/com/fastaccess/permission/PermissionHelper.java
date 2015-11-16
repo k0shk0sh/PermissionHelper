@@ -50,10 +50,21 @@ public class PermissionHelper implements OnActivityPermissionCallback {
                 permissionCallback.onPermissionGranted(permissions);
             } else {
                 String[] declinedPermissions = declinedPermissions(context, permissions);
-                if (forceAccepting) {
-                    requestAfterExplanation(declinedPermissions);
+                List<Boolean> deniedPermissionsLength = new ArrayList<Boolean>();//needed
+                for (String permissionName : declinedPermissions) {
+                    if (permissionName != null) {
+                        if (!isExplanationNeeded(permissionName)) {
+                            permissionCallback.onPermissionReallyDeclined(permissionName);
+                            deniedPermissionsLength.add(false);
+                        }
+                    }
                 }
-                permissionCallback.onPermissionDeclined(declinedPermissions);
+                if (deniedPermissionsLength.size() == 0) {
+                    if (forceAccepting) {
+                        requestAfterExplanation(declinedPermissions);
+                    }
+                    permissionCallback.onPermissionDeclined(declinedPermissions);
+                }
             }
         }
     }
@@ -102,6 +113,22 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     }
 
     /**
+     * internal usage.
+     */
+    private void handleMulti(String[] permissionsName) {
+        String[] permissions = declinedPermissions(context, permissionsName);
+        if (permissions.length == 0) {
+            permissionCallback.onPermissionGranted(permissionsName);
+            return;
+        }
+        for (String permission : permissions) {
+            if (permission != null) {
+                handleSingle(permission);
+            }
+        }
+    }
+
+    /**
      * to be called when explanation is presented to the user
      */
     public void requestAfterExplanation(String permissionName) {
@@ -142,15 +169,6 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     /**
      * internal usage.
      */
-    private void handleMulti(String[] permissionsName) {
-        for (String permission : declinedPermissions(context, permissionsName)) {
-            if (permission != null) handleSingle(permission);
-        }
-    }
-
-    /**
-     * internal usage.
-     */
     private boolean verifyPermissions(int[] grantResults) {
         if (grantResults.length < 1) {
             return false;
@@ -165,7 +183,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
 
     /**
      * be aware as it might return null (do check if the returned result is not null!)
-     * <p>
+     * <p/>
      * can be used outside of activity.
      */
     public static String declinedPermission(@NonNull Context context, @NonNull String[] permissions) {
@@ -192,7 +210,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
 
     /**
      * return true if permission is granted, false otherwise.
-     * <p>
+     * <p/>
      * can be used outside of activity.
      */
     public static boolean isPermissionGranted(@NonNull Context context, @NonNull String permission) {
@@ -201,7 +219,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
 
     /**
      * return true if permission is declined, false otherwise.
-     * <p>
+     * <p/>
      * can be used outside of activity.
      */
     public static boolean isPermissionDeclined(@NonNull Context context, @NonNull String permission) {
