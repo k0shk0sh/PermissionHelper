@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FontType">
+        <attr name="isRoboto" format="boolean"/>
+    </declare-styleable>
+    <declare-styleable name="TintColor">
+        <attr name="tintColor" format="color"/>
+    </declare-styleable>
+    <declare-styleable name="CirclePageIndicator">
+        <attr name="centered"/>
+        <attr name="fillColor" format="color"/>
+        <attr name="pageColor" format="color"/>
+        <attr name="android:orientation"/>
+        <attr name="radius" format="dimension"/>
+        <attr name="snap" format="boolean"/>
+        <attr name="strokeColor" format="color"/>
+        <attr name="strokeWidth"/>
+        <attr name="android:background"/>
+    </declare-styleable>
+    <attr name="centered" format="boolean"/>
+    <attr name="selectedColor" format="color"/>
+    <attr name="strokeWidth" format="dimension"/>
+    <attr name="unselectedColor" format="color"/>
+    <declare-styleable name="ViewPagerIndicator">
+        <attr name="vpiCirclePageIndicatorStyle" format="reference"/>
+        <attr name="vpiIconPageIndicatorStyle" format="reference"/>
+        <attr name="vpiLinePageIndicatorStyle" format="reference"/>
+        <attr name="vpiTitlePageIndicatorStyle" format="reference"/>
+        <attr name="vpiTabPageIndicatorStyle" format="reference"/>
+        <attr name="vpiUnderlinePageIndicatorStyle" format="reference"/>
+    </declare-styleable>
+</resources>

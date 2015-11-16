@@ -1,4 +1,4 @@
-package com.fastaccess.permission;
+package com.fastaccess.permission.base;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -10,6 +10,9 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+
+import com.fastaccess.permission.base.callback.OnActivityPermissionCallback;
+import com.fastaccess.permission.base.callback.OnPermissionCallback;
 
 import java.util.ArrayList;
 import java.util.List;

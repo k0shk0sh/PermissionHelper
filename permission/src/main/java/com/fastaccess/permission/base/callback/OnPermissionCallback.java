@@ -1,4 +1,4 @@
-package com.fastaccess.permission;
+package com.fastaccess.permission.base.callback;
 
 public interface OnPermissionCallback {
 

@@ -12,8 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.fastaccess.permission.OnPermissionCallback;
-import com.fastaccess.permission.PermissionHelper;
+import com.fastaccess.permission.base.callback.OnPermissionCallback;
+import com.fastaccess.permission.base.PermissionHelper;
 
 import java.util.Arrays;
 
