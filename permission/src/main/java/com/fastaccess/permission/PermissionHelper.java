@@ -1,9 +1,13 @@
 package com.fastaccess.permission;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
@@ -39,6 +43,21 @@ public class PermissionHelper implements OnActivityPermissionCallback {
         return new PermissionHelper(context, permissionCallback);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_PERMISSIONS) {
+            if (verifyPermissions(grantResults)) {
+                permissionCallback.onPermissionGranted(permissions);
+            } else {
+                String[] declinedPermissions = declinedPermissions(context, permissions);
+                if (forceAccepting) {
+                    requestAfterExplanation(declinedPermissions);
+                }
+                permissionCallback.onPermissionDeclined(declinedPermissions);
+            }
+        }
+    }
+
     /**
      * force the user to accept the permission. it won't work if the user ever thick-ed the "don't show again"
      */
@@ -67,27 +86,12 @@ public class PermissionHelper implements OnActivityPermissionCallback {
         return this;
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_PERMISSIONS) {
-            if (verifyPermissions(grantResults)) {
-                permissionCallback.onPermissionGranted(permissions);
-            } else {
-                String[] declinedPermissions = declinedPermissions(context, permissions);
-                if (forceAccepting) {
-                    requestAfterExplanation(declinedPermissions);
-                }
-                permissionCallback.onPermissionDeclined(declinedPermissions);
-            }
-        }
-    }
-
     /**
      * internal usage.
      */
     private void handleSingle(String permissionName) {
         if (isPermissionDeclined(permissionName)) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(context, permissionName)) {
+            if (isExplanationNeeded(permissionName)) {
                 permissionCallback.onPermissionNeedExplanation(permissionName);
             } else {
                 ActivityCompat.requestPermissions(context, new String[]{permissionName}, REQUEST_PERMISSIONS);
@@ -126,6 +130,13 @@ public class PermissionHelper implements OnActivityPermissionCallback {
      */
     public boolean isPermissionDeclined(String permissionsName) {
         return ActivityCompat.checkSelfPermission(context, permissionsName) != PackageManager.PERMISSION_GRANTED;
+    }
+
+    /**
+     * @return true if explanation needed.
+     */
+    public boolean isExplanationNeeded(@NonNull String permissionName) {
+        return ActivityCompat.shouldShowRequestPermissionRationale(context, permissionName);
     }
 
     /**
@@ -186,6 +197,31 @@ public class PermissionHelper implements OnActivityPermissionCallback {
      */
     public static boolean isPermissionGranted(@NonNull Context context, @NonNull String permission) {
         return ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    /**
+     * return true if permission is declined, false otherwise.
+     * <p>
+     * can be used outside of activity.
+     */
+    public static boolean isPermissionDeclined(@NonNull Context context, @NonNull String permission) {
+        return ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED;
+    }
+
+    /**
+     * @return true if explanation needed.
+     */
+    public static boolean isExplanationNeeded(@NonNull Activity context, @NonNull String permissionName) {
+        return ActivityCompat.shouldShowRequestPermissionRationale(context, permissionName);
+    }
+
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
+    public static void openSettingsScreen(Context context) {
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.parse("package:" + context.getPackageName());
+        intent.setData(uri);
+        context.startActivity(intent);
     }
 
 }
