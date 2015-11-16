@@ -85,9 +85,9 @@ public boolean isExplanationNeeded(@NonNull String permissionName)
 ```
 
 
-To understand more please go through the <a href="https://github
+> **To understand more please go through the <a href="https://github
 .com/k0shk0sh/PermissionHelper/tree/master/app/src/main/java/com/fastaccess/permission/sample">sample 
-app</a>
+app</a>**
 
 Why this library?
 =====
@@ -100,3 +100,10 @@ Dependency
 ======
 
 Android Support library ```v23.1.1```
+
+
+# Copyright Notice
+
+Copyright (C) 2013-2015 Kosh.
+Licensed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+license (see the LICENSE file).
