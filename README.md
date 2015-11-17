@@ -162,6 +162,7 @@ app</a>**
 
 Android Support library ```v23.1.1```
 
+CirclePageIndicator by **JakeWharton** (integrated within the library).
 
 # Images
 
