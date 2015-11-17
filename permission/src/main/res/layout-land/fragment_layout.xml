@@ -43,8 +43,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="10dp"
+            android:gravity="center"
             android:maxLines="2"
-            android:gravity="center"/>
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/message"
@@ -52,8 +53,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="10dip"
-            android:maxLines="4"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:maxLines="4"/>
 
         <LinearLayout
             android:layout_width="wrap_content"

@@ -50,7 +50,8 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
-                android:maxLines="2"/>
+                android:maxLines="2"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/message"
