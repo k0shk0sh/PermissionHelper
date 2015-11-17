@@ -102,6 +102,11 @@ Dependency
 Android Support library ```v23.1.1```
 
 
+Images
+=====
+
+Images used inside the demo are by +Adrian Aisemberg
+
 # Copyright Notice
 
 Copyright (C) 2013-2015 Kosh.
