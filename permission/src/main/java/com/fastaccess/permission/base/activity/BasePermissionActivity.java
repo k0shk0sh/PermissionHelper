@@ -1,6 +1,6 @@
 package com.fastaccess.permission.base.activity;
 
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,8 +9,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -26,12 +26,12 @@ import com.fastaccess.permission.base.widget.CirclePageIndicator;
 import java.util.List;
 
 
-public abstract class BaseActivity extends AppCompatActivity implements OnPermissionCallback, BaseCallback {
+public abstract class BasePermissionActivity extends AppCompatActivity implements OnPermissionCallback, BaseCallback {
 
-    private PermissionHelper permissionHelper;
-    private ViewPager pager;
-    private CirclePageIndicator indicator;
     private final static String PAGER_POSITION = "PAGER_POSITION";
+    protected PermissionHelper permissionHelper;
+    protected ViewPager pager;
+    protected CirclePageIndicator indicator; // take control to change the color and stuff.
 
     @NonNull
     protected abstract List<PermissionModel> permissions();
@@ -39,11 +39,28 @@ public abstract class BaseActivity extends AppCompatActivity implements OnPermis
     @StyleRes
     protected abstract int theme();
 
-    @Nullable
-    protected abstract Class<? extends AppCompatActivity> mainActivity();
+    /**
+     * Intro has finished.
+     */
+    protected abstract void onIntroFinished();
 
     @Nullable
     protected abstract ViewPager.PageTransformer pagerTransformer();
+
+    @NonNull
+    protected abstract Boolean backPressIsEnabled();
+
+    /**
+     * used to notify you that the permission is permanently denied. so you can decide whats next!
+     */
+    protected abstract void permissionIsPermanentlyDenied(String permissionName);
+
+    /**
+     * used to notify that the user ignored the permission
+     * <p/>
+     * note: if the {@link PermissionModel#isCanSkip()} return false, we could display the explanation immediately.
+     */
+    protected abstract void onUserDeclinePermission(String permissionName);
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -85,45 +102,58 @@ public abstract class BaseActivity extends AppCompatActivity implements OnPermis
     }
 
     @Override
+    public void onBackPressed() {
+        if (backPressIsEnabled()) {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public void onPermissionGranted(String[] permissionName) {
-        onNext(false, permissionName[0]);// we are certain that one permission is requested.
+        onNext(permissionName[0]);// we are certain that one permission is requested.
     }
 
     @Override
     public void onPermissionDeclined(String[] permissionName) {
-        PermissionFragment fragment = getFragment(pager.getCurrentItem());
-        if (fragment != null) {}
+        PermissionModel model = getPermission(pager.getCurrentItem());
+        if (model != null) {
+            if (!model.isCanSkip()) {
+                requestPermission(model);//ask again. you asked for it, and i'm just doing it.
+                return;
+            } else {
+                onUserDeclinePermission(permissionName[0]);
+            }
+        }
+        onNext(permissionName[0]);
     }
 
     @Override
     public void onPermissionPreGranted(String permissionsName) {
-        onNext(false, permissionsName);
+        onNext(permissionsName);
     }
 
     @Override
     public void onPermissionNeedExplanation(String permissionName) {
-        PermissionFragment fragment = getFragment(pager.getCurrentItem());
-        if (fragment != null) {
-            // blink the textView perhaps?
+        PermissionModel model = getPermission(pager.getCurrentItem());
+        if (model != null) {
+            requestPermission(model);
+        } else { // it will never occur. but in case it does, call it :).
+            permissionHelper.requestAfterExplanation(permissionName);
         }
     }
 
     @Override
     public void onPermissionReallyDeclined(String permissionName) {
-        onNext(true, permissionName);
+        permissionIsPermanentlyDenied(permissionName);
+        onNoPermissionNeeded();
     }
 
     @Override
     public void onNoPermissionNeeded() {
         if ((pager.getAdapter().getCount() - 1) == pager.getCurrentItem()) {
-            if (mainActivity() == null) {
-                finish();
-            } else {
-                startActivity(new Intent(this, mainActivity()));
-                finish();
-            }
+            onIntroFinished();
         } else {
-            onNext(true, "null");
+            onNext("");// the irony. I can't pass null too :p.
         }
     }
 
@@ -142,14 +172,13 @@ public abstract class BaseActivity extends AppCompatActivity implements OnPermis
     }
 
     @Override
-    public void onSkip(boolean isSkipped, String permissionName) {
+    public void onSkip(String permissionName) {
         pager.setCurrentItem(pager.getCurrentItem() - 1, true);
     }
 
     @Override
-    public void onNext(boolean skipped, @NonNull String permissionName) {
+    public void onNext(@NonNull String permissionName) {
         int currentPosition = pager.getCurrentItem();
-        Log.e("EEE", pager.getAdapter().getCount() + "  " + (currentPosition));
         if ((pager.getAdapter().getCount() - 1) == (currentPosition)) {
             onNoPermissionNeeded();
         } else {
@@ -158,8 +187,12 @@ public abstract class BaseActivity extends AppCompatActivity implements OnPermis
     }
 
     @Override
-    public void onPermissionRequest(@NonNull String permissionName) {
-        permissionHelper.request(permissionName);
+    public void onPermissionRequest(@NonNull String permissionName, boolean canSkip) {
+        if (permissionHelper.isExplanationNeeded(permissionName)) {
+            onPermissionNeedExplanation(permissionName);
+        } else {
+            permissionHelper.request(permissionName);
+        }
     }
 
     @Override
@@ -167,12 +200,41 @@ public abstract class BaseActivity extends AppCompatActivity implements OnPermis
         permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    private PermissionFragment getFragment(int index) {
+    /**
+     * @return instance of {@link PermissionFragment}
+     */
+    protected PermissionFragment getFragment(int index) {
         return (PermissionFragment) pager.getAdapter().instantiateItem(pager, index);
     }
 
+    /**
+     * return PermissionModel at specific index.
+     * <p/>
+     * if index > {@link #permissions().size()} null will be returned
+     */
+    protected PermissionModel getPermission(int index) {
+        if (index <= permissions().size()) {// avoid accessing index does not exists.
+            return permissions().get(index);
+        }
+        return null;
+    }
 
-    public class ParallaxPageTransformer implements ViewPager.PageTransformer {
+    /**
+     * internal usage to show dialog with explanation you provided and a button to ask the user to request the permission
+     */
+    protected void requestPermission(final PermissionModel model) {
+        new AlertDialog.Builder(this)
+                .setTitle(model.getTitle())
+                .setMessage(model.getExplanationMessage())
+                .setPositiveButton("Request", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        permissionHelper.requestAfterExplanation(model.getPermissionName());
+                    }
+                }).show();
+    }
+
+    protected class ParallaxPageTransformer implements ViewPager.PageTransformer {
 
         public void transformPage(View view, float position) {
             int pageWidth = view.getWidth();

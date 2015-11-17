@@ -1,14 +1,6 @@
 # PermissionHelper
 Android Library to help you with your runtime Permissions.
 
-V1.0.4 (coming soon)
-======
-* you don't need to handle permissions yourself, instead PermissionHelper will do it for you in an app intro fashion way, if you are interested, 
-check 
-<a href="https://github
-.com/k0shk0sh/PermissionHelper/tree/master/app/src/main/java/com/fastaccess/permission/sample/SamplePagerActivity.java">SamplePagerActivity</a>
-  
-**P.S: its not yet published and it won't until i make sure it works probably.**
 
 Installation
 =====
@@ -19,6 +11,14 @@ Installation
 
 Usage
 =====
+
+# Ask Permissions in Style
+
+
+
+
+
+# Take Control & Make your Own.
 
 Your ```Activity/Presenter```  should implement ```OnPermissionCallback``` which in return will give you access to
 
@@ -113,7 +113,7 @@ Android Support library ```v23.1.1```
 Images
 =====
 
-Images used inside the demo are by +Adrian Aisemberg
+Images used inside the demo are by <a href="http://www.materialup.com/maxKeppeler">Maximilian Keppeler</a>
 
 # Copyright Notice
 

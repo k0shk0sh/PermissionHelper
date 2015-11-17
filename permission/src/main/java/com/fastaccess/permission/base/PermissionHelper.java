@@ -1,9 +1,9 @@
 package com.fastaccess.permission.base;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -103,12 +103,17 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     /**
      * internal usage.
      */
-    private void handleSingle(String permissionName) {
-        if (isPermissionDeclined(permissionName)) {
-            if (isExplanationNeeded(permissionName)) {
-                permissionCallback.onPermissionNeedExplanation(permissionName);
+    private void handleSingle(@NonNull String permissionName) {
+        if (permissionExists(permissionName)) {// android M throws exception when requesting
+            // run time permission that does not exists in AndroidManifest.
+            if (isPermissionDeclined(permissionName)) {
+                if (isExplanationNeeded(permissionName)) {
+                    permissionCallback.onPermissionNeedExplanation(permissionName);
+                } else {
+                    ActivityCompat.requestPermissions(context, new String[]{permissionName}, REQUEST_PERMISSIONS);
+                }
             } else {
-                ActivityCompat.requestPermissions(context, new String[]{permissionName}, REQUEST_PERMISSIONS);
+                permissionCallback.onPermissionPreGranted(permissionName);
             }
         } else {
             permissionCallback.onPermissionPreGranted(permissionName);
@@ -118,7 +123,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     /**
      * internal usage.
      */
-    private void handleMulti(String[] permissionsName) {
+    private void handleMulti(@NonNull String[] permissionsName) {
         String[] permissions = declinedPermissions(context, permissionsName);
         if (permissions.length == 0) {
             permissionCallback.onPermissionGranted(permissionsName);
@@ -134,7 +139,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     /**
      * to be called when explanation is presented to the user
      */
-    public void requestAfterExplanation(String permissionName) {
+    public void requestAfterExplanation(@NonNull String permissionName) {
         if (isPermissionDeclined(permissionName)) {
             ActivityCompat.requestPermissions(context, new String[]{permissionName}, REQUEST_PERMISSIONS);
         } else {
@@ -145,7 +150,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     /**
      * to be called when explanation is presented to the user
      */
-    public void requestAfterExplanation(String[] permissions) {
+    public void requestAfterExplanation(@NonNull String[] permissions) {
         for (String permissionName : permissions) {
             if (isPermissionDeclined(permissionName)) {
                 ActivityCompat.requestPermissions(context, new String[]{permissionName}, REQUEST_PERMISSIONS);
@@ -158,8 +163,15 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     /**
      * return true if permission is declined, false otherwise.
      */
-    public boolean isPermissionDeclined(String permissionsName) {
+    public boolean isPermissionDeclined(@NonNull String permissionsName) {
         return ActivityCompat.checkSelfPermission(context, permissionsName) != PackageManager.PERMISSION_GRANTED;
+    }
+
+    /**
+     * return true if permission is granted, false otherwise.
+     */
+    public boolean isPermissionGranted(@NonNull String permissionsName) {
+        return ActivityCompat.checkSelfPermission(context, permissionsName) == PackageManager.PERMISSION_GRANTED;
     }
 
     /**
@@ -167,6 +179,15 @@ public class PermissionHelper implements OnActivityPermissionCallback {
      */
     public boolean isExplanationNeeded(@NonNull String permissionName) {
         return ActivityCompat.shouldShowRequestPermissionRationale(context, permissionName);
+    }
+
+    /**
+     * @return true if the permission is patently denied by the user and only can be granted via settings Screen
+     * <p/>
+     * consider using {@link PermissionHelper#openSettingsScreen(Context)} to open settings screen
+     */
+    public boolean isPermissionPermanentlyDenied(@NonNull String permission) {
+        return isPermissionDeclined(permission) && !isExplanationNeeded(permission);
     }
 
     /**
@@ -182,6 +203,36 @@ public class PermissionHelper implements OnActivityPermissionCallback {
             }
         }
         return true;
+    }
+
+    /**
+     * open android settings screen for the specific package name
+     */
+    public void openSettingsScreen() {
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.parse("package:" + context.getPackageName());
+        intent.setData(uri);
+        context.startActivity(intent);
+    }
+
+    /**
+     * @return true if permission exists in the manifest, false otherwise.
+     */
+    public boolean permissionExists(@NonNull String permissionName) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_PERMISSIONS);
+            if (packageInfo.requestedPermissions != null) {
+                for (String p : packageInfo.requestedPermissions) {
+                    if (p.equals(permissionName)) {
+                        return true;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     /**
@@ -237,15 +288,42 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     }
 
     /**
+     * @return true if the permission is patently denied by the user and only can be granted via settings Screen
+     * <p/>
+     * consider using {@link PermissionHelper#openSettingsScreen(Context)} to open settings screen
+     */
+    public static boolean isPermissionPermanentlyDenied(@NonNull Activity context, @NonNull String permission) {
+        return isPermissionDeclined(context, permission) && !isExplanationNeeded(context, permission);
+    }
+
+    /**
      * open android settings screen for your app.
      */
-    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     public static void openSettingsScreen(@NonNull Context context) {
         Intent intent = new Intent();
         intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         Uri uri = Uri.parse("package:" + context.getPackageName());
         intent.setData(uri);
         context.startActivity(intent);
+    }
+
+    /**
+     * @return true if permission exists in the manifest, false otherwise.
+     */
+    public static boolean permissionExists(@NonNull Context context, @NonNull String permissionName) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_PERMISSIONS);
+            if (packageInfo.requestedPermissions != null) {
+                for (String p : packageInfo.requestedPermissions) {
+                    if (p.equals(permissionName)) {
+                        return true;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

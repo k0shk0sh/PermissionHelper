@@ -22,6 +22,7 @@ public class PermissionModel implements Parcelable {
     private boolean canSkip;
     private String message;
     private String title;
+    private String fontType;
 
     public String getPermissionName() {
         return permissionName;
@@ -121,6 +122,17 @@ public class PermissionModel implements Parcelable {
         this.title = title;
     }
 
+    public String getFontType() {
+        return fontType;
+    }
+
+    /**
+     * @param fontType ex: (fonts/my_custom_text.ttf);
+     */
+    public void setFontType(@NonNull String fontType) {
+        this.fontType = fontType;
+    }
+
     @Override
     public int describeContents() { return 0; }
 
@@ -138,6 +150,7 @@ public class PermissionModel implements Parcelable {
         dest.writeByte(canSkip ? (byte) 1 : (byte) 0);
         dest.writeString(this.message);
         dest.writeString(this.title);
+        dest.writeString(this.fontType);
     }
 
     protected PermissionModel(Parcel in) {
@@ -153,6 +166,7 @@ public class PermissionModel implements Parcelable {
         this.canSkip = in.readByte() != 0;
         this.message = in.readString();
         this.title = in.readString();
+        this.fontType = in.readString();
     }
 
     public static final Parcelable.Creator<PermissionModel> CREATOR = new Parcelable.Creator<PermissionModel>() {

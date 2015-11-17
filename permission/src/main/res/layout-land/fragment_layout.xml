@@ -54,6 +54,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="10dip"
             android:gravity="center"
+            android:autoLink="all"
             android:maxLines="4"/>
 
         <LinearLayout

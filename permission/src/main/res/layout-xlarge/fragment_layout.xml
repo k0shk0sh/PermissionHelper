@@ -38,6 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="16dip"
+            android:autoLink="all"
             android:gravity="center"/>
 
         <LinearLayout

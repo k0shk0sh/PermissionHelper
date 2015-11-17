@@ -9,13 +9,13 @@
     android:orientation="vertical">
 
     <TextView
-        android:textStyle="bold"
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="16dip"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:textStyle="bold"/>
 
     <ImageView
         android:id="@+id/image"
@@ -32,6 +32,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="16dip"
+        android:autoLink="all"
+        android:maxLines="6"
         android:gravity="center"/>
 
     <LinearLayout

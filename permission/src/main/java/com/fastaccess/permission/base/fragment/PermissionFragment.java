@@ -1,12 +1,12 @@
 package com.fastaccess.permission.base.fragment;
 
 import android.content.Context;
-import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fastaccess.permission.R;
-import com.fastaccess.permission.base.PermissionHelper;
 import com.fastaccess.permission.base.callback.BaseCallback;
 import com.fastaccess.permission.base.model.PermissionModel;
 
@@ -88,11 +87,15 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
         image = (ImageView) view.findViewById(R.id.image);
         message = (TextView) view.findViewById(R.id.message);
         previous = (ImageButton) view.findViewById(R.id.previous);
-        request = (ImageButton) view.findViewById(R.id.request);
         next = (ImageButton) view.findViewById(R.id.next);
+        request = (ImageButton) view.findViewById(R.id.request);
         next.setOnClickListener(this);
         previous.setOnClickListener(this);
-        next.setOnClickListener(this);
+        request.setOnClickListener(this);
+        initViews();
+    }
+
+    private void initViews() {
         request.setVisibility(Build.VERSION.SDK_INT < Build.VERSION_CODES.M ? View.GONE : View.VISIBLE);
         background_layout.setBackgroundColor(permissionModel.getLayoutColor());
         image.setImageResource(permissionModel.getImageResourceId());
@@ -105,28 +108,27 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
         previous.setImageResource(permissionModel.getPreviousIcon() == 0 ? R.drawable.ic_arrow_left : permissionModel.getPreviousIcon());
         request.setImageResource(permissionModel.getRequestIcon() == 0 ? R.drawable.ic_arrow_done : permissionModel.getRequestIcon());
         next.setImageResource(permissionModel.getNextIcon() == 0 ? R.drawable.ic_arrow_right : permissionModel.getNextIcon());
+        if (!TextUtils.isEmpty(permissionModel.getFontType())) {
+            Typeface typeface = Typeface.createFromAsset(getResources().getAssets(), permissionModel.getFontType());
+            if (typeface != null) {
+                title.setTypeface(typeface);
+                message.setTypeface(typeface);
+            }
+        }
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.previous) {
-            callback.onSkip(true, permissionModel.getPermissionName());
+            callback.onSkip(permissionModel.getPermissionName());
         } else if (v.getId() == R.id.next) {
-            boolean isGranted = PermissionHelper.isPermissionGranted(getContext(), permissionModel.getPermissionName());
-            if (!permissionModel.isCanSkip() && !isGranted) {
-                new AlertDialog.Builder(getContext())
-                        .setMessage(permissionModel.getExplanationMessage())
-                        .setPositiveButton("Request", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                callback.onPermissionRequest(permissionModel.getPermissionName());
-                            }
-                        }).show();
+            if (!permissionModel.isCanSkip()) {
+                callback.onPermissionRequest(permissionModel.getPermissionName(), false);
             } else {
-                callback.onNext(true, permissionModel.getPermissionName());
+                callback.onNext(permissionModel.getPermissionName());
             }
         } else if (v.getId() == R.id.request) {
-            callback.onPermissionRequest(permissionModel.getPermissionName());
+            callback.onPermissionRequest(permissionModel.getPermissionName(), true);
             Log.e("Request", "RequestCalled {" + permissionModel.getPermissionName() + "}");
         }
     }
