@@ -55,6 +55,10 @@ _Have you wondered what will give you a higher chance of letting the user accept
     
 * And Finally **Let The Library Do The Job For You. in Style.**
 
+**Notice** 
+> You still can use the library to explain why you used the permission in your app, the library will never try ask the permission if 
+Android is smaller than **M**, it will just do like any Intro library does.  
+
 > For Better Understanding, please have a look at the example code at <a href="https://github.com/k0shk0sh/PermissionHelper/blob/master/app/src/main/java/com/fastaccess/permission/sample/SamplePagerActivity.java">SamplePagerActivity</a>
 
 # Take Control.
