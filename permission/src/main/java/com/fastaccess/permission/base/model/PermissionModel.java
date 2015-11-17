@@ -3,12 +3,11 @@ package com.fastaccess.permission.base.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
-import android.support.annotation.IdRes;
+import android.support.annotation.DimenRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
-/**
- * Created by Kosh on 16/11/15 9:20 PM. copyrights @ Innov8tif
- */
+
 public class PermissionModel implements Parcelable {
 
     private String permissionName;
@@ -17,9 +16,11 @@ public class PermissionModel implements Parcelable {
     private int textColor;
     private int textSize;
     private String explanationText;
-    private int skipIcon;
+    private int previousIcon;
+    private int nextIcon;
     private int requestIcon;
     private boolean canSkip;
+    private String message;
 
     public String getPermissionName() {
         return permissionName;
@@ -33,7 +34,7 @@ public class PermissionModel implements Parcelable {
         return imageResourceId;
     }
 
-    public void setImageResourceId(@IdRes int imageResourceId) {
+    public void setImageResourceId(@DrawableRes int imageResourceId) {
         this.imageResourceId = imageResourceId;
     }
 
@@ -57,7 +58,7 @@ public class PermissionModel implements Parcelable {
         return textSize;
     }
 
-    public void setTextSize(@IdRes int textSize) {
+    public void setTextSize(@DimenRes int textSize) {
         this.textSize = textSize;
     }
 
@@ -81,19 +82,35 @@ public class PermissionModel implements Parcelable {
         return requestIcon;
     }
 
-    public void setRequestIcon(@IdRes int requestIcon) {
+    public void setRequestIcon(@DrawableRes int requestIcon) {
         this.requestIcon = requestIcon;
     }
 
-    public int getSkipIcon() {
-        return skipIcon;
+    public int getPreviousIcon() {
+        return previousIcon;
     }
 
-    public void setSkipIcon(@IdRes int skipIcon) {
-        this.skipIcon = skipIcon;
+    public void setPreviousIcon(@DrawableRes int previousIcon) {
+        this.previousIcon = previousIcon;
     }
 
     public PermissionModel() {}
+
+    public int getNextIcon() {
+        return nextIcon;
+    }
+
+    public void setNextIcon(int nextIcon) {
+        this.nextIcon = nextIcon;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(@NonNull String message) {
+        this.message = message;
+    }
 
     @Override
     public int describeContents() { return 0; }
@@ -106,9 +123,11 @@ public class PermissionModel implements Parcelable {
         dest.writeInt(this.textColor);
         dest.writeInt(this.textSize);
         dest.writeString(this.explanationText);
-        dest.writeInt(this.skipIcon);
+        dest.writeInt(this.previousIcon);
+        dest.writeInt(this.nextIcon);
         dest.writeInt(this.requestIcon);
         dest.writeByte(canSkip ? (byte) 1 : (byte) 0);
+        dest.writeString(this.message);
     }
 
     protected PermissionModel(Parcel in) {
@@ -118,9 +137,11 @@ public class PermissionModel implements Parcelable {
         this.textColor = in.readInt();
         this.textSize = in.readInt();
         this.explanationText = in.readString();
-        this.skipIcon = in.readInt();
+        this.previousIcon = in.readInt();
+        this.nextIcon = in.readInt();
         this.requestIcon = in.readInt();
         this.canSkip = in.readByte() != 0;
+        this.message = in.readString();
     }
 
     public static final Parcelable.Creator<PermissionModel> CREATOR = new Parcelable.Creator<PermissionModel>() {

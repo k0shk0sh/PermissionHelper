@@ -9,9 +9,7 @@ import com.fastaccess.permission.base.model.PermissionModel;
 
 import java.util.List;
 
-/**
- * Created by Kosh on 16/11/15 10:35 PM. copyrights @ Innov8tif
- */
+
 public class PagerAdapter extends FragmentStatePagerAdapter {
 
     private List<PermissionModel> permissions;

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:gravity="center"
     android:orientation="vertical">
 
     <ImageView
@@ -14,8 +15,7 @@
         android:layout_gravity="center"
         android:layout_margin="16dip"
         android:adjustViewBounds="true"
-        android:maxHeight="300dp"
-        android:src="@color/default_circle_indicator_stroke_color"/>
+        android:maxHeight="250dp"/>
 
 
     <TextView
@@ -24,8 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="16dip"
-        android:gravity="center"
-        android:text="Koshhhhhh"/>
+        android:gravity="center"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -33,13 +32,15 @@
         android:layout_gravity="center"
         android:orientation="horizontal">
 
+
         <ImageButton
-            android:id="@+id/skip"
+            android:id="@+id/previous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="6dip"
             android:background="?selectableItemBackgroundBorderless"
-            android:src="@android:drawable/alert_dark_frame"/>
+            android:padding="15dp"
+            android:src="@drawable/ic_arrow_left"/>
 
         <ImageButton
             android:id="@+id/request"
@@ -47,7 +48,17 @@
             android:layout_height="wrap_content"
             android:layout_margin="6dip"
             android:background="?selectableItemBackgroundBorderless"
-            android:src="@android:drawable/alert_dark_frame"/>
+            android:padding="15dp"
+            android:src="@drawable/ic_arrow_done"/>
+
+        <ImageButton
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dip"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="15dp"
+            android:src="@drawable/ic_arrow_right"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -1,10 +1,14 @@
 package com.fastaccess.permission.base.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,22 +17,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fastaccess.permission.R;
+import com.fastaccess.permission.base.PermissionHelper;
 import com.fastaccess.permission.base.callback.BaseCallback;
 import com.fastaccess.permission.base.model.PermissionModel;
 
-/**
- * Created by Kosh on 16/11/15 10:36 PM. copyrights @ Innov8tif
- */
 public class PermissionFragment extends Fragment implements View.OnClickListener {
 
-    private final static String PERMISSION_INSTANCE = "PERMISSION_INSTNACE";
+    public final static String PERMISSION_INSTANCE = "PERMISSION_INSTNACE";
     private PermissionModel permissionModel;
     private BaseCallback callback;
     private View background_layout;
     private ImageView image;
     private TextView text;
-    private ImageButton skip;
+    private ImageButton previous;
     private ImageButton request;
+    private ImageButton next;
+
+    public static PermissionFragment newInstance(PermissionModel permissionModel) {
+        PermissionFragment fragment = new PermissionFragment();
+        Bundle localBundle = new Bundle();
+        localBundle.putParcelable(PERMISSION_INSTANCE, permissionModel);
+        fragment.setArguments(localBundle);
+        return fragment;
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -46,12 +57,12 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
         callback = null;
     }
 
-    public static PermissionFragment newInstance(PermissionModel permissionModel) {
-        PermissionFragment fragment = new PermissionFragment();
-        Bundle localBundle = new Bundle();
-        localBundle.putParcelable(PERMISSION_INSTANCE, permissionModel);
-        fragment.setArguments(localBundle);
-        return fragment;
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (permissionModel != null) {
+            outState.putParcelable(PERMISSION_INSTANCE, permissionModel);
+        }
     }
 
     @Nullable
@@ -74,31 +85,44 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
         background_layout = view.findViewById(R.id.background_layout);
         image = (ImageView) view.findViewById(R.id.image);
         text = (TextView) view.findViewById(R.id.text);
-        skip = (ImageButton) view.findViewById(R.id.skip);
+        previous = (ImageButton) view.findViewById(R.id.previous);
         request = (ImageButton) view.findViewById(R.id.request);
-        request.setVisibility(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP ? View.GONE : View.VISIBLE);
+        next = (ImageButton) view.findViewById(R.id.next);
+        next.setOnClickListener(this);
+        previous.setOnClickListener(this);
+        next.setOnClickListener(this);
+        request.setVisibility(Build.VERSION.SDK_INT < Build.VERSION_CODES.M ? View.GONE : View.VISIBLE);
         background_layout.setBackgroundColor(permissionModel.getLayoutColor());
         image.setImageResource(permissionModel.getImageResourceId());
-        text.setText(permissionModel.getExplanationText());
+        text.setText(permissionModel.getMessage());
         text.setTextColor(permissionModel.getTextColor());
-        text.setTextSize(permissionModel.getTextSize());
-        skip.setImageResource(permissionModel.getSkipIcon());
-        request.setImageResource(permissionModel.getRequestIcon());
-        if (callback != null) callback.onStatusBarColorChange(permissionModel.getLayoutColor());
+        text.setTextSize(TypedValue.COMPLEX_UNIT_PX, permissionModel.getTextSize());
+        previous.setImageResource(permissionModel.getPreviousIcon() == 0 ? R.drawable.ic_arrow_left : permissionModel.getPreviousIcon());
+        request.setImageResource(permissionModel.getRequestIcon() == 0 ? R.drawable.ic_arrow_done : permissionModel.getRequestIcon());
+        next.setImageResource(permissionModel.getNextIcon() == 0 ? R.drawable.ic_arrow_right : permissionModel.getNextIcon());
     }
 
     @Override
     public void onClick(View v) {
-        boolean isSkip = v.getId() == R.id.skip;
-        if (isSkip) {
+        if (v.getId() == R.id.previous) {
             callback.onSkip(true, permissionModel.getPermissionName());
-        } else {
+        } else if (v.getId() == R.id.next) {
+            boolean isGranted = PermissionHelper.isPermissionGranted(getContext(), permissionModel.getPermissionName());
+            if (!permissionModel.isCanSkip() && !isGranted) {
+                new AlertDialog.Builder(getContext())
+                        .setMessage(permissionModel.getExplanationText())
+                        .setPositiveButton("Request", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                callback.onPermissionRequest(permissionModel.getPermissionName());
+                            }
+                        }).show();
+            } else {
+                callback.onNext(true, permissionModel.getPermissionName());
+            }
+        } else if (v.getId() == R.id.request) {
             callback.onPermissionRequest(permissionModel.getPermissionName());
+            Log.e("Request", "RequestCalled {" + permissionModel.getPermissionName() + "}");
         }
-
-    }
-
-    public PermissionModel getPermissionModel() {
-        return permissionModel;
     }
 }
