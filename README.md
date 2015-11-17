@@ -1,7 +1,22 @@
 # PermissionHelper
 Android Library to help you with your runtime Permissions.
 
+Nexus 6 (M)
+=======
+<p align="center">
+<img alt="Nexus 6" src="https://github.com/k0shk0sh/PermissionHelper/blob/master/art/nexus6.jpg"/>
+</p>
 
+Nexus 7 (L)
+=======
+<p align="center">
+<img alt="Nexus 7" src="https://github.com/k0shk0sh/PermissionHelper/blob/master/art/nexus7.jpg"/>
+</p>
+Nexus 10 (L)
+=======
+<p align="center">
+<img alt="Nexus 10" src="https://github.com/k0shk0sh/PermissionHelper/blob/master/art/nexus10.jpg"/>
+</p>
 Installation
 =====
 
