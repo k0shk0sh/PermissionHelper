@@ -17,11 +17,12 @@ Nexus 10 (L)
 <p align="center">
 <img alt="Nexus 10" src="https://github.com/k0shk0sh/PermissionHelper/blob/master/art/nexus10.jpg"/>
 </p>
-Installation
-=====
+
+
+# Installation
 
 ```
-    compile 'com.github.k0shk0sh:PermissionHelper:1.0.3'
+    compile 'com.github.k0shk0sh:PermissionHelper:1.0.4'
 ```
 
 Usage
@@ -29,11 +30,34 @@ Usage
 
 # Ask Permissions in Style
 
+_Have you wondered what will give you a higher chance of letting the user accepts your permission?_
 
+>The answer is simple: **(UI)** that explains why you need to use that particular `permission`. 
 
+* All you need to do is extending <a href="https://github
+.com/k0shk0sh/PermissionHelper/blob/master/permission/src/main/java/com/fastaccess/permission/base/activity/BasePermissionActivity
+.java">BasePermissionActivity</a>. 
 
+  * By extending `BasePermissionActivity` you'll have control over (**Features**): 
+    * Permissions that being asked and their Explanation if its needed.
+    * Each `Screen` Background color (`DarkPrimaryColor` of that background will be generated automatically).
+    * Each `Screen` Image Resource. 
+    * Each `Screen` Title & Message.
+    * Each `Screen` Title & Message Text Size.
+    * Each `Screen` Text & Message `FontType`, yes you heard me right, each `Screen` can have their own `FontType`.
+    * Each `Screen` Next, Previous & Request Buttons Icon Resources. 
+    * Your Own `Theme`.
+    * Your Own Implementation of `ViewPager.PageTransformer` or use the default one. 
+    * You can defined for instance that a particular permission can't be skipped until the Explanation `Dialog` is showed.(follow example code below
+     to know 
+    how).
+    * `BasePermissionActivity` support Portrait & Landscape modes for both Mobile Phones & Tablets _(as showing in above images)_.
+    
+* And Finally **Let The Library Do The Job For You. in Style.**
 
-# Take Control & Make your Own.
+> For Better Understanding, please have a look at the example code at <a href="https://github.com/k0shk0sh/PermissionHelper/blob/master/app/src/main/java/com/fastaccess/permission/sample/SamplePagerActivity.java">SamplePagerActivity</a>
+
+# Take Control.
 
 Your ```Activity/Presenter```  should implement ```OnPermissionCallback``` which in return will give you access to
 
@@ -68,8 +92,7 @@ call
 permissionHelper.onRequestPermissionsResult(....)
 ```
 
-Extra
-======
+# Extra
 
 ```
 public static String declinedPermission(@NonNull Context context, @NonNull String[])
@@ -92,7 +115,15 @@ public static boolean isExplanationNeeded(@NonNull Activity context, @NonNull St
 ```
 
 ```
-public static void openSettingsScreen(Context context)
+public static void openSettingsScreen(Context context)//useful when we can't request for the permission due to user ticked don't show again.
+```
+
+```
+public static boolean permissionExists(@NonNull Context context, @NonNull String permissionName)
+```
+
+```
+public static boolean isPermissionPermanentlyDenied(@NonNull Activity context, @NonNull String permission)
 ```
 
 ```
@@ -104,29 +135,30 @@ public void requestAfterExplanation(String[] permissions)//to be used if the per
 ```
 
 ```
-public boolean isExplanationNeeded(@NonNull String permissionName)
+> all of the above static methods you can still access them with PermissionHelper instance.
 ```
 
 
-> **To understand more please go through the <a href="https://github
-.com/k0shk0sh/PermissionHelper/tree/master/app/src/main/java/com/fastaccess/permission/sample">sample 
+
+> **To understand more how taking control would look like please go through the <a href="https://github
+.com/k0shk0sh/PermissionHelper/tree/master/app/src/main/java/com/fastaccess/permission/sample/SampleActivity.java">sample 
 app</a>**
 
-Why this library?
-=====
+# Why this library?
 
-* Its small (three classes)
-* Its simple to use
-* And finally its there because there might be someone who's suffering copying the same code again and again in many projects.
+* Its simple to use.
+* Its Unique, Customizable & read back first point. 
+* You have two choices, do it your way through `callbacks`, or let the `Library` do it for you with your look & Feel.
+* Minimum API is 14, but it'll probably work in API 11 and above, just make sure you test it out.  
 
-Dependency
-======
+> If you're using this library drop me an email at kosh20111@gmail.com to include in the list.
+
+# Dependency
 
 Android Support library ```v23.1.1```
 
 
-Images
-=====
+# Images
 
 Images used inside the demo are by <a href="http://www.materialup.com/maxKeppeler">Maximilian Keppeler</a>
 
