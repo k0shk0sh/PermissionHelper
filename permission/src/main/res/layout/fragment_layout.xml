@@ -8,6 +8,14 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="16dip"
+        android:gravity="center"/>
+
     <ImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
@@ -15,11 +23,10 @@
         android:layout_gravity="center"
         android:layout_margin="16dip"
         android:adjustViewBounds="true"
-        android:maxHeight="250dp"/>
-
+        android:maxHeight="200dp"/>
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

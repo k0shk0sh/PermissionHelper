@@ -15,12 +15,13 @@ public class PermissionModel implements Parcelable {
     private int layoutColor;
     private int textColor;
     private int textSize;
-    private String explanationText;
+    private String explanationMessage;
     private int previousIcon;
     private int nextIcon;
     private int requestIcon;
     private boolean canSkip;
     private String message;
+    private String title;
 
     public String getPermissionName() {
         return permissionName;
@@ -62,12 +63,12 @@ public class PermissionModel implements Parcelable {
         this.textSize = textSize;
     }
 
-    public String getExplanationText() {
-        return explanationText;
+    public String getExplanationMessage() {
+        return explanationMessage;
     }
 
-    public void setExplanationText(@NonNull String explanationText) {
-        this.explanationText = explanationText;
+    public void setExplanationMessage(@NonNull String explanationMessage) {
+        this.explanationMessage = explanationMessage;
     }
 
     public boolean isCanSkip() {
@@ -112,6 +113,14 @@ public class PermissionModel implements Parcelable {
         this.message = message;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(@NonNull String title) {
+        this.title = title;
+    }
+
     @Override
     public int describeContents() { return 0; }
 
@@ -122,12 +131,13 @@ public class PermissionModel implements Parcelable {
         dest.writeInt(this.layoutColor);
         dest.writeInt(this.textColor);
         dest.writeInt(this.textSize);
-        dest.writeString(this.explanationText);
+        dest.writeString(this.explanationMessage);
         dest.writeInt(this.previousIcon);
         dest.writeInt(this.nextIcon);
         dest.writeInt(this.requestIcon);
         dest.writeByte(canSkip ? (byte) 1 : (byte) 0);
         dest.writeString(this.message);
+        dest.writeString(this.title);
     }
 
     protected PermissionModel(Parcel in) {
@@ -136,12 +146,13 @@ public class PermissionModel implements Parcelable {
         this.layoutColor = in.readInt();
         this.textColor = in.readInt();
         this.textSize = in.readInt();
-        this.explanationText = in.readString();
+        this.explanationMessage = in.readString();
         this.previousIcon = in.readInt();
         this.nextIcon = in.readInt();
         this.requestIcon = in.readInt();
         this.canSkip = in.readByte() != 0;
         this.message = in.readString();
+        this.title = in.readString();
     }
 
     public static final Parcelable.Creator<PermissionModel> CREATOR = new Parcelable.Creator<PermissionModel>() {

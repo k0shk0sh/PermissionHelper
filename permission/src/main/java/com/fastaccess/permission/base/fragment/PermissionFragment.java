@@ -28,10 +28,11 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
     private BaseCallback callback;
     private View background_layout;
     private ImageView image;
-    private TextView text;
+    private TextView message;
     private ImageButton previous;
     private ImageButton request;
     private ImageButton next;
+    private TextView title;
 
     public static PermissionFragment newInstance(PermissionModel permissionModel) {
         PermissionFragment fragment = new PermissionFragment();
@@ -83,8 +84,9 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
             throw new NullPointerException("Permission Model some how went nuts and become null or was it?.");
         }
         background_layout = view.findViewById(R.id.background_layout);
+        title = (TextView) view.findViewById(R.id.title);
         image = (ImageView) view.findViewById(R.id.image);
-        text = (TextView) view.findViewById(R.id.text);
+        message = (TextView) view.findViewById(R.id.message);
         previous = (ImageButton) view.findViewById(R.id.previous);
         request = (ImageButton) view.findViewById(R.id.request);
         next = (ImageButton) view.findViewById(R.id.next);
@@ -94,9 +96,12 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
         request.setVisibility(Build.VERSION.SDK_INT < Build.VERSION_CODES.M ? View.GONE : View.VISIBLE);
         background_layout.setBackgroundColor(permissionModel.getLayoutColor());
         image.setImageResource(permissionModel.getImageResourceId());
-        text.setText(permissionModel.getMessage());
-        text.setTextColor(permissionModel.getTextColor());
-        text.setTextSize(TypedValue.COMPLEX_UNIT_PX, permissionModel.getTextSize());
+        title.setText(permissionModel.getTitle());
+        title.setTextSize(TypedValue.COMPLEX_UNIT_PX, permissionModel.getTextSize());
+        title.setTextColor(permissionModel.getTextColor());
+        message.setText(permissionModel.getMessage());
+        message.setTextColor(permissionModel.getTextColor());
+        message.setTextSize(TypedValue.COMPLEX_UNIT_PX, permissionModel.getTextSize());
         previous.setImageResource(permissionModel.getPreviousIcon() == 0 ? R.drawable.ic_arrow_left : permissionModel.getPreviousIcon());
         request.setImageResource(permissionModel.getRequestIcon() == 0 ? R.drawable.ic_arrow_done : permissionModel.getRequestIcon());
         next.setImageResource(permissionModel.getNextIcon() == 0 ? R.drawable.ic_arrow_right : permissionModel.getNextIcon());
@@ -110,7 +115,7 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
             boolean isGranted = PermissionHelper.isPermissionGranted(getContext(), permissionModel.getPermissionName());
             if (!permissionModel.isCanSkip() && !isGranted) {
                 new AlertDialog.Builder(getContext())
-                        .setMessage(permissionModel.getExplanationText())
+                        .setMessage(permissionModel.getExplanationMessage())
                         .setPositiveButton("Request", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
