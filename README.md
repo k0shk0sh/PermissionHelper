@@ -9,20 +9,16 @@ Demo
 **Pre M** <a href="https://www.youtube.com/watch?v=n2dKAu5fR6M">Watch it in action.</a>
 Nexus 6 (M)
 =======
-<p align="center">
-<img alt="Nexus 6" src="https://github.com/k0shk0sh/PermissionHelper/blob/master/art/nexus6.jpg"/>
-</p>
+![Nexus 6](https://raw.github.com/k0shk0sh/PermissionHelper/master/art/nexus6.jpg)
 
 Nexus 7 (L)
 =======
-<p align="center">
-<img alt="Nexus 7" src="https://github.com/k0shk0sh/PermissionHelper/blob/master/art/nexus7.jpg"/>
-</p>
+![ScreenShot](https://raw.github.com/k0shk0sh/PermissionHelper/master/art/nexus7.jpg)
+
 Nexus 10 (L)
 =======
-<p align="center">
-<img alt="Nexus 10" src="https://github.com/k0shk0sh/PermissionHelper/blob/master/art/nexus10.jpg"/>
-</p>
+![ScreenShot](https://raw.github.com/k0shk0sh/PermissionHelper/master/art/nexus10.jpg)
+
 
 
 # Installation
@@ -58,7 +54,7 @@ _Have you wondered what will give you a higher chance of letting the user accept
      to know 
     how).
     * `BasePermissionActivity` support Portrait & Landscape modes for both Mobile Phones & Tablets _(as showing in above images)_.
-    
+    * `SYSTEM_ALERT_WINDOW Permission`  is being automatically handled if you ever pass it along other permissions ;) . 
 * And Finally **Let The Library Do The Job For You. in Style.**
 
 **Notice** 
@@ -125,9 +121,6 @@ public static boolean isPermissionDeclined(@NonNull Context context, @NonNull St
 public static boolean isExplanationNeeded(@NonNull Activity context, @NonNull String permissionName)
 ```
 
-```
-public static void openSettingsScreen(Context context)//useful when we can't request for the permission due to user ticked don't show again.
-```
 
 ```
 public static boolean permissionExists(@NonNull Context context, @NonNull String permissionName)
@@ -138,11 +131,24 @@ public static boolean isPermissionPermanentlyDenied(@NonNull Activity context, @
 ```
 
 ```
+public static void openSettingsScreen(Context context)//useful when we can't request for the permission due to user ticked don't show again.
+```
+
+```
+@TargetApi(Build.VERSION_CODES.M)
+public static boolean isSystemAlertGranted(@NonNull Context context)// special case for SYSTEM_ALERT_WINDOW permission.
+```
+
+```
 public void requestAfterExplanation(String permissionName)// to be used if the permission needs explanation
 ```
 
 ```
 public void requestAfterExplanation(String[] permissions)//to be used if the permission needs explanation
+```
+
+```
+public void requestSystemAlertPermission() // not really needed as request(...) will handle this case.
 ```
 
 ```

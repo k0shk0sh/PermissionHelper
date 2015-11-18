@@ -3,25 +3,24 @@ package com.fastaccess.permission.sample;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
-import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import com.fastaccess.permission.base.PermissionHelper;
+import com.fastaccess.permission.base.callback.OnPermissionCallback;
 
 import java.util.Arrays;
 
 public class SampleActivity extends AppCompatActivity implements OnPermissionCallback, View.OnClickListener {
 
     private final String TAG = SampleActivity.class.getName();
-    private Button single;
-    private Button multi;
+
     private TextView result;
     private PermissionHelper permissionHelper;
     private boolean isSingle;
@@ -29,6 +28,7 @@ public class SampleActivity extends AppCompatActivity implements OnPermissionCal
     private String[] neededPermission;
 
     private final String SINGLE_PERMISSION = Manifest.permission.GET_ACCOUNTS;
+
 
     private final String[] MULTI_PERMISSIONS = new String[]{
             Manifest.permission.GET_ACCOUNTS,
@@ -40,12 +40,21 @@ public class SampleActivity extends AppCompatActivity implements OnPermissionCal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample);
-        single = (Button) findViewById(R.id.single);
-        multi = (Button) findViewById(R.id.multi);
         result = (TextView) findViewById(R.id.result);
-        single.setOnClickListener(this);
-        multi.setOnClickListener(this);
+        findViewById(R.id.single).setOnClickListener(this);
+        findViewById(R.id.multi).setOnClickListener(this);
+        findViewById(R.id.overlay).setOnClickListener(this);
         permissionHelper = PermissionHelper.getInstance(this);
+    }
+
+    /**
+     * Used to determine if the user accepted {@link android.Manifest.permission#SYSTEM_ALERT_WINDOW} or no.
+     * <p/>
+     * if you never passed the permission this method won't be called.
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        permissionHelper.onActivityForResult(requestCode);
     }
 
     @Override
@@ -108,10 +117,17 @@ public class SampleActivity extends AppCompatActivity implements OnPermissionCal
 
     @Override
     public void onClick(View v) {
-        isSingle = v.getId() == R.id.single;
-        permissionHelper
-                .setForceAccepting(false)
-                .request(isSingle ? SINGLE_PERMISSION : MULTI_PERMISSIONS);
+        if (v.getId() == R.id.single || v.getId() == R.id.multi) {
+            isSingle = v.getId() == R.id.single;
+            permissionHelper
+                    .setForceAccepting(false) // default is false. its here so you know that it exists.
+                    .request(isSingle ? SINGLE_PERMISSION : MULTI_PERMISSIONS);/*you can pass it along other permissions,
+                     just make sure you override OnActivityResult so you can get a callback.
+                     ignoring that will result to not be notified if the user enable/disable the permission*/
+        } else {
+            permissionHelper
+                    .request(Manifest.permission.SYSTEM_ALERT_WINDOW);
+        }
     }
 
     public AlertDialog getAlertDialog(final String[] permissions, final String permissionName) {

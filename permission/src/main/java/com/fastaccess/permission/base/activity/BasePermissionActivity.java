@@ -1,8 +1,10 @@
 package com.fastaccess.permission.base.activity;
 
+import android.Manifest;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -31,10 +33,13 @@ import java.util.List;
 
 public abstract class BasePermissionActivity extends AppCompatActivity implements OnPermissionCallback, BaseCallback {
 
-    private final static String PAGER_POSITION = "PAGER_POSITION";
+    private final String PAGER_POSITION = "PAGER_POSITION";
+    private final String SYSTEM_OVERLAY_NUM_INSTANCE = "SYSTEM_OVERLAY_NUM_INSTANCE";
     protected PermissionHelper permissionHelper;
     protected ViewPager pager;
     protected CirclePageIndicator indicator; // take control to change the color and stuff.
+    private int systemOverRequestNumber = 0;/* only show the explanation once otherwise infinite
+                                                        LOOP if canSkip is false */
 
     @NonNull
     protected abstract List<PermissionModel> permissions();
@@ -71,6 +76,7 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
         if (pager != null) {
             outState.putInt(PAGER_POSITION, pager.getCurrentItem());
         }
+        outState.putInt(SYSTEM_OVERLAY_NUM_INSTANCE, systemOverRequestNumber);
     }
 
     @Override
@@ -102,7 +108,18 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
 
         if (savedInstanceState != null) {
             pager.setCurrentItem(savedInstanceState.getInt(PAGER_POSITION), true);
+            systemOverRequestNumber = savedInstanceState.getInt(SYSTEM_OVERLAY_NUM_INSTANCE);
         }
+    }
+
+    /**
+     * Used to determine if the user accepted {@link android.Manifest.permission#SYSTEM_ALERT_WINDOW} or no.
+     * <p/>
+     * if you never passed the permission this method won't be called.
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        permissionHelper.onActivityForResult(requestCode);
     }
 
     @Override
@@ -122,8 +139,18 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
         PermissionModel model = getPermission(pager.getCurrentItem());
         if (model != null) {
             if (!model.isCanSkip()) {
-                requestPermission(model);//ask again. you asked for it, and i'm just doing it.
-                return;
+                if (!model.getPermissionName().equalsIgnoreCase(Manifest.permission.SYSTEM_ALERT_WINDOW)) {
+                    requestPermission(model);//ask again. you asked for it, and i'm just doing it.
+                    return;
+                } else {
+                    if (systemOverRequestNumber == 0) {//because boolean is too mainstream. (jk).
+                        requestPermission(model);
+                        systemOverRequestNumber = 1;
+                        return;
+                    } else {
+                        onUserDeclinePermission(model.getPermissionName());
+                    }
+                }
             } else {
                 onUserDeclinePermission(permissionName[0]);
             }
@@ -138,11 +165,15 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
 
     @Override
     public void onPermissionNeedExplanation(String permissionName) {
-        PermissionModel model = getPermission(pager.getCurrentItem());
-        if (model != null) {
-            requestPermission(model);
-        } else { // it will never occur. but in case it does, call it :).
-            permissionHelper.requestAfterExplanation(permissionName);
+        if (!permissionName.equalsIgnoreCase(Manifest.permission.SYSTEM_ALERT_WINDOW)) {
+            PermissionModel model = getPermission(pager.getCurrentItem());
+            if (model != null) {
+                requestPermission(model);
+            } else { // it will never occur. but in case it does, call it :).
+                permissionHelper.requestAfterExplanation(permissionName);
+            }
+        } else {
+            onPermissionReallyDeclined(permissionName); // sorry, i can't do that, its just bad.
         }
     }
 
@@ -233,7 +264,11 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
                 .setPositiveButton("Request", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        permissionHelper.requestAfterExplanation(model.getPermissionName());
+                        if (model.getPermissionName().equalsIgnoreCase(Manifest.permission.SYSTEM_ALERT_WINDOW)) {
+                            permissionHelper.requestSystemAlertPermission();
+                        } else {
+                            permissionHelper.requestAfterExplanation(model.getPermissionName());
+                        }
                     }
                 }).show();
     }

@@ -1,5 +1,7 @@
 package com.fastaccess.permission.base;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +12,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 
 import com.fastaccess.permission.base.callback.OnActivityPermissionCallback;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
@@ -19,6 +22,7 @@ import java.util.List;
 
 public class PermissionHelper implements OnActivityPermissionCallback {
 
+    private static final int OVERLAY_PERMISSION_REQ_CODE = 2;
     private OnPermissionCallback permissionCallback;
     private Activity context;
     private final int REQUEST_PERMISSIONS = 1;
@@ -26,6 +30,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
 
     private PermissionHelper(@NonNull Activity context) {
         this.context = context;
+
         if (context instanceof OnPermissionCallback) {
             this.permissionCallback = (OnPermissionCallback) context;
         } else {
@@ -73,6 +78,23 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     }
 
     /**
+     * used only for {@link android.Manifest.permission#SYSTEM_ALERT_WINDOW}
+     */
+    public void onActivityForResult(int requestCode) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
+                if (isSystemAlertGranted()) {
+                    permissionCallback.onPermissionGranted(new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW});
+                } else {
+                    permissionCallback.onPermissionDeclined(new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW});
+                }
+            }
+        } else {
+            permissionCallback.onPermissionPreGranted(Manifest.permission.SYSTEM_ALERT_WINDOW);
+        }
+    }
+
+    /**
      * force the user to accept the permission. it won't work if the user ever thick-ed the "don't show again"
      */
     public PermissionHelper setForceAccepting(boolean forceAccepting) {
@@ -101,19 +123,41 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     }
 
     /**
+     * used only for {@link android.Manifest.permission#SYSTEM_ALERT_WINDOW}
+     */
+    public void requestSystemAlertPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            try {
+                if (!isSystemAlertGranted()) {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + context.getPackageName()));
+                    context.startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
+                }
+            } catch (Exception e) {
+                Log.e("SystemAlertPermission", "Failed. How? god only know", e);
+            }
+        } else {
+            permissionCallback.onPermissionPreGranted(Manifest.permission.SYSTEM_ALERT_WINDOW);
+        }
+    }
+
+    /**
      * internal usage.
      */
     private void handleSingle(@NonNull String permissionName) {
         if (permissionExists(permissionName)) {// android M throws exception when requesting
             // run time permission that does not exists in AndroidManifest.
-            if (isPermissionDeclined(permissionName)) {
-                if (isExplanationNeeded(permissionName)) {
-                    permissionCallback.onPermissionNeedExplanation(permissionName);
+            if (!permissionName.equalsIgnoreCase(Manifest.permission.SYSTEM_ALERT_WINDOW)) {
+                if (isPermissionDeclined(permissionName)) {
+                    if (isExplanationNeeded(permissionName)) {
+                        permissionCallback.onPermissionNeedExplanation(permissionName);
+                    } else {
+                        ActivityCompat.requestPermissions(context, new String[]{permissionName}, REQUEST_PERMISSIONS);
+                    }
                 } else {
-                    ActivityCompat.requestPermissions(context, new String[]{permissionName}, REQUEST_PERMISSIONS);
+                    permissionCallback.onPermissionPreGranted(permissionName);
                 }
             } else {
-                permissionCallback.onPermissionPreGranted(permissionName);
+                requestSystemAlertPermission();
             }
         } else {
             permissionCallback.onPermissionPreGranted(permissionName);
@@ -206,17 +250,6 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     }
 
     /**
-     * open android settings screen for the specific package name
-     */
-    public void openSettingsScreen() {
-        Intent intent = new Intent();
-        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.parse("package:" + context.getPackageName());
-        intent.setData(uri);
-        context.startActivity(intent);
-    }
-
-    /**
      * @return true if permission exists in the manifest, false otherwise.
      */
     public boolean permissionExists(@NonNull String permissionName) {
@@ -233,6 +266,25 @@ public class PermissionHelper implements OnActivityPermissionCallback {
             e.printStackTrace();
         }
         return false;
+    }
+
+    /**
+     * @return true if {@link android.Manifest.permission#SYSTEM_ALERT_WINDOW} is granted
+     */
+    @TargetApi(Build.VERSION_CODES.M)
+    public boolean isSystemAlertGranted() {
+        return Settings.canDrawOverlays(context);
+    }
+
+    /**
+     * open android settings screen for the specific package name
+     */
+    public void openSettingsScreen() {
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.parse("package:" + context.getPackageName());
+        intent.setData(uri);
+        context.startActivity(intent);
     }
 
     /**
@@ -324,6 +376,14 @@ public class PermissionHelper implements OnActivityPermissionCallback {
             e.printStackTrace();
         }
         return false;
+    }
+
+    /**
+     * @return true if {@link android.Manifest.permission#SYSTEM_ALERT_WINDOW} is granted
+     */
+    @TargetApi(Build.VERSION_CODES.M)
+    public static boolean isSystemAlertGranted(@NonNull Context context) {
+        return Settings.canDrawOverlays(context);
     }
 
 }

@@ -57,6 +57,17 @@ public class SamplePagerActivity extends BasePermissionActivity {
         model.setLayoutColor(getResources().getColor(R.color.blue));
         model.setImageResourceId(R.drawable.permission_one);
         permissions.add(model);
+        model = getDefaultInstance();
+        model.setCanSkip(false); /*explanation only once will be called otherwise we will
+                            run into infinite request if the user never grant the permission.*/
+        model.setTitle("SYSTEM_ALERT_WINDOW");
+        model.setPermissionName(Manifest.permission.SYSTEM_ALERT_WINDOW);
+        model.setMessage("PermissionHelper handles requesting SYSTEM_ALERT_WINDOW permission");
+        model.setExplanationMessage("We need this permission to make our videoPlayer overlay on your screen.");
+        model.setFontType("my_font.ttf");
+        model.setLayoutColor(getResources().getColor(R.color.colorPrimaryDark));
+        model.setImageResourceId(R.drawable.permission_two);
+        permissions.add(model);
         return permissions;
     }
 
