@@ -45,6 +45,7 @@ _Have you wondered what will give you a higher chance of letting the user accept
     * Each `Screen` Background color (`DarkPrimaryColor` of that background will be generated automatically).
     * Each `Screen` Image Resource. 
     * Each `Screen` Title & Message.
+    * Each `Screen` Title & Message Text Color.
     * Each `Screen` Title & Message Text Size.
     * Each `Screen` Text & Message `FontType`, yes you heard me right, each `Screen` can have their own `FontType`.
     * Each `Screen` Next, Previous & Request Buttons Icon Resources. 
