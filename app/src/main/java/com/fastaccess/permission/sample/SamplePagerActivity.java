@@ -15,9 +15,6 @@ import com.fastaccess.permission.base.model.PermissionModel;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Kosh on 16/11/15 11:18 PM. copyrights @ Innov8tif
- */
 public class SamplePagerActivity extends BasePermissionActivity {
 
     @NonNull

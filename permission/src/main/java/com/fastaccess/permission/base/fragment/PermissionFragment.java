@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +21,7 @@ import com.fastaccess.permission.base.model.PermissionModel;
 
 public class PermissionFragment extends Fragment implements View.OnClickListener {
 
-    public final static String PERMISSION_INSTANCE = "PERMISSION_INSTNACE";
+    private final static String PERMISSION_INSTANCE = "PERMISSION_INSTANCE";
     private PermissionModel permissionModel;
     private BaseCallback callback;
     private View background_layout;
@@ -129,7 +128,6 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
             }
         } else if (v.getId() == R.id.request) {
             callback.onPermissionRequest(permissionModel.getPermissionName(), true);
-            Log.e("Request", "RequestCalled {" + permissionModel.getPermissionName() + "}");
         }
     }
 }

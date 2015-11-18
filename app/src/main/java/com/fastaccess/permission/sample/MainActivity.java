@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-/**
- * Created by Kosh on 18/11/15 12:09 AM. copyrights @ Innov8tif
- */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override

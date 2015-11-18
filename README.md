@@ -32,7 +32,7 @@ Usage
 
 _Have you wondered what will give you a higher chance of letting the user accepts your permission?_
 
->The answer is simple: **(UI)** that explains why you need to use that particular `permission`. 
+>The answer is simple: **(Educating UI)** that explains why you need to use that particular `permission`. 
 
 * All you need to do is extending <a href="https://github
 .com/k0shk0sh/PermissionHelper/blob/master/permission/src/main/java/com/fastaccess/permission/base/activity/BasePermissionActivity
@@ -170,6 +170,6 @@ Images used inside the demo are by <a href="http://www.materialup.com/maxKeppele
 
 # Copyright Notice
 
-Copyright (C) 2013-2015 Kosh.
+Copyright (C) 2015 Kosh.
 Licensed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 license (see the LICENSE file).

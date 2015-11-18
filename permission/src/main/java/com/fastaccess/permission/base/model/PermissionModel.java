@@ -96,13 +96,11 @@ public class PermissionModel implements Parcelable {
         this.previousIcon = previousIcon;
     }
 
-    public PermissionModel() {}
-
     public int getNextIcon() {
         return nextIcon;
     }
 
-    public void setNextIcon(int nextIcon) {
+    public void setNextIcon(@DrawableRes int nextIcon) {
         this.nextIcon = nextIcon;
     }
 
@@ -132,6 +130,8 @@ public class PermissionModel implements Parcelable {
     public void setFontType(@NonNull String fontType) {
         this.fontType = fontType;
     }
+
+    public PermissionModel() {}
 
     @Override
     public int describeContents() { return 0; }
