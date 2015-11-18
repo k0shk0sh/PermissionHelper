@@ -121,12 +121,12 @@ public class SampleActivity extends AppCompatActivity implements OnPermissionCal
             isSingle = v.getId() == R.id.single;
             permissionHelper
                     .setForceAccepting(false) // default is false. its here so you know that it exists.
-                    .request(isSingle ? SINGLE_PERMISSION : MULTI_PERMISSIONS);/*you can pass it along other permissions,
-                     just make sure you override OnActivityResult so you can get a callback.
-                     ignoring that will result to not be notified if the user enable/disable the permission*/
+                    .request(isSingle ? SINGLE_PERMISSION : MULTI_PERMISSIONS);
         } else {
             permissionHelper
-                    .request(Manifest.permission.SYSTEM_ALERT_WINDOW);
+                    .request(Manifest.permission.SYSTEM_ALERT_WINDOW);/*you can pass it along other permissions,
+                     just make sure you override OnActivityResult so you can get a callback.
+                     ignoring that will result to not be notified if the user enable/disable the permission*/
         }
     }
 
