@@ -244,19 +244,20 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
             int pageWidth = view.getWidth();
             View message = view.findViewById(R.id.message);
             View title = view.findViewById(R.id.title);
-            if (position < -1) {
-            } else if (position <= 0) {
-                setTranslationX(view, -position);
-                setTranslationX(message, pageWidth * position);
-                setTranslationX(title, pageWidth * position);
-                setAlpha(message, 1 + position);
-                setAlpha(title, 1 + position);
-            } else if (position <= 1) { // (0,1]
-                setTranslationX(view, position);
-                setTranslationX(message, pageWidth * position);
-                setTranslationX(title, pageWidth * position);
-                setAlpha(message, 1 - position);
-                setAlpha(title, 1 - position);
+            if (position >= -1) {
+                if (position <= 0) {
+                    setTranslationX(view, -position);
+                    setTranslationX(message, pageWidth * position);
+                    setTranslationX(title, pageWidth * position);
+                    setAlpha(message, 1 + position);
+                    setAlpha(title, 1 + position);
+                } else if (position <= 1) { // (0,1]
+                    setTranslationX(view, position);
+                    setTranslationX(message, pageWidth * position);
+                    setTranslationX(title, pageWidth * position);
+                    setAlpha(message, 1 - position);
+                    setAlpha(title, 1 - position);
+                }
             }
         }
     }
