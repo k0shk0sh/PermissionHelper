@@ -25,7 +25,7 @@ Nexus 10 (L)
 # Installation
 
 ```
-    compile 'com.github.k0shk0sh:PermissionHelper:1.0.4'
+    compile 'com.github.k0shk0sh:PermissionHelper:1.0.5'
 ```
 
 Usage
