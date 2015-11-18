@@ -172,7 +172,7 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
     }
 
     @Override
-    public void onSkip(String permissionName) {
+    public void onSkip(@NonNull String permissionName) {
         pager.setCurrentItem(pager.getCurrentItem() - 1, true);
     }
 
