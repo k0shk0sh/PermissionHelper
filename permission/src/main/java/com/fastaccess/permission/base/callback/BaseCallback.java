@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 
 public interface BaseCallback {
 
-    void onSkip(String permissionName);
+    void onSkip(@NonNull String permissionName);
 
     void onNext(@NonNull String permissionName);
 
