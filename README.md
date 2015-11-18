@@ -1,12 +1,8 @@
 # PermissionHelper
 Android Library to help you with your runtime Permissions.
 
-Demo
+Demo <a href="https://www.youtube.com/watch?v=n2dKAu5fR6M">Watch it in action.</a>
 ======
-
-<p align="center">
-<img alt="Nexus 6" src="https://github.com/k0shk0sh/PermissionHelper/blob/master/art/demo.gif"/>
-</p>
 
 Nexus 6 (M)
 =======
