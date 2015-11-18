@@ -1,7 +1,10 @@
 package com.fastaccess.permission.base.activity;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
@@ -84,15 +87,16 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
         indicator.setViewPager(pager);
         pager.setOffscreenPageLimit(permissions().size());
         permissionHelper = PermissionHelper.getInstance(this);
+        int color = permissions().get(0).getLayoutColor();
+        pager.setBackgroundColor(color);
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                onStatusBarColorChange(permissions().get(position).getLayoutColor());
+                animateColorChange(pager, getPermission(position).getLayoutColor());
             }
         });
-        onStatusBarColorChange(permissions().get(0).getLayoutColor());
         if (pagerTransformer() == null)
-            pager.setPageTransformer(true, new ParallaxPageTransformer());
+            pager.setPageTransformer(true, new IntroTransformer());
         else
             pager.setPageTransformer(true, pagerTransformer());
 
@@ -234,27 +238,50 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
                 }).show();
     }
 
-    protected class ParallaxPageTransformer implements ViewPager.PageTransformer {
+    protected class IntroTransformer implements ViewPager.PageTransformer {
 
         public void transformPage(View view, float position) {
             int pageWidth = view.getWidth();
+            View message = view.findViewById(R.id.message);
+            View title = view.findViewById(R.id.title);
             if (position < -1) {
-                view.setAlpha(0);
-            } else if (position <= 0) { // [-1,0]
-                view.setAlpha(1);
-                view.setTranslationX(0);
-                view.setScaleX(1);
-                view.setScaleY(1);
+            } else if (position <= 0) {
+                setTranslationX(view, -position);
+                setTranslationX(message, pageWidth * position);
+                setTranslationX(title, pageWidth * position);
+                setAlpha(message, 1 + position);
+                setAlpha(title, 1 + position);
             } else if (position <= 1) { // (0,1]
-                view.setAlpha(1 - position);
-                view.setTranslationX(pageWidth * -position);
-                float scaleFactor = 0.75f + (1 - 0.75f) * (1 - Math.abs(position));
-                view.setScaleX(scaleFactor);
-                view.setScaleY(scaleFactor);
-            } else {
-                view.setAlpha(0);
+                setTranslationX(view, position);
+                setTranslationX(message, pageWidth * position);
+                setTranslationX(title, pageWidth * position);
+                setAlpha(message, 1 - position);
+                setAlpha(title, 1 - position);
             }
-
         }
     }
+
+    private void setAlpha(View view, float value) {
+        view.animate().alpha(value);
+    }
+
+    private void setTranslationX(View view, float value) {
+        view.animate().translationX(value);
+    }
+
+    private void animateColorChange(final View view, final int color) {
+        ValueAnimator animator = new ValueAnimator();
+        animator.setIntValues(((ColorDrawable) view.getBackground()).getColor(), color);
+        animator.setEvaluator(new ArgbEvaluator());
+        animator.setDuration(600);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                view.setBackgroundColor((Integer) animation.getAnimatedValue());
+                onStatusBarColorChange((Integer) animation.getAnimatedValue());
+            }
+        });
+        animator.start();
+    }
 }
+
