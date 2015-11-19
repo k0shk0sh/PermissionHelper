@@ -65,7 +65,7 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
 
     /**
      * used to notify that the user ignored the permission
-     * <p/>
+     * <p>
      * note: if the {@link PermissionModel#isCanSkip()} return false, we could display the explanation immediately.
      */
     protected abstract void onUserDeclinePermission(String permissionName);
@@ -95,6 +95,7 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
         permissionHelper = PermissionHelper.getInstance(this);
         int color = permissions().get(0).getLayoutColor();
         pager.setBackgroundColor(color);
+        onStatusBarColorChange(color);
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -114,7 +115,7 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
 
     /**
      * Used to determine if the user accepted {@link android.Manifest.permission#SYSTEM_ALERT_WINDOW} or no.
-     * <p/>
+     * <p>
      * if you never passed the permission this method won't be called.
      */
     @Override
@@ -244,7 +245,7 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
 
     /**
      * return PermissionModel at specific index.
-     * <p/>
+     * <p>
      * if index > {@link #permissions().size()} null will be returned
      */
     protected PermissionModel getPermission(int index) {
