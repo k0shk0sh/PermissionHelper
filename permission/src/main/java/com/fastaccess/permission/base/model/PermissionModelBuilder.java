@@ -1,6 +1,7 @@
 package com.fastaccess.permission.base.model;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
@@ -13,14 +14,14 @@ import com.fastaccess.permission.R;
 
 
 public class PermissionModelBuilder {
-    private final Context context;
+    private final Resources res;
     private final PermissionModel permissionModel;
 
     private PermissionModelBuilder(@NonNull Context context) {
-        this.context = context;
+        this.res = context.getResources();
         this.permissionModel = new PermissionModel(); // Generate sane default values
         withTextColor(Color.WHITE);
-        withTextSize(context.getResources().getDimensionPixelSize(R.dimen.text_size));
+        withTextSize(res.getDimensionPixelSize(R.dimen.text_size));
         withRequestIcon(R.drawable.ic_arrow_done);
         withPreviousIcon(R.drawable.ic_arrow_left);
         withNextIcon(R.drawable.ic_arrow_right);
@@ -51,7 +52,7 @@ public class PermissionModelBuilder {
     }
 
     public PermissionModelBuilder withLayoutColorRes(@ColorRes int layoutColor) {
-        this.permissionModel.setLayoutColor(context.getResources().getColor(layoutColor));
+        this.permissionModel.setLayoutColor(res.getColor(layoutColor));
         return this;
     }
 
@@ -62,7 +63,7 @@ public class PermissionModelBuilder {
     }
 
     public PermissionModelBuilder withTextColorRes(@ColorRes int textColor) {
-        this.permissionModel.setTextColor(context.getResources().getColor(textColor));
+        this.permissionModel.setTextColor(res.getColor(textColor));
         return this;
     }
 
@@ -78,7 +79,7 @@ public class PermissionModelBuilder {
     }
 
     public PermissionModelBuilder withExplanationMessage(@StringRes int explanationMessage) {
-        this.permissionModel.setExplanationMessage(context.getResources().getString(explanationMessage));
+        this.permissionModel.setExplanationMessage(res.getString(explanationMessage));
         return this;
     }
 
@@ -112,7 +113,7 @@ public class PermissionModelBuilder {
     }
 
     public PermissionModelBuilder withMessage(@StringRes int message) {
-        this.permissionModel.setMessage(context.getResources().getString(message));
+        this.permissionModel.setMessage(res.getString(message));
         return this;
     }
 
@@ -122,7 +123,7 @@ public class PermissionModelBuilder {
     }
 
     public PermissionModelBuilder withTitle(@StringRes int title) {
-        this.permissionModel.setTitle(context.getResources().getString(title));
+        this.permissionModel.setTitle(res.getString(title));
         return this;
     }
 
