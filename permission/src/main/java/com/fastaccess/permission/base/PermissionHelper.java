@@ -103,8 +103,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     }
 
     /**
-     * @param permissionName
-     *         (it can be one of these types (String), (String[])
+     * @param permissionName (it can be one of these types (String), (String[])
      */
     public PermissionHelper request(@NonNull Object permissionName) {
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
@@ -120,6 +119,10 @@ public class PermissionHelper implements OnActivityPermissionCallback {
             permissionCallback.onNoPermissionNeeded();
         }
         return this;
+    }
+
+    public PermissionHelper request(String... permissionsName) {
+        return request((Object) permissionsName);
     }
 
     /**
