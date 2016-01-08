@@ -45,7 +45,6 @@ public class PermissionModelBuilder {
         return this;
     }
 
-
     public PermissionModelBuilder withLayoutColor(@ColorInt int layoutColor) {
         this.permissionModel.setLayoutColor(layoutColor);
         return this;
@@ -56,7 +55,6 @@ public class PermissionModelBuilder {
         return this;
     }
 
-
     public PermissionModelBuilder withTextColor(@ColorInt int textColor) {
         this.permissionModel.setTextColor(textColor);
         return this;
@@ -66,7 +64,6 @@ public class PermissionModelBuilder {
         this.permissionModel.setTextColor(res.getColor(textColor));
         return this;
     }
-
 
     public PermissionModelBuilder withTextSize(@DimenRes int textSize) {
         this.permissionModel.setTextSize(textSize);
@@ -88,24 +85,20 @@ public class PermissionModelBuilder {
         return this;
     }
 
-
     public PermissionModelBuilder withRequestIcon(@DrawableRes int requestIcon) {
         this.permissionModel.setRequestIcon(requestIcon);
         return this;
     }
-
 
     public PermissionModelBuilder withPreviousIcon(@DrawableRes int previousIcon) {
         this.permissionModel.setPreviousIcon(previousIcon);
         return this;
     }
 
-
     public PermissionModelBuilder withNextIcon(@DrawableRes int nextIcon) {
         this.permissionModel.setNextIcon(nextIcon);
         return this;
     }
-
 
     public PermissionModelBuilder withMessage(@NonNull String message) {
         this.permissionModel.setMessage(message);
@@ -128,7 +121,8 @@ public class PermissionModelBuilder {
     }
 
     /**
-     * @param fontType ex: (fonts/my_custom_text.ttf);
+     * @param fontType
+     *         ex: (fonts/my_custom_text.ttf);
      */
     public PermissionModelBuilder withFontType(@NonNull String fontType) {
         this.permissionModel.setFontType(fontType);

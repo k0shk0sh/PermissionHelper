@@ -25,7 +25,6 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
     private final static String PERMISSION_INSTANCE = "PERMISSION_INSTANCE";
     private PermissionModel permissionModel;
     private BaseCallback callback;
-    private View background_layout;
     private ImageView image;
     private TextView message;
     private ImageButton previous;
@@ -82,7 +81,6 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
         if (permissionModel == null) {
             throw new NullPointerException("Permission Model some how went nuts and become null or was it?.");
         }
-        background_layout = view.findViewById(R.id.background_layout);
         title = (TextView) view.findViewById(R.id.title);
         image = (ImageView) view.findViewById(R.id.image);
         message = (TextView) view.findViewById(R.id.message);
