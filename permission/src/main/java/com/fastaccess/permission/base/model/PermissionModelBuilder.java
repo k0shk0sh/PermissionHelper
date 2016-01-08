@@ -3,6 +3,7 @@ package com.fastaccess.permission.base.model;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
@@ -15,13 +16,15 @@ import com.fastaccess.permission.R;
 
 public class PermissionModelBuilder {
     private final Resources res;
+    private Resources.Theme theme;
     private final PermissionModel permissionModel;
 
     private PermissionModelBuilder(@NonNull Context context) {
         this.res = context.getResources();
+        this.theme = context.getTheme();
         this.permissionModel = new PermissionModel(); // Generate sane default values
         withTextColor(Color.WHITE);
-        withTextSize(res.getDimensionPixelSize(R.dimen.text_size));
+        withTextSize(res.getDimensionPixelSize(R.dimen.permissions_text_size));
         withRequestIcon(R.drawable.ic_arrow_done);
         withPreviousIcon(R.drawable.ic_arrow_left);
         withNextIcon(R.drawable.ic_arrow_right);
@@ -51,7 +54,11 @@ public class PermissionModelBuilder {
     }
 
     public PermissionModelBuilder withLayoutColorRes(@ColorRes int layoutColor) {
-        this.permissionModel.setLayoutColor(res.getColor(layoutColor));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            this.permissionModel.setLayoutColor(res.getColor(layoutColor, theme));
+        } else {
+            this.permissionModel.setLayoutColor(res.getColor(layoutColor));
+        }
         return this;
     }
 
@@ -61,7 +68,11 @@ public class PermissionModelBuilder {
     }
 
     public PermissionModelBuilder withTextColorRes(@ColorRes int textColor) {
-        this.permissionModel.setTextColor(res.getColor(textColor));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            this.permissionModel.setTextColor(res.getColor(textColor, theme));
+        } else {
+            this.permissionModel.setTextColor(res.getColor(textColor));
+        }
         return this;
     }
 
