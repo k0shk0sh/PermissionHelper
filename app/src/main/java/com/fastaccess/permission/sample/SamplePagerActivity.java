@@ -2,8 +2,6 @@ package com.fastaccess.permission.sample;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -11,6 +9,7 @@ import android.util.Log;
 
 import com.fastaccess.permission.base.activity.BasePermissionActivity;
 import com.fastaccess.permission.base.model.PermissionModel;
+import com.fastaccess.permission.base.model.PermissionModelBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,53 +20,54 @@ public class SamplePagerActivity extends BasePermissionActivity {
     @Override
     protected List<PermissionModel> permissions() {
         List<PermissionModel> permissions = new ArrayList<>();
-        PermissionModel model = getDefaultInstance();
-        model.setCanSkip(true);
-        model.setPermissionName(Manifest.permission.GET_ACCOUNTS);
-        model.setTitle("GET_ACCOUNTS");
-        model.setMessage("PermissionHelper supports all screens, try rotating your phone/tablet");
-        model.setExplanationMessage("We need this permission to customize your experience by " +
-                "auto completing your email address");
-        model.setFontType("my_font.ttf");
-        model.setLayoutColor(getResources().getColor(R.color.colorPrimary));
-        model.setImageResourceId(R.drawable.permission_three);
-        permissions.add(model);
-        model = getDefaultInstance();
-        model.setTitle("ACCESS_FINE_LOCATION");
-        model.setCanSkip(false);
-        model.setPermissionName(Manifest.permission.ACCESS_FINE_LOCATION);
-        model.setMessage("PermissionHelper also prevents your app getting crashed if the " +
-                "requested permission never exists in your AndroidManifest" +
-                ". Android DOES!");
-        model.setExplanationMessage("We need this permission to access to your location to" +
-                " find nearby restaurants and places you like!");
-        model.setFontType("my_font.ttf");
-        model.setLayoutColor(getResources().getColor(R.color.colorAccent));
-        model.setImageResourceId(R.drawable.permission_two);
-        permissions.add(model);
-        model = getDefaultInstance();
-        model.setCanSkip(true);
-        model.setTitle("WRITE_EXTERNAL_STORAGE");
-        model.setPermissionName(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        model.setMessage("PermissionHelper lets you customize all these stuff you are seeing!." +
-                " if you ever thought of anything that improves the library please" +
-                " suggest by filling up an issue in github https://github.com/k0shk0sh/PermissionHelper");
-        model.setExplanationMessage("We need this permission to save your captured images and videos to your SD-Card");
-        model.setFontType("my_font.ttf");
-        model.setLayoutColor(getResources().getColor(R.color.blue));
-        model.setImageResourceId(R.drawable.permission_one);
-        permissions.add(model);
-        model = getDefaultInstance();
-        model.setCanSkip(false); /*explanation only once will be called otherwise we will
+        permissions.add(PermissionModelBuilder.withContext(this)
+                .withCanSkip(true)
+                .withPermissionName(Manifest.permission.GET_ACCOUNTS)
+                .withTitle(R.string.title_get_accounts)
+                .withMessage(R.string.message_get_accounts)
+                .withExplanationMessage(R.string.explanation_message_get_accounts)
+                .withFontType("my_font.ttf")
+                .withLayoutColorRes(R.color.colorPrimary)
+                .withImageResourceId(R.drawable.permission_three)
+                .build());
+
+        permissions.add(PermissionModelBuilder.withContext(this)
+                .withTitle("ACCESS_FINE_LOCATION")
+                .withCanSkip(false)
+                .withPermissionName(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withMessage("PermissionHelper also prevents your app getting crashed if the " +
+                        "requested permission never exists in your AndroidManifest" +
+                        ". Android DOES!")
+                .withExplanationMessage("We need this permission to access to your location to" +
+                        " find nearby restaurants and places you like!")
+                .withFontType("my_font.ttf")
+                .withLayoutColorRes(R.color.colorAccent)
+                .withImageResourceId(R.drawable.permission_two)
+                .build());
+
+        permissions.add(PermissionModelBuilder.withContext(this)
+                .withCanSkip(true)
+                .withTitle("WRITE_EXTERNAL_STORAGE")
+                .withPermissionName(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withMessage("PermissionHelper lets you customize all these stuff you are seeing!." +
+                        " if you ever thought of anything that improves the library please" +
+                        " suggest by filling up an issue in github https://github.com/k0shk0sh/PermissionHelper")
+                .withExplanationMessage("We need this permission to save your captured images and videos to your SD-Card")
+                .withFontType("my_font.ttf")
+                .withLayoutColorRes(R.color.blue)
+                .withImageResourceId(R.drawable.permission_one)
+                .build());
+
+        permissions.add(PermissionModelBuilder.withContext(this)
+                .withCanSkip(false) /*explanation only once will be called otherwise we will
                             run into infinite request if the user never grant the permission.*/
-        model.setTitle("SYSTEM_ALERT_WINDOW");
-        model.setPermissionName(Manifest.permission.SYSTEM_ALERT_WINDOW);
-        model.setMessage("PermissionHelper handles requesting SYSTEM_ALERT_WINDOW permission");
-        model.setExplanationMessage("We need this permission to make our videoPlayer overlay on your screen.");
-        model.setFontType("my_font.ttf");
-        model.setLayoutColor(getResources().getColor(R.color.colorPrimaryDark));
-        model.setImageResourceId(R.drawable.permission_two);
-        permissions.add(model);
+                .withTitle("SYSTEM_ALERT_WINDOW")
+                .withPermissionName(Manifest.permission.SYSTEM_ALERT_WINDOW)
+                .withMessage("PermissionHelper handles requesting SYSTEM_ALERT_WINDOW permission")
+                .withExplanationMessage("We need this permission to make our videoPlayer overlay on your screen.")
+                .withFontType("my_font.ttf")
+                .withLayoutColorRes(R.color.colorPrimaryDark)
+                .withImageResourceId(R.drawable.permission_two).build());
         return permissions;
     }
 
@@ -111,16 +111,5 @@ public class SamplePagerActivity extends BasePermissionActivity {
                 "        /** read {@link #permissionIsPermanentlyDenied(String)} **/\n" +
                 "    }");
 
-    }
-
-    private PermissionModel getDefaultInstance() {
-        Resources res = getResources();
-        PermissionModel model = new PermissionModel();
-        model.setTextColor(Color.WHITE);
-        model.setTextSize(res.getDimensionPixelSize(R.dimen.text_size));
-        model.setRequestIcon(R.drawable.ic_arrow_done);
-        model.setPreviousIcon(R.drawable.ic_arrow_left);
-        model.setNextIcon(R.drawable.ic_arrow_right);
-        return model;
     }
 }

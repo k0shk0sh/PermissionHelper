@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">AndroidPermissionHelper</string>
+    <string name="title_get_accounts">GET_ACCOUNTS</string>
+    <string name="message_get_accounts">PermissionHelper supports all screens, try rotating your phone/tablet</string>
+    <string name="explanation_message_get_accounts">We need this permission to customize your experience by auto completing your email address</string>
 </resources>
