@@ -91,7 +91,7 @@ public class SamplePagerActivity extends BasePermissionActivity {
 
     @NonNull
     @Override
-    protected Boolean backPressIsEnabled() {
+    protected boolean backPressIsEnabled() {
         return false;
     }
 

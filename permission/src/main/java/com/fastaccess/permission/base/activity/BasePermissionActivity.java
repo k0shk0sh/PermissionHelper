@@ -26,6 +26,7 @@ import com.fastaccess.permission.base.callback.BaseCallback;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import com.fastaccess.permission.base.fragment.PermissionFragment;
 import com.fastaccess.permission.base.model.PermissionModel;
+import com.fastaccess.permission.base.utils.ThemeUtil;
 import com.fastaccess.permission.base.widget.CirclePageIndicator;
 
 import java.util.List;
@@ -56,7 +57,7 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
     protected abstract ViewPager.PageTransformer pagerTransformer();
 
     @NonNull
-    protected abstract Boolean backPressIsEnabled();
+    protected abstract boolean backPressIsEnabled();
 
     /**
      * used to notify you that the permission is permanently denied. so you can decide whats next!
@@ -94,12 +95,19 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
         pager.setOffscreenPageLimit(permissions().size());
         permissionHelper = PermissionHelper.getInstance(this);
         int color = permissions().get(0).getLayoutColor();
+        if (color == 0) {
+            color = ThemeUtil.getPrimaryColor(this);
+        }
         pager.setBackgroundColor(color);
         onStatusBarColorChange(color);
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                animateColorChange(pager, getPermission(position).getLayoutColor());
+                int color = getPermission(position).getLayoutColor();
+                if (color == 0) {
+                    color = ThemeUtil.getPrimaryColor(BasePermissionActivity.this);
+                }
+                animateColorChange(pager, color);
             }
         });
         if (pagerTransformer() == null)

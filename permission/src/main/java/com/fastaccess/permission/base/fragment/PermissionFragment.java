@@ -1,6 +1,7 @@
 package com.fastaccess.permission.base.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -96,14 +97,14 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
 
     private void initViews() {
         request.setVisibility(Build.VERSION.SDK_INT < Build.VERSION_CODES.M ? View.GONE : View.VISIBLE);
-//        background_layout.setBackgroundColor(permissionModel.getLayoutColor());
         image.setImageResource(permissionModel.getImageResourceId());
         title.setText(permissionModel.getTitle());
         title.setTextSize(TypedValue.COMPLEX_UNIT_PX, permissionModel.getTextSize());
-        title.setTextColor(permissionModel.getTextColor());
+        title.setTextColor(permissionModel.getTextColor() == 0 ? Color.WHITE : permissionModel.getTextColor());
         message.setText(permissionModel.getMessage());
         message.setTextColor(permissionModel.getTextColor());
-        message.setTextSize(TypedValue.COMPLEX_UNIT_PX, permissionModel.getTextSize());
+        if (permissionModel.getTextSize() != 0)
+            message.setTextSize(TypedValue.COMPLEX_UNIT_PX, permissionModel.getTextSize());
         previous.setImageResource(permissionModel.getPreviousIcon() == 0 ? R.drawable.ic_arrow_left : permissionModel.getPreviousIcon());
         request.setImageResource(permissionModel.getRequestIcon() == 0 ? R.drawable.ic_arrow_done : permissionModel.getRequestIcon());
         next.setImageResource(permissionModel.getNextIcon() == 0 ? R.drawable.ic_arrow_right : permissionModel.getNextIcon());
