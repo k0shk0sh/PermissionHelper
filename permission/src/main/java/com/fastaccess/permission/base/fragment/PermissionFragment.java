@@ -94,7 +94,7 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
     }
 
     private void initViews() {
-        request.setVisibility((Build.VERSION.SDK_INT < Build.VERSION_CODES.M || permissionModel.getPermissionName() != null) ? View.GONE : View.VISIBLE);
+        request.setVisibility((Build.VERSION.SDK_INT < Build.VERSION_CODES.M || permissionModel.getPermissionName() == null) ? View.GONE : View.VISIBLE);
         image.setImageResource(permissionModel.getImageResourceId());
         title.setText(permissionModel.getTitle());
         title.setTextSize(permissionModel.getTextSize());
