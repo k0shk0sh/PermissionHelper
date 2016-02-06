@@ -11,7 +11,7 @@ import java.util.List;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
 
-    private List<PermissionModel> permissions;
+    private final List<PermissionModel> permissions;
 
     public PagerAdapter(FragmentManager fm, List<PermissionModel> permissions) {
         super(fm);

@@ -16,7 +16,7 @@ import com.fastaccess.permission.R;
 
 public class PermissionModelBuilder {
     private final Resources res;
-    private Resources.Theme theme;
+    private final Resources.Theme theme;
     private final PermissionModel permissionModel;
 
     private PermissionModelBuilder(@NonNull Context context) {
@@ -62,7 +62,7 @@ public class PermissionModelBuilder {
         return this;
     }
 
-    public PermissionModelBuilder withTextColor(@ColorInt int textColor) {
+    private PermissionModelBuilder withTextColor(@ColorInt int textColor) {
         this.permissionModel.setTextColor(textColor);
         return this;
     }
@@ -76,7 +76,7 @@ public class PermissionModelBuilder {
         return this;
     }
 
-    public PermissionModelBuilder withTextSize(@DimenRes int textSize) {
+    private PermissionModelBuilder withTextSize(@DimenRes int textSize) {
         this.permissionModel.setTextSize(textSize);
         return this;
     }
@@ -96,17 +96,17 @@ public class PermissionModelBuilder {
         return this;
     }
 
-    public PermissionModelBuilder withRequestIcon(@DrawableRes int requestIcon) {
+    private PermissionModelBuilder withRequestIcon(@DrawableRes int requestIcon) {
         this.permissionModel.setRequestIcon(requestIcon);
         return this;
     }
 
-    public PermissionModelBuilder withPreviousIcon(@DrawableRes int previousIcon) {
+    private PermissionModelBuilder withPreviousIcon(@DrawableRes int previousIcon) {
         this.permissionModel.setPreviousIcon(previousIcon);
         return this;
     }
 
-    public PermissionModelBuilder withNextIcon(@DrawableRes int nextIcon) {
+    private PermissionModelBuilder withNextIcon(@DrawableRes int nextIcon) {
         this.permissionModel.setNextIcon(nextIcon);
         return this;
     }
