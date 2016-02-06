@@ -22,6 +22,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         return PermissionFragment_.builder()
                 .permissionModel(permissions.get(position))
+                .shouldHidePreviousButton(position == 0)
                 .build();
     }
 

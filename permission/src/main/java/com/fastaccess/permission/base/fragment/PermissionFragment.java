@@ -25,6 +25,8 @@ public class PermissionFragment extends Fragment {
     @FragmentArg
     @InstanceState
     PermissionModel permissionModel;
+    @FragmentArg
+    boolean shouldHidePreviousButton;
     @ViewById
     ImageView previous, request, next, image;
     @ViewById
@@ -59,9 +61,14 @@ public class PermissionFragment extends Fragment {
         title.setTextColor(permissionModel.getTextColor());
         message.setText(permissionModel.getMessage());
         message.setTextColor(permissionModel.getTextColor());
-        if (permissionModel.getTextSize() != 0)
+        if (permissionModel.getTextSize() != 0) {
             message.setTextSize(TypedValue.COMPLEX_UNIT_PX, permissionModel.getTextSize());
-        previous.setImageResource(permissionModel.getPreviousIcon());
+        }
+        if (shouldHidePreviousButton) {
+            previous.setVisibility(View.INVISIBLE);
+        } else {
+            previous.setImageResource(permissionModel.getPreviousIcon());
+        }
         request.setImageResource(permissionModel.getRequestIcon());
         next.setImageResource(permissionModel.getNextIcon());
         if (!TextUtils.isEmpty(permissionModel.getFontType())) {
