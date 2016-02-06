@@ -36,9 +36,9 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
 
     private final String PAGER_POSITION = "PAGER_POSITION";
     private final String SYSTEM_OVERLAY_NUM_INSTANCE = "SYSTEM_OVERLAY_NUM_INSTANCE";
-    protected PermissionHelper permissionHelper;
-    protected ViewPager pager;
-    protected CirclePageIndicator indicator; // take control to change the color and stuff.
+    private PermissionHelper permissionHelper;
+    private ViewPager pager;
+    private CirclePageIndicator indicator; // take control to change the color and stuff.
     private int systemOverRequestNumber = 0;/* only show the explanation once otherwise infinite
                                                         LOOP if canSkip is false */
 
@@ -56,7 +56,6 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
     @Nullable
     protected abstract ViewPager.PageTransformer pagerTransformer();
 
-    @NonNull
     protected abstract boolean backPressIsEnabled();
 
     /**
@@ -256,7 +255,7 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
      * <p>
      * if index > {@link #permissions().size()} null will be returned
      */
-    protected PermissionModel getPermission(int index) {
+    private PermissionModel getPermission(int index) {
         if (index <= permissions().size()) {// avoid accessing index does not exists.
             return permissions().get(index);
         }
@@ -266,7 +265,7 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
     /**
      * internal usage to show dialog with explanation you provided and a button to ask the user to request the permission
      */
-    protected void requestPermission(final PermissionModel model) {
+    private void requestPermission(final PermissionModel model) {
         new AlertDialog.Builder(this)
                 .setTitle(model.getTitle())
                 .setMessage(model.getExplanationMessage())
@@ -280,30 +279,6 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
                         }
                     }
                 }).show();
-    }
-
-    protected class IntroTransformer implements ViewPager.PageTransformer {
-
-        public void transformPage(View view, float position) {
-            int pageWidth = view.getWidth();
-            View message = view.findViewById(R.id.message);
-            View title = view.findViewById(R.id.title);
-            if (position >= -1) {
-                if (position <= 0) {
-                    setTranslationX(view, -position);
-                    setTranslationX(message, pageWidth * position);
-                    setTranslationX(title, pageWidth * position);
-                    setAlpha(message, 1 + position);
-                    setAlpha(title, 1 + position);
-                } else if (position <= 1) { // (0,1]
-                    setTranslationX(view, position);
-                    setTranslationX(message, pageWidth * position);
-                    setTranslationX(title, pageWidth * position);
-                    setAlpha(message, 1 - position);
-                    setAlpha(title, 1 - position);
-                }
-            }
-        }
     }
 
     private void setAlpha(View view, float value) {
@@ -327,6 +302,30 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
             }
         });
         animator.start();
+    }
+
+    private class IntroTransformer implements ViewPager.PageTransformer {
+
+        public void transformPage(View view, float position) {
+            int pageWidth = view.getWidth();
+            View message = view.findViewById(R.id.message);
+            View title = view.findViewById(R.id.title);
+            if (position >= -1) {
+                if (position <= 0) {
+                    setTranslationX(view, -position);
+                    setTranslationX(message, pageWidth * position);
+                    setTranslationX(title, pageWidth * position);
+                    setAlpha(message, 1 + position);
+                    setAlpha(title, 1 + position);
+                } else if (position <= 1) { // (0,1]
+                    setTranslationX(view, position);
+                    setTranslationX(message, pageWidth * position);
+                    setTranslationX(title, pageWidth * position);
+                    setAlpha(message, 1 - position);
+                    setAlpha(title, 1 - position);
+                }
+            }
+        }
     }
 }
 
