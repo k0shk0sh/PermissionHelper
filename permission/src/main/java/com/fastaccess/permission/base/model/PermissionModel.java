@@ -5,7 +5,7 @@ import org.parceler.Parcel;
 import lombok.Data;
 
 @Data
-@Parcel
+@Parcel(parcelsIndex = false)
 public class PermissionModel {
     int imageResourceId;
     int layoutColor;
