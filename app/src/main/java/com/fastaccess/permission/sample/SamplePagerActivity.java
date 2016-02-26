@@ -22,7 +22,6 @@ public class SamplePagerActivity extends BasePermissionActivity {
         List<PermissionModel> permissions = new ArrayList<>();
         permissions.add(PermissionModelBuilder.withContext(this)
                 .withCanSkip(true)
-                .withPermissionName(Manifest.permission.GET_ACCOUNTS)
                 .withTitle(R.string.title_get_accounts)
                 .withMessage(R.string.message_get_accounts)
                 .withExplanationMessage(R.string.explanation_message_get_accounts)
