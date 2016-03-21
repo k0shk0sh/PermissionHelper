@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 
@@ -76,6 +77,11 @@ public class SamplePagerActivity extends BasePermissionActivity {
     }
 
     @Override
+    protected boolean swipeDisabled() {
+        return false;
+    }
+
+    @Override
     protected void onIntroFinished() {
         Log.i("onIntroFinished", "Intro has finished");
         // do whatever you like!
@@ -110,5 +116,10 @@ public class SamplePagerActivity extends BasePermissionActivity {
                 "        /** read {@link #permissionIsPermanentlyDenied(String)} **/\n" +
                 "    }");
 
+    }
+
+    @Override
+    protected FragmentStatePagerAdapter pagerAdapter() {
+        return new CustomPagerAdapter(getSupportFragmentManager(), permissions());
     }
 }

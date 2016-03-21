@@ -13,6 +13,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -48,6 +49,7 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
     @StyleRes
     protected abstract int theme();
 
+    protected abstract boolean swipeDisabled();
     /**
      * Intro has finished.
      */
@@ -70,6 +72,8 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
      */
     protected abstract void onUserDeclinePermission(String permissionName);
 
+    protected abstract FragmentStatePagerAdapter pagerAdapter();
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -83,13 +87,14 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         if (theme() != 0) setTheme(theme());
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_layout);
+        setContentView(swipeDisabled() ? R.layout.main_layout_swipe_disabled : R.layout.main_layout);
         if (permissions().isEmpty()) {
             throw new NullPointerException("permissions() is empty");
         }
         pager = (ViewPager) findViewById(R.id.pager);
         indicator = (CirclePageIndicator) findViewById(R.id.indicator);
-        pager.setAdapter(new PagerAdapter(getSupportFragmentManager(), permissions()));
+        FragmentStatePagerAdapter adapter = pagerAdapter();
+        pager.setAdapter(adapter != null ? adapter : new PagerAdapter(getSupportFragmentManager(), permissions()));
         indicator.setViewPager(pager);
         pager.setOffscreenPageLimit(permissions().size());
         permissionHelper = PermissionHelper.getInstance(this);
@@ -109,10 +114,8 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
                 animateColorChange(pager, color);
             }
         });
-        if (pagerTransformer() == null)
-            pager.setPageTransformer(true, new IntroTransformer());
-        else
-            pager.setPageTransformer(true, pagerTransformer());
+        ViewPager.PageTransformer transformer = pagerTransformer();
+        pager.setPageTransformer(true, transformer != null ? transformer : new IntroTransformer());
 
         if (savedInstanceState != null) {
             pager.setCurrentItem(savedInstanceState.getInt(PAGER_POSITION), true);
