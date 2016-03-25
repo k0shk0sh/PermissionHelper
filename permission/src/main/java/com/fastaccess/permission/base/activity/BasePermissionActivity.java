@@ -272,7 +272,7 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
         new AlertDialog.Builder(this)
                 .setTitle(model.getTitle())
                 .setMessage(model.getExplanationMessage())
-                .setPositiveButton("Request", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getText(R.string.request_button), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (model.getPermissionName().equalsIgnoreCase(Manifest.permission.SYSTEM_ALERT_WINDOW)) {
