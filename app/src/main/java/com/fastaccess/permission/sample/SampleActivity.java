@@ -36,8 +36,7 @@ public class SampleActivity extends AppCompatActivity implements OnPermissionCal
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample);
         result = (TextView) findViewById(R.id.result);
@@ -52,36 +51,30 @@ public class SampleActivity extends AppCompatActivity implements OnPermissionCal
      * <p/>
      * if you never passed the permission this method won't be called.
      */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         permissionHelper.onActivityForResult(requestCode);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    @Override
-    public void onPermissionGranted(String[] permissionName) {
+    @Override public void onPermissionGranted(@NonNull String[] permissionName) {
         result.setText("Permission(s) " + Arrays.toString(permissionName) + " Granted");
         Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
     }
 
-    @Override
-    public void onPermissionDeclined(String[] permissionName) {
+    @Override public void onPermissionDeclined(@NonNull String[] permissionName) {
         result.setText("Permission(s) " + Arrays.toString(permissionName) + " Declined");
         Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
     }
 
-    @Override
-    public void onPermissionPreGranted(String permissionsName) {
+    @Override public void onPermissionPreGranted(@NonNull String permissionsName) {
         result.setText("Permission( " + permissionsName + " ) preGranted");
         Log.i("onPermissionPreGranted", "Permission( " + permissionsName + " ) preGranted");
     }
 
-    @Override
-    public void onPermissionNeedExplanation(String permissionName) {
+    @Override public void onPermissionNeedExplanation(@NonNull String permissionName) {
         Log.i("NeedExplanation", "Permission( " + permissionName + " ) needs Explanation");
         if (!isSingle) {
             neededPermission = PermissionHelper.declinedPermissions(this, MULTI_PERMISSIONS);
@@ -102,21 +95,18 @@ public class SampleActivity extends AppCompatActivity implements OnPermissionCal
         }
     }
 
-    @Override
-    public void onPermissionReallyDeclined(String permissionName) {
+    @Override public void onPermissionReallyDeclined(@NonNull String permissionName) {
         result.setText("Permission " + permissionName + " can only be granted from SettingsScreen");
         Log.i("ReallyDeclined", "Permission " + permissionName + " can only be granted from settingsScreen");
         /** you can call  {@link PermissionHelper#openSettingsScreen(Context)} to open the settings screen */
     }
 
-    @Override
-    public void onNoPermissionNeeded() {
+    @Override public void onNoPermissionNeeded() {
         result.setText("Permission(s) not needed");
         Log.i("onNoPermissionNeeded", "Permission(s) not needed");
     }
 
-    @Override
-    public void onClick(View v) {
+    @Override public void onClick(View v) {
         if (v.getId() == R.id.single || v.getId() == R.id.multi) {
             isSingle = v.getId() == R.id.single;
             permissionHelper

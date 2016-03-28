@@ -42,21 +42,17 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
     private int systemOverRequestNumber = 0;/* only show the explanation once otherwise infinite
                                                         LOOP if canSkip is false */
 
-    @NonNull
-    protected abstract List<PermissionModel> permissions();
+    @NonNull protected abstract List<PermissionModel> permissions();
 
-    @StyleRes
-    protected abstract int theme();
+    @StyleRes protected abstract int theme();
 
     /**
      * Intro has finished.
      */
     protected abstract void onIntroFinished();
 
-    @Nullable
-    protected abstract ViewPager.PageTransformer pagerTransformer();
+    @Nullable protected abstract ViewPager.PageTransformer pagerTransformer();
 
-    @NonNull
     protected abstract boolean backPressIsEnabled();
 
     /**
@@ -66,13 +62,12 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
 
     /**
      * used to notify that the user ignored the permission
-     * <p>
+     * <p/>
      * note: if the {@link PermissionModel#isCanSkip()} return false, we could display the explanation immediately.
      */
     protected abstract void onUserDeclinePermission(String permissionName);
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    @Override protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (pager != null) {
             outState.putInt(PAGER_POSITION, pager.getCurrentItem());
@@ -80,8 +75,7 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
         outState.putInt(SYSTEM_OVERLAY_NUM_INSTANCE, systemOverRequestNumber);
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         if (theme() != 0) setTheme(theme());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
@@ -110,11 +104,7 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
                 animateColorChange(pager, color);
             }
         });
-        if (pagerTransformer() == null)
-            pager.setPageTransformer(true, new IntroTransformer());
-        else
-            pager.setPageTransformer(true, pagerTransformer());
-
+        pager.setPageTransformer(true, pagerTransformer() == null ? new IntroTransformer() : pagerTransformer());
         if (savedInstanceState != null) {
             pager.setCurrentItem(savedInstanceState.getInt(PAGER_POSITION), true);
             systemOverRequestNumber = savedInstanceState.getInt(SYSTEM_OVERLAY_NUM_INSTANCE);
@@ -123,28 +113,25 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
 
     /**
      * Used to determine if the user accepted {@link android.Manifest.permission#SYSTEM_ALERT_WINDOW} or no.
-     * <p>
+     * <p/>
      * if you never passed the permission this method won't be called.
      */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         permissionHelper.onActivityForResult(requestCode);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
-    @Override
-    public void onBackPressed() {
+    @Override public void onBackPressed() {
         if (backPressIsEnabled()) {
             super.onBackPressed();
         }
     }
 
-    @Override
-    public void onPermissionGranted(String[] permissionName) {
+    @Override public void onPermissionGranted(@NonNull String[] permissionName) {
         onNext(permissionName[0]);// we are certain that one permission is requested.
     }
 
-    @Override
-    public void onPermissionDeclined(String[] permissionName) {
+    @Override public void onPermissionDeclined(@NonNull String[] permissionName) {
         PermissionModel model = getPermission(pager.getCurrentItem());
         if (model != null) {
             if (!model.isCanSkip()) {
@@ -167,13 +154,11 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
         onNext(permissionName[0]);
     }
 
-    @Override
-    public void onPermissionPreGranted(String permissionsName) {
+    @Override public void onPermissionPreGranted(@NonNull String permissionsName) {
         onNext(permissionsName);
     }
 
-    @Override
-    public void onPermissionNeedExplanation(String permissionName) {
+    @Override public void onPermissionNeedExplanation(@NonNull String permissionName) {
         if (!permissionName.equalsIgnoreCase(Manifest.permission.SYSTEM_ALERT_WINDOW)) {
             PermissionModel model = getPermission(pager.getCurrentItem());
             if (model != null) {
@@ -186,14 +171,12 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
         }
     }
 
-    @Override
-    public void onPermissionReallyDeclined(String permissionName) {
+    @Override public void onPermissionReallyDeclined(@NonNull String permissionName) {
         permissionIsPermanentlyDenied(permissionName);
         onNoPermissionNeeded();
     }
 
-    @Override
-    public void onNoPermissionNeeded() {
+    @Override public void onNoPermissionNeeded() {
         if ((pager.getAdapter().getCount() - 1) == pager.getCurrentItem()) {
             onIntroFinished();
         } else {
@@ -201,8 +184,7 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
         }
     }
 
-    @Override
-    public void onStatusBarColorChange(@ColorInt int color) {
+    @Override public void onStatusBarColorChange(@ColorInt int color) {
         if (color == 0) return;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             float cl = 0.9f;
@@ -215,23 +197,21 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
         }
     }
 
-    @Override
-    public void onSkip(@NonNull String permissionName) {
+    @Override public void onSkip(@NonNull String permissionName) {
         pager.setCurrentItem(pager.getCurrentItem() - 1, true);
     }
 
-    @Override
-    public void onNext(@NonNull String permissionName) {
+    @Override public void onNext(@NonNull String permissionName) {
         int currentPosition = pager.getCurrentItem();
         if ((pager.getAdapter().getCount() - 1) == (currentPosition)) {
             onNoPermissionNeeded();
         } else {
-            pager.setCurrentItem(pager.getCurrentItem() + 1, true);
+            currentPosition = pager.getCurrentItem() + 1;
+            pager.setCurrentItem(currentPosition, true);
         }
     }
 
-    @Override
-    public void onPermissionRequest(@NonNull String permissionName, boolean canSkip) {
+    @Override public void onPermissionRequest(@NonNull String permissionName, boolean canSkip) {
         if (permissionHelper.isExplanationNeeded(permissionName)) {
             onPermissionNeedExplanation(permissionName);
         } else {
@@ -239,21 +219,20 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     /**
      * @return instance of {@link PermissionFragment}
      */
-    protected PermissionFragment getFragment(int index) {
+    @SuppressWarnings("unused") protected PermissionFragment getFragment(int index) {
         return (PermissionFragment) pager.getAdapter().instantiateItem(pager, index);
     }
 
     /**
      * return PermissionModel at specific index.
-     * <p>
+     * <p/>
      * if index > {@link #permissions().size()} null will be returned
      */
     protected PermissionModel getPermission(int index) {

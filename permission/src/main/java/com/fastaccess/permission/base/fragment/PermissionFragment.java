@@ -40,8 +40,7 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
         return fragment;
     }
 
-    @Override
-    public void onAttach(Context context) {
+    @Override public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof BaseCallback) {
             callback = (BaseCallback) context;
@@ -50,28 +49,23 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    @Override
-    public void onDetach() {
+    @Override public void onDetach() {
         super.onDetach();
         callback = null;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
+    @Override public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (permissionModel != null) {
             outState.putParcelable(PERMISSION_INSTANCE, permissionModel);
         }
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_layout, container, false);
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (savedInstanceState != null) {
             permissionModel = savedInstanceState.getParcelable(PERMISSION_INSTANCE);
@@ -93,11 +87,25 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
         initViews();
     }
 
+    @Override public void onClick(View v) {
+        if (v.getId() == R.id.previous) {
+            callback.onSkip(permissionModel.getPermissionName());
+        } else if (v.getId() == R.id.next) {
+            if (!permissionModel.isCanSkip()) {
+                callback.onPermissionRequest(permissionModel.getPermissionName(), false);
+            } else {
+                callback.onNext(permissionModel.getPermissionName());
+            }
+        } else if (v.getId() == R.id.request) {
+            callback.onPermissionRequest(permissionModel.getPermissionName(), true);
+        }
+    }
+
     private void initViews() {
         request.setVisibility(Build.VERSION.SDK_INT < Build.VERSION_CODES.M ? View.GONE : View.VISIBLE);
         image.setImageResource(permissionModel.getImageResourceId());
         title.setText(permissionModel.getTitle());
-        title.setTextSize(permissionModel.getTextSize());
+        title.setTextSize(TypedValue.COMPLEX_UNIT_PX, permissionModel.getTextSize());
         title.setTextColor(permissionModel.getTextColor() == 0 ? Color.WHITE : permissionModel.getTextColor());
         message.setText(permissionModel.getMessage());
         message.setTextColor(permissionModel.getTextColor() == 0 ? Color.WHITE : permissionModel.getTextColor());
@@ -111,21 +119,6 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
                 title.setTypeface(typeface);
                 message.setTypeface(typeface);
             }
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.previous) {
-            callback.onSkip(permissionModel.getPermissionName());
-        } else if (v.getId() == R.id.next) {
-            if (!permissionModel.isCanSkip()) {
-                callback.onPermissionRequest(permissionModel.getPermissionName(), false);
-            } else {
-                callback.onNext(permissionModel.getPermissionName());
-            }
-        } else if (v.getId() == R.id.request) {
-            callback.onPermissionRequest(permissionModel.getPermissionName(), true);
         }
     }
 }

@@ -1,30 +1,27 @@
 package com.fastaccess.permission.base.model;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Color;
-import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.v4.app.ActivityCompat;
 
 import com.fastaccess.permission.R;
 
 
 public class PermissionModelBuilder {
-    private final Resources res;
-    private Resources.Theme theme;
     private final PermissionModel permissionModel;
+    private Context context;
 
     private PermissionModelBuilder(@NonNull Context context) {
-        this.res = context.getResources();
-        this.theme = context.getTheme();
+        this.context = context;
         this.permissionModel = new PermissionModel(); // Generate sane default values
         withTextColor(Color.WHITE);
-        withTextSize(res.getDimensionPixelSize(R.dimen.permissions_text_size));
+        withTextSize(context.getResources().getDimensionPixelSize(R.dimen.permissions_text_size));
         withRequestIcon(R.drawable.ic_arrow_done);
         withPreviousIcon(R.drawable.ic_arrow_left);
         withNextIcon(R.drawable.ic_arrow_right);
@@ -54,11 +51,7 @@ public class PermissionModelBuilder {
     }
 
     public PermissionModelBuilder withLayoutColorRes(@ColorRes int layoutColor) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            this.permissionModel.setLayoutColor(res.getColor(layoutColor, theme));
-        } else {
-            this.permissionModel.setLayoutColor(res.getColor(layoutColor));
-        }
+        this.permissionModel.setLayoutColor(ActivityCompat.getColor(context, layoutColor));
         return this;
     }
 
@@ -68,11 +61,7 @@ public class PermissionModelBuilder {
     }
 
     public PermissionModelBuilder withTextColorRes(@ColorRes int textColor) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            this.permissionModel.setTextColor(res.getColor(textColor, theme));
-        } else {
-            this.permissionModel.setTextColor(res.getColor(textColor));
-        }
+        this.permissionModel.setTextColor(ActivityCompat.getColor(context, textColor));
         return this;
     }
 
@@ -87,7 +76,7 @@ public class PermissionModelBuilder {
     }
 
     public PermissionModelBuilder withExplanationMessage(@StringRes int explanationMessage) {
-        this.permissionModel.setExplanationMessage(res.getString(explanationMessage));
+        this.permissionModel.setExplanationMessage(context.getString(explanationMessage));
         return this;
     }
 
@@ -117,7 +106,7 @@ public class PermissionModelBuilder {
     }
 
     public PermissionModelBuilder withMessage(@StringRes int message) {
-        this.permissionModel.setMessage(res.getString(message));
+        this.permissionModel.setMessage(context.getString(message));
         return this;
     }
 
@@ -127,7 +116,7 @@ public class PermissionModelBuilder {
     }
 
     public PermissionModelBuilder withTitle(@StringRes int title) {
-        this.permissionModel.setTitle(res.getString(title));
+        this.permissionModel.setTitle(context.getString(title));
         return this;
     }
 

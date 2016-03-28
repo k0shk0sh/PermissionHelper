@@ -7,16 +7,14 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         findViewById(R.id.badAss).setOnClickListener(this);
         findViewById(R.id.pagerActivity).setOnClickListener(this);
     }
 
-    @Override
-    public void onClick(View v) {
+    @Override public void onClick(View v) {
         boolean isBadAss = v.getId() == R.id.badAss;
         Intent intent;
         if (isBadAss) {

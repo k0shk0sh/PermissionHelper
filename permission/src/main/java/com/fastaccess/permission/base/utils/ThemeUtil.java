@@ -11,15 +11,13 @@ import com.fastaccess.permission.R;
  */
 public class ThemeUtil {
 
-    @ColorInt
-    public static int getPrimaryColor(Context context) {
+    @ColorInt public static int getPrimaryColor(Context context) {
         TypedValue value = new TypedValue();
         context.getTheme().resolveAttribute(R.attr.colorPrimary, value, true);
         return value.data;
     }
 
-    @ColorInt
-    public static int getThemeAccentColor(Context context) {
+    @ColorInt public static int getThemeAccentColor(Context context) {
         TypedValue value = new TypedValue();
         context.getTheme().resolveAttribute(R.attr.colorAccent, value, true);
         return value.data;

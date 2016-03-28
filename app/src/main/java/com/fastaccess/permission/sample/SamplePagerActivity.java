@@ -16,9 +16,7 @@ import java.util.List;
 
 public class SamplePagerActivity extends BasePermissionActivity {
 
-    @NonNull
-    @Override
-    protected List<PermissionModel> permissions() {
+    @NonNull @Override protected List<PermissionModel> permissions() {
         List<PermissionModel> permissions = new ArrayList<>();
         permissions.add(PermissionModelBuilder.withContext(this)
                 .withCanSkip(true)
@@ -71,38 +69,30 @@ public class SamplePagerActivity extends BasePermissionActivity {
         return permissions;
     }
 
-    @Override
-    protected int theme() {
+    @Override protected int theme() {
         return R.style.noActionBar;
     }
 
-    @Override
-    protected void onIntroFinished() {
+    @Override protected void onIntroFinished() {
         Log.i("onIntroFinished", "Intro has finished");
         // do whatever you like!
         finish();
     }
 
-    @Nullable
-    @Override
-    protected ViewPager.PageTransformer pagerTransformer() {
+    @Nullable @Override protected ViewPager.PageTransformer pagerTransformer() {
         return null;//use default
     }
 
-    @NonNull
-    @Override
-    protected boolean backPressIsEnabled() {
+    @Override protected boolean backPressIsEnabled() {
         return false;
     }
 
-    @Override
-    protected void permissionIsPermanentlyDenied(String permissionName) {
+    @Override protected void permissionIsPermanentlyDenied(String permissionName) {
         Log.e("DANGER", "Permission ( " + permissionName + " ) is permanentlyDenied and can only be granted via settings screen");
         /** {@link com.fastaccess.permission.base.PermissionHelper#openSettingsScreen(Context)} can help you to open it if you like */
     }
 
-    @Override
-    protected void onUserDeclinePermission(String permissionName) {
+    @Override protected void onUserDeclinePermission(String permissionName) {
         Log.w("Warning", "Permission ( " + permissionName + " ) is skipped you can request it again by calling doing such\n " +
                 "if (permissionHelper.isExplanationNeeded(permissionName)) {\n" +
                 "        permissionHelper.requestAfterExplanation(permissionName);\n" +
