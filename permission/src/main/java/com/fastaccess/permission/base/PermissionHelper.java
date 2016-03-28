@@ -195,13 +195,20 @@ public class PermissionHelper implements OnActivityPermissionCallback {
      * to be called when explanation is presented to the user
      */
     public void requestAfterExplanation(@NonNull String[] permissions) {
+
+        ArrayList<String> permissionsToRequest = new ArrayList<>();
+
         for (String permissionName : permissions) {
             if (isPermissionDeclined(permissionName)) {
-                ActivityCompat.requestPermissions(context, new String[]{permissionName}, REQUEST_PERMISSIONS);
+                permissionsToRequest.add(permissionName); // add permission to request
             } else {
-                permissionCallback.onPermissionPreGranted(permissionName);
+                permissionCallback.onPermissionPreGranted(permissionName); // do not request, since it is already granted
             }
         }
+
+        permissions = permissionsToRequest.toArray(new String[permissionsToRequest.size()]);
+
+        ActivityCompat.requestPermissions(context, permissions, REQUEST_PERMISSIONS);
     }
 
     /**
