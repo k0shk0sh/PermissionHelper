@@ -1,8 +1,8 @@
-/.idea
-*.iml
+.idea/
 .gradle
 /local.properties
 .DS_Store
 /build
 /captures
+/AndroidPermissionHelper.iml
 /secret
