@@ -24,6 +24,30 @@ public class PermissionModel implements Parcelable {
     private String title;
     private String fontType;
 
+    public static final Parcelable.Creator<PermissionModel> CREATOR = new Parcelable.Creator<PermissionModel>() {
+        public PermissionModel createFromParcel(Parcel source) {return new PermissionModel(source);}
+
+        public PermissionModel[] newArray(int size) {return new PermissionModel[size];}
+    };
+
+    public PermissionModel() {}
+
+    protected PermissionModel(Parcel in) {
+        this.permissionName = in.readString();
+        this.imageResourceId = in.readInt();
+        this.layoutColor = in.readInt();
+        this.textColor = in.readInt();
+        this.textSize = in.readInt();
+        this.explanationMessage = in.readString();
+        this.previousIcon = in.readInt();
+        this.nextIcon = in.readInt();
+        this.requestIcon = in.readInt();
+        this.canSkip = in.readByte() != 0;
+        this.message = in.readString();
+        this.title = in.readString();
+        this.fontType = in.readString();
+    }
+
     public String getPermissionName() {
         return permissionName;
     }
@@ -131,8 +155,6 @@ public class PermissionModel implements Parcelable {
         this.fontType = fontType;
     }
 
-    public PermissionModel() {}
-
     @Override
     public int describeContents() { return 0; }
 
@@ -153,25 +175,4 @@ public class PermissionModel implements Parcelable {
         dest.writeString(this.fontType);
     }
 
-    protected PermissionModel(Parcel in) {
-        this.permissionName = in.readString();
-        this.imageResourceId = in.readInt();
-        this.layoutColor = in.readInt();
-        this.textColor = in.readInt();
-        this.textSize = in.readInt();
-        this.explanationMessage = in.readString();
-        this.previousIcon = in.readInt();
-        this.nextIcon = in.readInt();
-        this.requestIcon = in.readInt();
-        this.canSkip = in.readByte() != 0;
-        this.message = in.readString();
-        this.title = in.readString();
-        this.fontType = in.readString();
-    }
-
-    public static final Parcelable.Creator<PermissionModel> CREATOR = new Parcelable.Creator<PermissionModel>() {
-        public PermissionModel createFromParcel(Parcel source) {return new PermissionModel(source);}
-
-        public PermissionModel[] newArray(int size) {return new PermissionModel[size];}
-    };
 }

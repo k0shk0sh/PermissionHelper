@@ -48,6 +48,18 @@ public class CirclePageIndicator extends View implements PageIndicator {
     private int mActivePointerId = INVALID_POINTER;
     private boolean mIsDragging;
 
+    @SuppressWarnings("UnusedDeclaration")
+    public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
+        @Override
+        public SavedState createFromParcel(Parcel in) {
+            return new SavedState(in);
+        }
+
+        @Override
+        public SavedState[] newArray(int size) {
+            return new SavedState[size];
+        }
+    };
 
     public CirclePageIndicator(Context context) {
         this(context, null);
@@ -525,17 +537,5 @@ public class CirclePageIndicator extends View implements PageIndicator {
             dest.writeInt(currentPage);
         }
 
-        @SuppressWarnings("UnusedDeclaration")
-        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
-            @Override
-            public SavedState createFromParcel(Parcel in) {
-                return new SavedState(in);
-            }
-
-            @Override
-            public SavedState[] newArray(int size) {
-                return new SavedState[size];
-            }
-        };
     }
 }
