@@ -11,6 +11,8 @@ import com.fastaccess.permission.R;
  */
 public class ThemeUtil {
 
+    private ThemeUtil() {}
+
     @ColorInt public static int getPrimaryColor(Context context) {
         TypedValue value = new TypedValue();
         context.getTheme().resolveAttribute(R.attr.colorPrimary, value, true);

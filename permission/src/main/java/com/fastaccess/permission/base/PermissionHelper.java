@@ -24,7 +24,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     private static final int OVERLAY_PERMISSION_REQ_CODE = 2;
     private OnPermissionCallback permissionCallback;
     private Activity context;
-    private final int REQUEST_PERMISSIONS = 1;
+    private static final int REQUEST_PERMISSIONS = 1;
     private boolean forceAccepting;
 
     private PermissionHelper(@NonNull Activity context) {
@@ -58,11 +58,9 @@ public class PermissionHelper implements OnActivityPermissionCallback {
                 String[] declinedPermissions = declinedPermissions(context, permissions);
                 List<Boolean> deniedPermissionsLength = new ArrayList<Boolean>();//needed
                 for (String permissionName : declinedPermissions) {
-                    if (permissionName != null) {
-                        if (!isExplanationNeeded(permissionName)) {
-                            permissionCallback.onPermissionReallyDeclined(permissionName);
-                            deniedPermissionsLength.add(false);
-                        }
+                    if (permissionName != null && !isExplanationNeeded(permissionName)) {
+                        permissionCallback.onPermissionReallyDeclined(permissionName);
+                        deniedPermissionsLength.add(false);
                     }
                 }
                 if (deniedPermissionsLength.size() == 0) {

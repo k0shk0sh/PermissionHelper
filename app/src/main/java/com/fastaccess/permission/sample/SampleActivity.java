@@ -27,10 +27,10 @@ public class SampleActivity extends AppCompatActivity implements OnPermissionCal
     private AlertDialog builder;
     private String[] neededPermission;
 
-    private final String SINGLE_PERMISSION = Manifest.permission.GET_ACCOUNTS;
+    private final static String SINGLE_PERMISSION = Manifest.permission.GET_ACCOUNTS;
 
 
-    private final String[] MULTI_PERMISSIONS = new String[]{
+    private final static String[] MULTI_PERMISSIONS = new String[]{
             Manifest.permission.GET_ACCOUNTS,
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
