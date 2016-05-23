@@ -103,7 +103,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
      *         (it can be one of these types (String), (String[])
      */
     public PermissionHelper request(@NonNull Object permissionName) {
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (permissionName instanceof String) {
                 handleSingle((String) permissionName);
             } else if (permissionName instanceof String[]) {
