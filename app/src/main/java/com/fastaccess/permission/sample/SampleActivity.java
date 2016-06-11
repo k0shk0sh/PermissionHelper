@@ -78,14 +78,14 @@ public class SampleActivity extends AppCompatActivity implements OnPermissionCal
         Log.i("NeedExplanation", "Permission( " + permissionName + " ) needs Explanation");
         if (!isSingle) {
             neededPermission = PermissionHelper.declinedPermissions(this, MULTI_PERMISSIONS);
-            StringBuilder builder = new StringBuilder(neededPermission.length);
+            StringBuilder permissionBuilder = new StringBuilder(neededPermission.length);
             if (neededPermission.length > 0) {
                 for (String permission : neededPermission) {
-                    builder.append(permission).append("\n");
+                    permissionBuilder.append(permission).append("\n");
                 }
             }
-            result.setText("Permission( " + builder.toString() + " ) needs Explanation");
-            AlertDialog alert = getAlertDialog(neededPermission, builder.toString());
+            result.setText("Permission( " + permissionBuilder.toString() + " ) needs Explanation");
+            AlertDialog alert = getAlertDialog(neededPermission, permissionBuilder.toString());
             if (!alert.isShowing()) {
                 alert.show();
             }
