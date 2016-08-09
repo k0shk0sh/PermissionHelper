@@ -34,8 +34,8 @@ import java.util.List;
 
 public abstract class BasePermissionActivity extends AppCompatActivity implements OnPermissionCallback, BaseCallback {
 
-    private final String PAGER_POSITION = "PAGER_POSITION";
-    private final String SYSTEM_OVERLAY_NUM_INSTANCE = "SYSTEM_OVERLAY_NUM_INSTANCE";
+    private static final String PAGER_POSITION = "PAGER_POSITION";
+    private static final String SYSTEM_OVERLAY_NUM_INSTANCE = "SYSTEM_OVERLAY_NUM_INSTANCE";
     protected PermissionHelper permissionHelper;
     protected ViewPager pager;
     protected CirclePageIndicator indicator; // take control to change the color and stuff.

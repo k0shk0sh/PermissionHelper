@@ -284,10 +284,8 @@ public class CirclePageIndicator extends View implements PageIndicator {
                 final float x = MotionEventCompat.getX(ev, activePointerIndex);
                 final float deltaX = x - mLastMotionX;
 
-                if (!mIsDragging) {
-                    if (Math.abs(deltaX) > mTouchSlop) {
-                        mIsDragging = true;
-                    }
+                if (!mIsDragging && Math.abs(deltaX) > mTouchSlop) {
+                    mIsDragging = true;
                 }
 
                 if (mIsDragging) {
