@@ -23,6 +23,7 @@ import com.fastaccess.permission.base.model.PermissionModel;
 public class PermissionFragment extends Fragment implements View.OnClickListener {
 
     private final static String PERMISSION_INSTANCE = "PERMISSION_INSTANCE";
+    private final static String LAYOUT_RES_INSTANCE = "LAYOUT_RES_ID";
     private PermissionModel permissionModel;
     private BaseCallback callback;
     private ImageView image;
@@ -62,7 +63,7 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
     }
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_layout, container, false);
+        return inflater.inflate(R.layout.permissionhelper_fragment_layout, container, false);
     }
 
     @Override public void onViewCreated(View view, Bundle savedInstanceState) {

@@ -19,13 +19,11 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         this.permissions = permissions;
     }
 
-    @Override
-    public Fragment getItem(int position) {
+    @Override public Fragment getItem(int position) {
         return PermissionFragment.newInstance(permissions.get(position));
     }
 
-    @Override
-    public int getCount() {
+    @Override public int getCount() {
         return permissions.size();
     }
 }

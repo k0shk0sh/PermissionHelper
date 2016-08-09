@@ -10,26 +10,25 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 
 import com.fastaccess.permission.base.callback.OnActivityPermissionCallback;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
+import com.fastaccess.permission.base.model.PermissionModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PermissionHelper implements OnActivityPermissionCallback {
-
+    private final OnPermissionCallback permissionCallback;
     private static final int OVERLAY_PERMISSION_REQ_CODE = 2;
-    private OnPermissionCallback permissionCallback;
-    private Activity context;
     private final int REQUEST_PERMISSIONS = 1;
+    private final Activity context;
     private boolean forceAccepting;
 
     private PermissionHelper(@NonNull Activity context) {
         this.context = context;
-
         if (context instanceof OnPermissionCallback) {
             this.permissionCallback = (OnPermissionCallback) context;
         } else {
@@ -56,7 +55,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
                 permissionCallback.onPermissionGranted(permissions);
             } else {
                 String[] declinedPermissions = declinedPermissions(context, permissions);
-                List<Boolean> deniedPermissionsLength = new ArrayList<Boolean>();//needed
+                List<Boolean> deniedPermissionsLength = new ArrayList<>();//needed
                 for (String permissionName : declinedPermissions) {
                     if (permissionName != null) {
                         if (!isExplanationNeeded(permissionName)) {
@@ -68,6 +67,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
                 if (deniedPermissionsLength.size() == 0) {
                     if (forceAccepting) {
                         requestAfterExplanation(declinedPermissions);
+                        return;
                     }
                     permissionCallback.onPermissionDeclined(declinedPermissions);
                 }
@@ -78,7 +78,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     /**
      * used only for {@link android.Manifest.permission#SYSTEM_ALERT_WINDOW}
      */
-    public void onActivityForResult(int requestCode) {
+    @Override public void onActivityForResult(int requestCode) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
                 if (isSystemAlertGranted()) {
@@ -132,9 +132,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
                 } else {
                     permissionCallback.onPermissionPreGranted(Manifest.permission.SYSTEM_ALERT_WINDOW);
                 }
-            } catch (Exception e) {
-                Log.e("SystemAlertPermission", "Failed. How? god only know", e);
-            }
+            } catch (Exception ignored) {}
         } else {
             permissionCallback.onPermissionPreGranted(Manifest.permission.SYSTEM_ALERT_WINDOW);
         }
@@ -160,7 +158,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
                 requestSystemAlertPermission();
             }
         } else {
-            permissionCallback.onPermissionPreGranted(permissionName);
+            permissionCallback.onPermissionDeclined(new String[]{permissionName});
         }
     }
 
@@ -298,9 +296,9 @@ public class PermissionHelper implements OnActivityPermissionCallback {
      * <p/>
      * can be used outside of activity.
      */
-    public static String declinedPermission(@NonNull Context context, @NonNull String[] permissions) {
+    @Nullable public static String declinedPermission(@NonNull Context context, @NonNull String[] permissions) {
         for (String permission : permissions) {
-            if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (isPermissionDeclined(context, permission)) {
                 return permission;
             }
         }
@@ -311,9 +309,9 @@ public class PermissionHelper implements OnActivityPermissionCallback {
      * @return list of permissions that the user declined or not yet granted.
      */
     public static String[] declinedPermissions(@NonNull Context context, @NonNull String[] permissions) {
-        List<String> permissionsNeeded = new ArrayList<String>();
+        List<String> permissionsNeeded = new ArrayList<>();
         for (String permission : permissions) {
-            if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (isPermissionDeclined(context, permission)) {
                 permissionsNeeded.add(permission);
             }
         }
@@ -392,6 +390,18 @@ public class PermissionHelper implements OnActivityPermissionCallback {
             return Settings.canDrawOverlays(context);
         }
         return true;
+    }
+
+    public static void removeGrantedPermissions(Context context, @NonNull List<PermissionModel> models) {
+        List<PermissionModel> granted = new ArrayList<>();
+        for (PermissionModel permissionModel : models) {
+            if (isPermissionGranted(context, permissionModel.getPermissionName())) {
+                granted.add(permissionModel);
+            }
+        }
+        if (!granted.isEmpty()) {
+            models.removeAll(granted);
+        }
     }
 
 }

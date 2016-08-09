@@ -78,7 +78,7 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         if (theme() != 0) setTheme(theme());
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_layout);
+        setContentView(R.layout.main_permissionhelper_layout);
         if (permissions().isEmpty()) {
             throw new NullPointerException("permissions() is empty");
         }
@@ -236,7 +236,7 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
      * if index > {@link #permissions().size()} null will be returned
      */
     protected PermissionModel getPermission(int index) {
-        if (index <= permissions().size()) {// avoid accessing index does not exists.
+        if ((index - 1) <= permissions().size()) {// avoid accessing index does not exists.
             return permissions().get(index);
         }
         return null;
@@ -261,9 +261,32 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
                 }).show();
     }
 
-    protected class IntroTransformer implements ViewPager.PageTransformer {
+    private void animateColorChange(final View view, final int color) {
+        ValueAnimator animator = new ValueAnimator();
+        animator.setIntValues(((ColorDrawable) view.getBackground()).getColor(), color);
+        animator.setEvaluator(new ArgbEvaluator());
+        animator.setDuration(600);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                view.setBackgroundColor((Integer) animation.getAnimatedValue());
+                onStatusBarColorChange((Integer) animation.getAnimatedValue());
+            }
+        });
+        animator.start();
+    }
 
-        public void transformPage(View view, float position) {
+    protected static class IntroTransformer implements ViewPager.PageTransformer {
+
+        private void setAlpha(View view, float value) {
+            view.animate().alpha(value);
+        }
+
+        private void setTranslationX(View view, float value) {
+            view.animate().translationX(value);
+        }
+
+        @Override public void transformPage(View view, float position) {
             int pageWidth = view.getWidth();
             View message = view.findViewById(R.id.message);
             View title = view.findViewById(R.id.title);
@@ -285,27 +308,5 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
         }
     }
 
-    private void setAlpha(View view, float value) {
-        view.animate().alpha(value);
-    }
-
-    private void setTranslationX(View view, float value) {
-        view.animate().translationX(value);
-    }
-
-    private void animateColorChange(final View view, final int color) {
-        ValueAnimator animator = new ValueAnimator();
-        animator.setIntValues(((ColorDrawable) view.getBackground()).getColor(), color);
-        animator.setEvaluator(new ArgbEvaluator());
-        animator.setDuration(600);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                view.setBackgroundColor((Integer) animation.getAnimatedValue());
-                onStatusBarColorChange((Integer) animation.getAnimatedValue());
-            }
-        });
-        animator.start();
-    }
 }
 

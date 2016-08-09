@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 
+import com.fastaccess.permission.base.PermissionHelper;
 import com.fastaccess.permission.base.activity.BasePermissionActivity;
 import com.fastaccess.permission.base.model.PermissionModel;
 import com.fastaccess.permission.base.model.PermissionModelBuilder;
@@ -66,6 +67,7 @@ public class SamplePagerActivity extends BasePermissionActivity {
                 .withFontType("my_font.ttf")
                 .withLayoutColorRes(R.color.colorPrimaryDark)
                 .withImageResourceId(R.drawable.permission_two).build());
+        PermissionHelper.removeGrantedPermissions(this, permissions);//newly added to get rid of granted permissions.
         return permissions;
     }
 

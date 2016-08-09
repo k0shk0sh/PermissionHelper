@@ -2,6 +2,7 @@
 <LinearLayout
     android:id="@+id/background_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
@@ -24,7 +25,9 @@
         android:layout_gravity="center"
         android:layout_margin="16dip"
         android:adjustViewBounds="true"
-        android:maxHeight="200dp"/>
+        android:maxHeight="200dp"
+        android:scaleType="fitCenter"
+        tools:src="@drawable/ic_arrow_done"/>
 
     <TextView
         android:id="@+id/message"
@@ -33,8 +36,8 @@
         android:layout_gravity="center"
         android:layout_margin="16dip"
         android:autoLink="all"
-        android:maxLines="6"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:maxLines="6"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -42,13 +45,12 @@
         android:layout_gravity="center"
         android:orientation="horizontal">
 
-
         <ImageButton
             android:id="@+id/previous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="6dip"
-            android:background="?selectableItemBackgroundBorderless"
+            android:background="?selectableItemBackground"
             android:padding="15dp"
             android:src="@drawable/ic_arrow_left"/>
 
@@ -57,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="6dip"
-            android:background="?selectableItemBackgroundBorderless"
+            android:background="?selectableItemBackground"
             android:padding="15dp"
             android:src="@drawable/ic_arrow_done"/>
 
@@ -66,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="6dip"
-            android:background="?selectableItemBackgroundBorderless"
+            android:background="?selectableItemBackground"
             android:padding="15dp"
             android:src="@drawable/ic_arrow_right"/>
     </LinearLayout>

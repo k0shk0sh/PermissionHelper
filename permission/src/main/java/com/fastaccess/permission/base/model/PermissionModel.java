@@ -32,7 +32,7 @@ public class PermissionModel implements Parcelable {
         this.permissionName = permissionName;
     }
 
-    public int getImageResourceId() {
+    @DrawableRes public int getImageResourceId() {
         return imageResourceId;
     }
 
@@ -40,7 +40,7 @@ public class PermissionModel implements Parcelable {
         this.imageResourceId = imageResourceId;
     }
 
-    public int getLayoutColor() {
+    @ColorInt public int getLayoutColor() {
         return layoutColor;
     }
 
@@ -48,7 +48,7 @@ public class PermissionModel implements Parcelable {
         this.layoutColor = layoutColor;
     }
 
-    public int getTextColor() {
+    @ColorInt public int getTextColor() {
         return textColor;
     }
 
@@ -56,7 +56,7 @@ public class PermissionModel implements Parcelable {
         this.textColor = textColor;
     }
 
-    public int getTextSize() {
+    @DimenRes public int getTextSize() {
         return textSize;
     }
 
@@ -80,7 +80,7 @@ public class PermissionModel implements Parcelable {
         this.canSkip = canSkip;
     }
 
-    public int getRequestIcon() {
+    @DrawableRes public int getRequestIcon() {
         return requestIcon;
     }
 
@@ -88,7 +88,7 @@ public class PermissionModel implements Parcelable {
         this.requestIcon = requestIcon;
     }
 
-    public int getPreviousIcon() {
+    @DrawableRes public int getPreviousIcon() {
         return previousIcon;
     }
 
@@ -96,7 +96,7 @@ public class PermissionModel implements Parcelable {
         this.previousIcon = previousIcon;
     }
 
-    public int getNextIcon() {
+    @DrawableRes public int getNextIcon() {
         return nextIcon;
     }
 
@@ -125,7 +125,8 @@ public class PermissionModel implements Parcelable {
     }
 
     /**
-     * @param fontType ex: (fonts/my_custom_text.ttf);
+     * @param fontType
+     *         ex: (fonts/my_custom_text.ttf);
      */
     public void setFontType(@NonNull String fontType) {
         this.fontType = fontType;
@@ -133,11 +134,9 @@ public class PermissionModel implements Parcelable {
 
     public PermissionModel() {}
 
-    @Override
-    public int describeContents() { return 0; }
+    @Override public int describeContents() { return 0; }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    @Override public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.permissionName);
         dest.writeInt(this.imageResourceId);
         dest.writeInt(this.layoutColor);
