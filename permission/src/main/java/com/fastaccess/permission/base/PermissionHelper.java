@@ -21,9 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PermissionHelper implements OnActivityPermissionCallback {
-    private final OnPermissionCallback permissionCallback;
     private static final int OVERLAY_PERMISSION_REQ_CODE = 2;
-    private final int REQUEST_PERMISSIONS = 1;
+    private static final int REQUEST_PERMISSIONS = 1;
+
+    private final OnPermissionCallback permissionCallback;
     private final Activity context;
     private boolean forceAccepting;
 
@@ -57,11 +58,9 @@ public class PermissionHelper implements OnActivityPermissionCallback {
                 String[] declinedPermissions = declinedPermissions(context, permissions);
                 List<Boolean> deniedPermissionsLength = new ArrayList<>();//needed
                 for (String permissionName : declinedPermissions) {
-                    if (permissionName != null) {
-                        if (!isExplanationNeeded(permissionName)) {
-                            permissionCallback.onPermissionReallyDeclined(permissionName);
-                            deniedPermissionsLength.add(false);
-                        }
+                    if (permissionName != null && !isExplanationNeeded(permissionName)) {
+                        permissionCallback.onPermissionReallyDeclined(permissionName);
+                        deniedPermissionsLength.add(false);
                     }
                 }
                 if (deniedPermissionsLength.size() == 0) {
@@ -105,7 +104,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
      *         (it can be one of these types (String), (String[])
      */
     public PermissionHelper request(@NonNull Object permissionName) {
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (permissionName instanceof String) {
                 handleSingle((String) permissionName);
             } else if (permissionName instanceof String[]) {

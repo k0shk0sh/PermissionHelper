@@ -173,7 +173,7 @@ app</a>**
 
 # Dependency
 
-Android Support library ```v23.1.1```
+Android Support library ```v24.1.1```
 
 CirclePageIndicator by **JakeWharton** (integrated within the library).
 
