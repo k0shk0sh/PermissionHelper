@@ -23,7 +23,7 @@ Nexus 10 (L)
 
 # Installation
 
-```
+```groovy
     compile 'com.github.k0shk0sh:PermissionHelper:1.0.11'
 ```
 
@@ -69,7 +69,7 @@ request button is hidden ;).
 
 Your ```Activity/Presenter```  should implement ```OnPermissionCallback``` which in return will give you access to
 
-```
+```java
     void onPermissionGranted(String[] permissionName);
 
     void onPermissionDeclined(String[] permissionName);
@@ -85,74 +85,74 @@ Your ```Activity/Presenter```  should implement ```OnPermissionCallback``` which
 
 to request a permission all you have to do is:
 
-```
+```java
 permissionHelper
      .setForceAccepting(false)// true if you had like force reshowing the permission dialog on Deny (not recommended)
      .request(isSingle ? SINGLE_PERMISSION : MULTIPLE_PERMISSIONS);
 ```
 
 and finally in your `Activity`
-```
+```java
 onRequestPermissionsResult(....)
 ``` 
 call 
-``` 
+```java
 permissionHelper.onRequestPermissionsResult(....)
 ```
 
 # Extra
 
-```
+```java
 public static String declinedPermission(@NonNull Context context, @NonNull String[])
 ```
 
-```
+```java
 public static String[] declinedPermissions(@NonNull Context context, @NonNull String[] permissions)
 ```
 
-```
+```java
 public static boolean isPermissionGranted(@NonNull Context context, @NonNull String permission)
 ```
 
-```
+```java
 public static boolean isPermissionDeclined(@NonNull Context context, @NonNull String permission)
 ```
 
-```
+```java
 public static boolean isExplanationNeeded(@NonNull Activity context, @NonNull String permissionName)
 ```
 
 
-```
+```java
 public static boolean permissionExists(@NonNull Context context, @NonNull String permissionName)
 ```
 
-```
+```java
 public static boolean isPermissionPermanentlyDenied(@NonNull Activity context, @NonNull String permission)
 ```
 
-```
+```java
 public static void openSettingsScreen(Context context)//useful when we can't request for the permission due to user ticked don't show again.
 ```
 
-```
+```java
 @TargetApi(Build.VERSION_CODES.M)
 public static boolean isSystemAlertGranted(@NonNull Context context)// special case for SYSTEM_ALERT_WINDOW permission.
 ```
 
-```
+```java
 public void requestAfterExplanation(String permissionName)// to be used if the permission needs explanation
 ```
 
-```
+```java
 public void requestAfterExplanation(String[] permissions)//to be used if the permission needs explanation
 ```
 
-```
+```java
 public void requestSystemAlertPermission() // not really needed as request(...) will handle this case.
 ```
 
-```
+```java
 > all of the above static methods you can still access them with PermissionHelper instance.
 ```
 
