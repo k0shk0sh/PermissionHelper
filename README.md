@@ -25,7 +25,7 @@ Nexus 10 (L)
 
 #### Gradle
 ```groovy
-    compile 'com.github.k0shk0sh:PermissionHelper:1.0.11'
+    compile 'com.github.k0shk0sh:PermissionHelper:1.0.12'
 ```
 
 #### Maven

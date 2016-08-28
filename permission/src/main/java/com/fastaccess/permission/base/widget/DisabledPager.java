@@ -15,13 +15,11 @@ public class DisabledPager extends ViewPager {
         super(context, attrs);
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    @Override public boolean onTouchEvent(MotionEvent event) {
         return false;
     }
 
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent event) {
+    @Override public boolean onInterceptTouchEvent(MotionEvent event) {
         return false;
     }
 }
