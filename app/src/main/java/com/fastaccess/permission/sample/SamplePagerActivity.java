@@ -6,8 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.Toast;
 
-import com.fastaccess.permission.base.PermissionHelper;
 import com.fastaccess.permission.base.activity.BasePermissionActivity;
 import com.fastaccess.permission.base.model.PermissionModel;
 import com.fastaccess.permission.base.model.PermissionModelBuilder;
@@ -67,7 +67,6 @@ public class SamplePagerActivity extends BasePermissionActivity {
                 .withFontType("my_font.ttf")
                 .withLayoutColorRes(R.color.colorPrimaryDark)
                 .withImageResourceId(R.drawable.permission_two).build());
-        PermissionHelper.removeGrantedPermissions(this, permissions);//newly added to get rid of granted permissions.
         return permissions;
     }
 
@@ -76,6 +75,7 @@ public class SamplePagerActivity extends BasePermissionActivity {
     }
 
     @Override protected void onIntroFinished() {
+        Toast.makeText(this, "Intro Finished", Toast.LENGTH_SHORT).show();
         Log.i("onIntroFinished", "Intro has finished");
         // do whatever you like!
         finish();
@@ -89,12 +89,12 @@ public class SamplePagerActivity extends BasePermissionActivity {
         return false;
     }
 
-    @Override protected void permissionIsPermanentlyDenied(String permissionName) {
+    @Override protected void permissionIsPermanentlyDenied(@NonNull String permissionName) {
         Log.e("DANGER", "Permission ( " + permissionName + " ) is permanentlyDenied and can only be granted via settings screen");
         /** {@link com.fastaccess.permission.base.PermissionHelper#openSettingsScreen(Context)} can help you to open it if you like */
     }
 
-    @Override protected void onUserDeclinePermission(String permissionName) {
+    @Override protected void onUserDeclinePermission(@NonNull String permissionName) {
         Log.w("Warning", "Permission ( " + permissionName + " ) is skipped you can request it again by calling doing such\n " +
                 "if (permissionHelper.isExplanationNeeded(permissionName)) {\n" +
                 "        permissionHelper.requestAfterExplanation(permissionName);\n" +

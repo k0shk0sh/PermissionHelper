@@ -24,8 +24,8 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     private static final int OVERLAY_PERMISSION_REQ_CODE = 2;
     private static final int REQUEST_PERMISSIONS = 1;
 
-    private final OnPermissionCallback permissionCallback;
-    private final Activity context;
+    @NonNull private final OnPermissionCallback permissionCallback;
+    @NonNull private final Activity context;
     private boolean forceAccepting;
 
     private PermissionHelper(@NonNull Activity context) {
@@ -42,11 +42,11 @@ public class PermissionHelper implements OnActivityPermissionCallback {
         this.permissionCallback = permissionCallback;
     }
 
-    public static PermissionHelper getInstance(@NonNull Activity context) {
+    @NonNull public static PermissionHelper getInstance(@NonNull Activity context) {
         return new PermissionHelper(context);
     }
 
-    public static PermissionHelper getInstance(@NonNull Activity context, @NonNull OnPermissionCallback permissionCallback) {
+    @NonNull public static PermissionHelper getInstance(@NonNull Activity context, @NonNull OnPermissionCallback permissionCallback) {
         return new PermissionHelper(context, permissionCallback);
     }
 
@@ -94,7 +94,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     /**
      * force the user to accept the permission. it won't work if the user ever thick-ed the "don't show again"
      */
-    public PermissionHelper setForceAccepting(boolean forceAccepting) {
+    @NonNull public PermissionHelper setForceAccepting(boolean forceAccepting) {
         this.forceAccepting = forceAccepting;
         return this;
     }
@@ -103,7 +103,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
      * @param permissionName
      *         (it can be one of these types (String), (String[])
      */
-    public PermissionHelper request(@NonNull Object permissionName) {
+    @NonNull public PermissionHelper request(@NonNull Object permissionName) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (permissionName instanceof String) {
                 handleSingle((String) permissionName);
@@ -238,7 +238,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     /**
      * internal usage.
      */
-    private boolean verifyPermissions(int[] grantResults) {
+    private boolean verifyPermissions(@NonNull int[] grantResults) {
         if (grantResults.length < 1) {
             return false;
         }
@@ -391,10 +391,14 @@ public class PermissionHelper implements OnActivityPermissionCallback {
         return true;
     }
 
-    public static void removeGrantedPermissions(Context context, @NonNull List<PermissionModel> models) {
+    public static void removeGrantedPermissions(@NonNull Context context, @NonNull List<PermissionModel> models) {
         List<PermissionModel> granted = new ArrayList<>();
         for (PermissionModel permissionModel : models) {
-            if (isPermissionGranted(context, permissionModel.getPermissionName())) {
+            if (permissionModel.getPermissionName().equalsIgnoreCase(Manifest.permission.SYSTEM_ALERT_WINDOW)) {
+                if (isSystemAlertGranted(context)) {
+                    granted.add(permissionModel);
+                }
+            } else if (isPermissionGranted(context, permissionModel.getPermissionName())) {
                 granted.add(permissionModel);
             }
         }

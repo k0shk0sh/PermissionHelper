@@ -7,7 +7,9 @@ import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
-
+/**
+ * please use {@link PermissionModelBuilder} for more convince
+ */
 public class PermissionModel implements Parcelable {
 
     private String permissionName;
@@ -23,6 +25,7 @@ public class PermissionModel implements Parcelable {
     private String message;
     private String title;
     private String fontType;
+
 
     public String getPermissionName() {
         return permissionName;
@@ -132,7 +135,10 @@ public class PermissionModel implements Parcelable {
         this.fontType = fontType;
     }
 
-    public PermissionModel() {}
+    /**
+     * please use {@link PermissionModelBuilder} for more convince
+     */
+    @Deprecated public PermissionModel() {}
 
     @Override public int describeContents() { return 0; }
 

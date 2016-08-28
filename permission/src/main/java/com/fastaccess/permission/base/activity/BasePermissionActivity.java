@@ -26,6 +26,7 @@ import com.fastaccess.permission.base.callback.BaseCallback;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import com.fastaccess.permission.base.fragment.PermissionFragment;
 import com.fastaccess.permission.base.model.PermissionModel;
+import com.fastaccess.permission.base.utils.FontTypeHelper;
 import com.fastaccess.permission.base.utils.ThemeUtil;
 import com.fastaccess.permission.base.widget.CirclePageIndicator;
 
@@ -58,14 +59,14 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
     /**
      * used to notify you that the permission is permanently denied. so you can decide whats next!
      */
-    protected abstract void permissionIsPermanentlyDenied(String permissionName);
+    protected abstract void permissionIsPermanentlyDenied(@NonNull String permissionName);
 
     /**
      * used to notify that the user ignored the permission
      * <p/>
      * note: if the {@link PermissionModel#isCanSkip()} return false, we could display the explanation immediately.
      */
-    protected abstract void onUserDeclinePermission(String permissionName);
+    protected abstract void onUserDeclinePermission(@NonNull String permissionName);
 
     @Override protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -80,7 +81,8 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_permissionhelper_layout);
         if (permissions().isEmpty()) {
-            throw new NullPointerException("permissions() is empty");
+            onIntroFinished();
+            return;
         }
         pager = (ViewPager) findViewById(R.id.pager);
         indicator = (CirclePageIndicator) findViewById(R.id.indicator);
@@ -125,6 +127,11 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
         if (backPressIsEnabled()) {
             super.onBackPressed();
         }
+    }
+
+    @Override protected void onDestroy() {
+        super.onDestroy();
+        FontTypeHelper.clear();
     }
 
     @Override public void onPermissionGranted(@NonNull String[] permissionName) {
@@ -236,7 +243,8 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
      * if index > {@link #permissions().size()} null will be returned
      */
     protected PermissionModel getPermission(int index) {
-        if ((index - 1) <= permissions().size()) {// avoid accessing index does not exists.
+        if (permissions().isEmpty()) return null;
+        if ((index) <= permissions().size()) {// avoid accessing index does not exists.
             return permissions().get(index);
         }
         return null;

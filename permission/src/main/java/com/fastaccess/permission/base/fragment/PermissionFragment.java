@@ -2,12 +2,10 @@ package com.fastaccess.permission.base.fragment;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +17,12 @@ import android.widget.TextView;
 import com.fastaccess.permission.R;
 import com.fastaccess.permission.base.callback.BaseCallback;
 import com.fastaccess.permission.base.model.PermissionModel;
+import com.fastaccess.permission.base.utils.FontTypeHelper;
+import com.fastaccess.permission.base.utils.ThemeUtil;
 
 public class PermissionFragment extends Fragment implements View.OnClickListener {
 
     private final static String PERMISSION_INSTANCE = "PERMISSION_INSTANCE";
-    private final static String LAYOUT_RES_INSTANCE = "LAYOUT_RES_ID";
     private PermissionModel permissionModel;
     private BaseCallback callback;
     private ImageView image;
@@ -106,20 +105,26 @@ public class PermissionFragment extends Fragment implements View.OnClickListener
         request.setVisibility(Build.VERSION.SDK_INT < Build.VERSION_CODES.M ? View.GONE : View.VISIBLE);
         image.setImageResource(permissionModel.getImageResourceId());
         title.setText(permissionModel.getTitle());
-        title.setTextSize(TypedValue.COMPLEX_UNIT_PX, permissionModel.getTextSize());
         title.setTextColor(permissionModel.getTextColor() == 0 ? Color.WHITE : permissionModel.getTextColor());
         message.setText(permissionModel.getMessage());
+        setTextSizes();
         message.setTextColor(permissionModel.getTextColor() == 0 ? Color.WHITE : permissionModel.getTextColor());
-        if (permissionModel.getTextSize() != 0) message.setTextSize(TypedValue.COMPLEX_UNIT_PX, permissionModel.getTextSize());
         previous.setImageResource(permissionModel.getPreviousIcon() == 0 ? R.drawable.ic_arrow_left : permissionModel.getPreviousIcon());
         request.setImageResource(permissionModel.getRequestIcon() == 0 ? R.drawable.ic_arrow_done : permissionModel.getRequestIcon());
         next.setImageResource(permissionModel.getNextIcon() == 0 ? R.drawable.ic_arrow_right : permissionModel.getNextIcon());
-        if (!TextUtils.isEmpty(permissionModel.getFontType())) {
-            Typeface typeface = Typeface.createFromAsset(getResources().getAssets(), permissionModel.getFontType());
-            if (typeface != null) {
-                title.setTypeface(typeface);
-                message.setTypeface(typeface);
-            }
+        FontTypeHelper.setTextTypeFace(title, permissionModel.getFontType());
+        FontTypeHelper.setTextTypeFace(message, permissionModel.getFontType());
+    }
+
+    private void setTextSizes() {
+        boolean isFromResources = ThemeUtil.isTextSizeFromResources(getContext(), permissionModel.getTextSize());
+        if (isFromResources) {
+            title.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(permissionModel.getTextSize()));
+            message.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(permissionModel.getTextSize()));
+        } else {
+            title.setTextSize(TypedValue.COMPLEX_UNIT_PX, permissionModel.getTextSize());
+            message.setTextSize(TypedValue.COMPLEX_UNIT_PX, permissionModel.getTextSize());
+
         }
     }
 }

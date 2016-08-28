@@ -21,7 +21,7 @@ public class PermissionModelBuilder {
         this.context = context;
         this.permissionModel = new PermissionModel(); // Generate sane default values
         withTextColor(Color.WHITE);
-        withTextSize(context.getResources().getDimensionPixelSize(R.dimen.permissions_text_size));
+        withTextSize(R.dimen.permissions_text_size);
         withRequestIcon(R.drawable.ic_arrow_done);
         withPreviousIcon(R.drawable.ic_arrow_left);
         withNextIcon(R.drawable.ic_arrow_right);

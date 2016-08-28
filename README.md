@@ -23,8 +23,19 @@ Nexus 10 (L)
 
 # Installation
 
+#### Gradle
 ```groovy
     compile 'com.github.k0shk0sh:PermissionHelper:1.0.11'
+```
+
+#### Maven
+```
+<dependency>
+  <groupId>com.github.k0shk0sh</groupId>
+  <artifactId>PermissionHelper</artifactId>
+  <version>1.0.12</version>
+  <type>aar</type>
+</dependency>
 ```
 
 Usage
@@ -173,7 +184,7 @@ app</a>**
 
 # Dependency
 
-Android Support library ```v24.1.1```
+Android Support library ```v24.0.2``
 
 CirclePageIndicator by **JakeWharton** (integrated within the library).
 

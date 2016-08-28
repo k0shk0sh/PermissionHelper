@@ -123,7 +123,8 @@ public class SampleActivity extends AppCompatActivity implements OnPermissionCal
     public AlertDialog getAlertDialog(final String[] permissions, final String permissionName) {
         if (builder == null) {
             builder = new AlertDialog.Builder(this)
-                    .setTitle("Permission Needs Explanation").create();
+                    .setTitle("Permission Needs Explanation")
+                    .create();
         }
         builder.setButton(DialogInterface.BUTTON_POSITIVE, "Request", new DialogInterface.OnClickListener() {
             @Override
@@ -138,7 +139,8 @@ public class SampleActivity extends AppCompatActivity implements OnPermissionCal
     public AlertDialog getAlertDialog(final String permission) {
         if (builder == null) {
             builder = new AlertDialog.Builder(this)
-                    .setTitle("Permission Needs Explanation").create();
+                    .setTitle("Permission Needs Explanation")
+                    .create();
         }
         builder.setButton(DialogInterface.BUTTON_POSITIVE, "Request", new DialogInterface.OnClickListener() {
             @Override
