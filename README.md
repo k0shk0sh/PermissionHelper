@@ -29,7 +29,7 @@ Nexus 10 (L)
 ```
 
 #### Maven
-```
+```xml
 <dependency>
   <groupId>com.github.k0shk0sh</groupId>
   <artifactId>PermissionHelper</artifactId>
