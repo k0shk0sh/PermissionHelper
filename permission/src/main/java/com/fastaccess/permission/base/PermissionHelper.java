@@ -164,17 +164,18 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     /**
      * internal usage.
      */
-    private void handleMulti(@NonNull String[] permissionsName) {
-        String[] permissions = declinedPermissions(context, permissionsName);
-        if (permissions.length == 0) {
-            permissionCallback.onPermissionGranted(permissionsName);
+    private void handleMulti(@NonNull String[] permissionNames) {
+        List<String> permissions = declinedPermissionsAsList(context, permissionNames);
+        if (permissions.isEmpty()) {
+            permissionCallback.onPermissionGranted(permissionNames);
             return;
         }
-        for (String permission : permissions) {
-            if (permission != null) {
-                handleSingle(permission);
-            }
+        boolean hasAlertWindowPermission = permissions.contains(Manifest.permission.SYSTEM_ALERT_WINDOW);
+        if (hasAlertWindowPermission) {
+            int index = permissions.indexOf(Manifest.permission.SYSTEM_ALERT_WINDOW);
+            permissions.remove(index);
         }
+        ActivityCompat.requestPermissions(context, permissions.toArray(new String[permissions.size()]), REQUEST_PERMISSIONS);
     }
 
     /**
@@ -310,11 +311,21 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     public static String[] declinedPermissions(@NonNull Context context, @NonNull String[] permissions) {
         List<String> permissionsNeeded = new ArrayList<>();
         for (String permission : permissions) {
-            if (isPermissionDeclined(context, permission)) {
+            if (isPermissionDeclined(context, permission) && permissionExists(context, permission)) {
                 permissionsNeeded.add(permission);
             }
         }
         return permissionsNeeded.toArray(new String[permissionsNeeded.size()]);
+    }
+
+    public static List<String> declinedPermissionsAsList(@NonNull Context context, @NonNull String[] permissions) {
+        List<String> permissionsNeeded = new ArrayList<>();
+        for (String permission : permissions) {
+            if (isPermissionDeclined(context, permission) && permissionExists(context, permission)) {
+                permissionsNeeded.add(permission);
+            }
+        }
+        return permissionsNeeded;
     }
 
     /**
@@ -406,5 +417,4 @@ public class PermissionHelper implements OnActivityPermissionCallback {
             models.removeAll(granted);
         }
     }
-
 }
