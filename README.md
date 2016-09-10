@@ -33,7 +33,7 @@ Nexus 10 (L)
 <dependency>
   <groupId>com.github.k0shk0sh</groupId>
   <artifactId>PermissionHelper</artifactId>
-  <version>1.0.12</version>
+  <version>1.0.13</version>
   <type>aar</type>
 </dependency>
 ```
