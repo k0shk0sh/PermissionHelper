@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Permissionhelper by k0shk0sh</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Permissionhelper</h1>
+      <h2 class="project-tagline">Android Library to help you with your runtime Permissions</h2>
+      <a href="https://github.com/k0shk0sh/PermissionHelper" class="btn">View on GitHub</a>
+      <a href="https://github.com/k0shk0sh/PermissionHelper/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/k0shk0sh/PermissionHelper/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="permissionhelper" class="anchor" href="#permissionhelper" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>PermissionHelper</h1>
+
+<p>Android Library to help you with your runtime Permissions.</p>
+
+<h1>
+<a id="demo-" class="anchor" href="#demo-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Demo </h1>
+
+<p><strong>Android M</strong> <a href="https://youtu.be/ypFH4yxjppQ">Watch it in action.</a>
+<br>
+<strong>Pre M</strong> <a href="https://www.youtube.com/watch?v=n2dKAu5fR6M">Watch it in action.</a></p>
+
+<h1>
+<a id="nexus-6-m" class="anchor" href="#nexus-6-m" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Nexus 6 (M)</h1>
+
+<p><img src="https://raw.github.com/k0shk0sh/PermissionHelper/master/art/nexus6.jpg" alt="Nexus 6"></p>
+
+<h1>
+<a id="nexus-7-l" class="anchor" href="#nexus-7-l" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Nexus 7 (L)</h1>
+
+<p><img src="https://raw.github.com/k0shk0sh/PermissionHelper/master/art/nexus7.jpg" alt="ScreenShot"></p>
+
+<h1>
+<a id="nexus-10-l" class="anchor" href="#nexus-10-l" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Nexus 10 (L)</h1>
+
+<p><img src="https://raw.github.com/k0shk0sh/PermissionHelper/master/art/nexus10.jpg" alt="ScreenShot"></p>
+
+<h1>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h1>
+
+<h4>
+<a id="gradle" class="anchor" href="#gradle" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Gradle</h4>
+
+<div class="highlight highlight-source-groovy"><pre>    compile <span class="pl-s"><span class="pl-pds">'</span>com.github.k0shk0sh:PermissionHelper:1.0.13<span class="pl-pds">'</span></span></pre></div>
+
+<h4>
+<a id="maven" class="anchor" href="#maven" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Maven</h4>
+
+<div class="highlight highlight-text-xml"><pre>&lt;<span class="pl-ent">dependency</span>&gt;
+  &lt;<span class="pl-ent">groupId</span>&gt;com.github.k0shk0sh&lt;/<span class="pl-ent">groupId</span>&gt;
+  &lt;<span class="pl-ent">artifactId</span>&gt;PermissionHelper&lt;/<span class="pl-ent">artifactId</span>&gt;
+  &lt;<span class="pl-ent">version</span>&gt;1.0.13&lt;/<span class="pl-ent">version</span>&gt;
+  &lt;<span class="pl-ent">type</span>&gt;aar&lt;/<span class="pl-ent">type</span>&gt;
+&lt;/<span class="pl-ent">dependency</span>&gt;</pre></div>
+
+<h1>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h1>
+
+<h1>
+<a id="ask-permissions-in-style" class="anchor" href="#ask-permissions-in-style" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ask Permissions in Style</h1>
+
+<p><em>Have you wondered what will give you a higher chance of letting the user accepts your permission?</em></p>
+
+<blockquote>
+<p>The answer is simple: <strong>(Educating UI)</strong> that explains why you need to use that particular <code>permission</code>. </p>
+</blockquote>
+
+<ul>
+<li>
+<p>All you need to do is extending <a href="https://github%0A.com/k0shk0sh/PermissionHelper/blob/master/permission/src/main/java/com/fastaccess/permission/base/activity/BasePermissionActivity%0A.java">BasePermissionActivity</a>. </p>
+
+<ul>
+<li>By extending <code>BasePermissionActivity</code> you'll have control over (<strong>Features</strong>): 
+
+<ul>
+<li>Permissions that being asked and their Explanation if its needed.</li>
+<li>Each <code>Screen</code> Background color (<code>DarkPrimaryColor</code> of that background will be generated automatically).</li>
+<li>Each <code>Screen</code> Image Resource. </li>
+<li>Each <code>Screen</code> Title &amp; Message.</li>
+<li>Each <code>Screen</code> Title &amp; Message Text Color.</li>
+<li>Each <code>Screen</code> Title &amp; Message Text Size.</li>
+<li>Each <code>Screen</code> Text &amp; Message <code>FontType</code>, yes you heard me right, each <code>Screen</code> can have their own <code>FontType</code>.</li>
+<li>Each <code>Screen</code> Next, Previous &amp; Request Buttons Icon Resources. </li>
+<li>Your Own <code>Theme</code>.</li>
+<li>Your Own Implementation of <code>ViewPager.PageTransformer</code> or use the default one. </li>
+<li>You can defined for instance that a particular permission can't be skipped until the Explanation <code>Dialog</code> is showed.(follow example code below
+to know 
+how).</li>
+<li>
+<code>BasePermissionActivity</code> support Portrait &amp; Landscape modes for both Mobile Phones &amp; Tablets <em>(as showing in above images)</em>.</li>
+<li>
+<code>SYSTEM_ALERT_WINDOW Permission</code>  is being automatically handled if you ever pass it along other permissions ;) . </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>And Finally <strong>Let The Library Do The Job For You. in Style.</strong>
+</li>
+</ul>
+
+<p><strong>Notice</strong> </p>
+
+<blockquote>
+<p>You still can use the library to explain why you used the permission in your app, the library will never try ask the permission if 
+Android is smaller than <strong>M</strong>, it will just do like any Intro library does. as you can see in <strong>Nexus 7 &amp; Nexus 10</strong> screens running Android <strong>L</strong>, 
+request button is hidden ;). </p>
+
+<p>For Better Understanding, please have a look at the example code at <a href="https://github.com/k0shk0sh/PermissionHelper/blob/master/app/src/main/java/com/fastaccess/permission/sample/SamplePagerActivity.java">SamplePagerActivity</a></p>
+</blockquote>
+
+<h1>
+<a id="take-control" class="anchor" href="#take-control" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Take Control.</h1>
+
+<p>Your <code>Activity/Presenter</code>  should implement <code>OnPermissionCallback</code> which in return will give you access to</p>
+
+<div class="highlight highlight-source-java"><pre>    <span class="pl-k">void</span> onPermissionGranted(<span class="pl-k">String</span>[] permissionName);
+
+    <span class="pl-k">void</span> onPermissionDeclined(<span class="pl-k">String</span>[] permissionName);
+
+    <span class="pl-k">void</span> onPermissionPreGranted(<span class="pl-smi">String</span> permissionsName);
+
+    <span class="pl-k">void</span> onPermissionNeedExplanation(<span class="pl-smi">String</span> permissionName);  
+
+    <span class="pl-k">void</span> onPermissionReallyDeclined(<span class="pl-smi">String</span> permissionName);<span class="pl-c">//user has ticked don't show again and deny the permission</span>
+
+    <span class="pl-k">void</span> onNoPermissionNeeded(); <span class="pl-c">// fallback to api &lt; M</span></pre></div>
+
+<p>to request a permission all you have to do is:</p>
+
+<div class="highlight highlight-source-java"><pre>permissionHelper
+     .setForceAccepting(<span class="pl-c1">false</span>)<span class="pl-c">// true if you had like force reshowing the permission dialog on Deny (not recommended)</span>
+     .request(isSingle <span class="pl-k">?</span> <span class="pl-c1">SINGLE_PERMISSION</span> <span class="pl-k">:</span> <span class="pl-c1">MULTIPLE_PERMISSIONS</span>);</pre></div>
+
+<p>and finally in your <code>Activity</code></p>
+
+<div class="highlight highlight-source-java"><pre>onRequestPermissionsResult(<span class="pl-c1">....</span>)</pre></div>
+
+<p>call </p>
+
+<div class="highlight highlight-source-java"><pre>permissionHelper<span class="pl-k">.</span>onRequestPermissionsResult(<span class="pl-c1">....</span>)</pre></div>
+
+<h1>
+<a id="extra" class="anchor" href="#extra" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Extra</h1>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-smi">String</span> declinedPermission(<span class="pl-k">@NonNull</span> <span class="pl-smi">Context</span> context, <span class="pl-k">@NonNull</span> <span class="pl-k">String</span>[])</pre></div>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">String</span>[] declinedPermissions(<span class="pl-k">@NonNull</span> <span class="pl-smi">Context</span> context, <span class="pl-k">@NonNull</span> <span class="pl-k">String</span>[] permissions)</pre></div>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">boolean</span> isPermissionGranted(<span class="pl-k">@NonNull</span> <span class="pl-smi">Context</span> context, <span class="pl-k">@NonNull</span> <span class="pl-smi">String</span> permission)</pre></div>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">boolean</span> isPermissionDeclined(<span class="pl-k">@NonNull</span> <span class="pl-smi">Context</span> context, <span class="pl-k">@NonNull</span> <span class="pl-smi">String</span> permission)</pre></div>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">boolean</span> isExplanationNeeded(<span class="pl-k">@NonNull</span> <span class="pl-smi">Activity</span> context, <span class="pl-k">@NonNull</span> <span class="pl-smi">String</span> permissionName)</pre></div>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">boolean</span> permissionExists(<span class="pl-k">@NonNull</span> <span class="pl-smi">Context</span> context, <span class="pl-k">@NonNull</span> <span class="pl-smi">String</span> permissionName)</pre></div>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">boolean</span> isPermissionPermanentlyDenied(<span class="pl-k">@NonNull</span> <span class="pl-smi">Activity</span> context, <span class="pl-k">@NonNull</span> <span class="pl-smi">String</span> permission)</pre></div>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> openSettingsScreen(<span class="pl-smi">Context</span> context)<span class="pl-c">//useful when we can't request for the permission due to user ticked don't show again.</span></pre></div>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">@TargetApi</span>(<span class="pl-smi">Build</span><span class="pl-c1"><span class="pl-k">.</span>VERSION_CODES</span><span class="pl-k">.</span><span class="pl-smi">M</span>)
+<span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">boolean</span> isSystemAlertGranted(<span class="pl-k">@NonNull</span> <span class="pl-smi">Context</span> context)<span class="pl-c">// special case for SYSTEM_ALERT_WINDOW permission.</span></pre></div>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">void</span> requestAfterExplanation(<span class="pl-smi">String</span> permissionName)<span class="pl-c">// to be used if the permission needs explanation</span></pre></div>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">void</span> requestAfterExplanation(<span class="pl-k">String</span>[] permissions)<span class="pl-c">//to be used if the permission needs explanation</span></pre></div>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">void</span> requestSystemAlertPermission() <span class="pl-c">// not really needed as request(...) will handle this case.</span></pre></div>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">&gt;</span> all of the above <span class="pl-k">static</span> methods you can still access them with <span class="pl-smi">PermissionHelper</span> instance.</pre></div>
+
+<blockquote>
+<p><strong>To understand more how taking control would look like please go through the <a href="https://github%0A.com/k0shk0sh/PermissionHelper/tree/master/app/src/main/java/com/fastaccess/permission/sample/SampleActivity.java">sample 
+app</a></strong></p>
+</blockquote>
+
+<h1>
+<a id="why-this-library" class="anchor" href="#why-this-library" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Why this library?</h1>
+
+<ul>
+<li>Its simple to use.</li>
+<li>Its Unique, Customizable &amp; read back first point. </li>
+<li>You have two choices, do it your way through <code>callbacks</code>, or let the <code>Library</code> do it for you with your look &amp; Feel.</li>
+<li>Minimum API is 14, but it'll probably work in API 11 and above, just make sure you test it out.<br>
+</li>
+</ul>
+
+<h1>
+<a id="dependency" class="anchor" href="#dependency" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dependency</h1>
+
+<p>Android Support library `<code>v24.0.2</code></p>
+
+<p>CirclePageIndicator by <strong>JakeWharton</strong> (integrated within the library).</p>
+
+<h1>
+<a id="images" class="anchor" href="#images" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Images</h1>
+
+<p>Images used inside the demo are by <a href="http://www.materialup.com/maxKeppeler">Maximilian Keppeler</a></p>
+
+<h1>
+<a id="copyright-notice" class="anchor" href="#copyright-notice" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Copyright Notice</h1>
+
+<p>Copyright (C) 2015 Kosh.
+Licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>
+license (see the LICENSE file).</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/k0shk0sh/PermissionHelper">Permissionhelper</a> is maintained by <a href="https://github.com/k0shk0sh">k0shk0sh</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
