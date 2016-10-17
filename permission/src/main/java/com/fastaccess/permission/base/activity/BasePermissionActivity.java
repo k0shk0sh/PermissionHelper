@@ -111,6 +111,7 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
             pager.setCurrentItem(savedInstanceState.getInt(PAGER_POSITION), true);
             systemOverRequestNumber = savedInstanceState.getInt(SYSTEM_OVERLAY_NUM_INSTANCE);
         }
+
     }
 
     /**

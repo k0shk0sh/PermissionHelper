@@ -24,6 +24,13 @@
         android:textSize="16sp"/>
 
     <Button
+        android:id="@+id/useFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Sample Fragment"/>
+
+    <Button
         android:id="@+id/single"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

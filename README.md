@@ -25,7 +25,7 @@ Nexus 10 (L)
 
 #### Gradle
 ```groovy
-    compile 'com.github.k0shk0sh:PermissionHelper:1.0.13'
+    compile 'com.github.k0shk0sh:PermissionHelper:1.1.0'
 ```
 
 #### Maven
@@ -33,7 +33,7 @@ Nexus 10 (L)
 <dependency>
   <groupId>com.github.k0shk0sh</groupId>
   <artifactId>PermissionHelper</artifactId>
-  <version>1.0.13</version>
+  <version>1.1.0</version>
   <type>aar</type>
 </dependency>
 ```
@@ -78,7 +78,7 @@ request button is hidden ;).
 
 # Take Control.
 
-Your ```Activity/Presenter```  should implement ```OnPermissionCallback``` which in return will give you access to
+Your ```Activity/Fragment/Presenter```  should implement ```OnPermissionCallback``` which in return will give you access to
 
 ```java
     void onPermissionGranted(String[] permissionName);
@@ -96,13 +96,24 @@ Your ```Activity/Presenter```  should implement ```OnPermissionCallback``` which
 
 to request a permission all you have to do is:
 
+- Activity
+
 ```java
 permissionHelper
      .setForceAccepting(false)// true if you had like force reshowing the permission dialog on Deny (not recommended)
      .request(isSingle ? SINGLE_PERMISSION : MULTIPLE_PERMISSIONS);
 ```
 
-and finally in your `Activity`
+- Fragment 
+
+```java
+permissionFragmentHelper
+     .setForceAccepting(false)// true if you had like force reshowing the permission dialog on Deny (not recommended)
+     .request(isSingle ? SINGLE_PERMISSION : MULTIPLE_PERMISSIONS);
+```
+
+
+and finally in your `Activity/Fragment`
 ```java
 onRequestPermissionsResult(....)
 ``` 
@@ -111,67 +122,58 @@ call
 permissionHelper.onRequestPermissionsResult(....)
 ```
 
-# Extra
+# Extra Activity/Fragment
+
+* Depends on whether you using `PermissionHelper` or `PermissionFragmentHelper` you can call these methods
 
 ```java
-public static String declinedPermission(@NonNull Context context, @NonNull String[])
+public static String declinedPermission(@NonNull Context/Fragment context, @NonNull String[])
 ```
 
 ```java
-public static String[] declinedPermissions(@NonNull Context context, @NonNull String[] permissions)
+public static String[] declinedPermissions(@NonNull Context/Fragment context, @NonNull String[] permissions)
 ```
 
 ```java
-public static boolean isPermissionGranted(@NonNull Context context, @NonNull String permission)
+public static boolean isPermissionGranted(@NonNull Context/Fragment context, @NonNull String permission)
 ```
 
 ```java
-public static boolean isPermissionDeclined(@NonNull Context context, @NonNull String permission)
+public static boolean isPermissionDeclined(@NonNull Context/Fragment context, @NonNull String permission)
 ```
 
 ```java
-public static boolean isExplanationNeeded(@NonNull Activity context, @NonNull String permissionName)
+public static boolean isExplanationNeeded(@NonNull Activity/Fragment context, @NonNull String permissionName)
 ```
 
 
 ```java
-public static boolean permissionExists(@NonNull Context context, @NonNull String permissionName)
+public static boolean permissionExists(@NonNull Context/Fragment context, @NonNull String permissionName)
 ```
 
 ```java
-public static boolean isPermissionPermanentlyDenied(@NonNull Activity context, @NonNull String permission)
+public static boolean isPermissionPermanentlyDenied(@NonNull Activity/Fragment context, @NonNull String permission)
 ```
 
 ```java
-public static void openSettingsScreen(Context context)//useful when we can't request for the permission due to user ticked don't show again.
+public static void openSettingsScreen(Context/Fragment context)//useful when we can't request for the permission due to user ticked don't show again.
 ```
 
 ```java
 @TargetApi(Build.VERSION_CODES.M)
-public static boolean isSystemAlertGranted(@NonNull Context context)// special case for SYSTEM_ALERT_WINDOW permission.
-```
-
-```java
-public void requestAfterExplanation(String permissionName)// to be used if the permission needs explanation
-```
-
-```java
-public void requestAfterExplanation(String[] permissions)//to be used if the permission needs explanation
-```
-
-```java
-public void requestSystemAlertPermission() // not really needed as request(...) will handle this case.
-```
-
-```java
-> all of the above static methods you can still access them with PermissionHelper instance.
+public static boolean isSystemAlertGranted(@NonNull Context/Fragment context)// special case for SYSTEM_ALERT_WINDOW permission.
 ```
 
 
+> all of the above static methods you can still access them with PermissionHelper or PermissionFragmentHelper instance.
 
-> **To understand more how taking control would look like please go through the <a href="https://github
-.com/k0shk0sh/PermissionHelper/tree/master/app/src/main/java/com/fastaccess/permission/sample/SampleActivity.java">sample 
-app</a>**
+
+
+* To understand more how taking control would look like please go through the 
+    - `Activity` <a href="https://github.com/k0shk0sh/PermissionHelper/tree/master/app/src/main/java/com/fastaccess/permission/sample
+    /SampleActivity.java">`SampleActivity`</a>
+    - `Fragment` <a href="https://github.com/k0shk0sh/PermissionHelper/tree/master/app/src/main/java/com/fastaccess/permission/sample
+                     /SampleFragment.java">`SampleFragment`</a>
 
 # Why this library?
 
@@ -184,7 +186,7 @@ app</a>**
 
 # Dependency
 
-Android Support library ```v24.0.2``
+Android Support library ```v24.2.1``
 
 CirclePageIndicator by **JakeWharton** (integrated within the library).
 

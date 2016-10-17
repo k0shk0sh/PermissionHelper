@@ -26,9 +26,9 @@ public class PermissionModel implements Parcelable {
     private String title;
     private String fontType;
 
-
     public String getPermissionName() {
         return permissionName;
+
     }
 
     public void setPermissionName(@NonNull String permissionName) {
