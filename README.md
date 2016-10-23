@@ -186,7 +186,7 @@ public static boolean isSystemAlertGranted(@NonNull Context/Fragment context)// 
 
 # Dependency
 
-Android Support library ```v24.2.1``
+Android Support library ``v24.2.1``
 
 CirclePageIndicator by **JakeWharton** (integrated within the library).
 
