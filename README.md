@@ -170,10 +170,8 @@ public static boolean isSystemAlertGranted(@NonNull Context/Fragment context)// 
 
 
 * To understand more how taking control would look like please go through the 
-    - `Activity` <a href="https://github.com/k0shk0sh/PermissionHelper/tree/master/app/src/main/java/com/fastaccess/permission/sample
-    /SampleActivity.java">`SampleActivity`</a>
-    - `Fragment` <a href="https://github.com/k0shk0sh/PermissionHelper/tree/master/app/src/main/java/com/fastaccess/permission/sample
-                     /SampleFragment.java">`SampleFragment`</a>
+    - `Activity` <a href="https://github.com/k0shk0sh/PermissionHelper/tree/master/app/src/main/java/com/fastaccess/permission/sample/SampleActivity.java">`SampleActivity`</a>
+    - `Fragment` <a href="https://github.com/k0shk0sh/PermissionHelper/tree/master/app/src/main/java/com/fastaccess/permission/sample/SampleFragment.java">`SampleFragment`</a>
 
 # Why this library?
 
