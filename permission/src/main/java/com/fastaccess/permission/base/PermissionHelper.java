@@ -313,6 +313,13 @@ public class PermissionHelper implements OnActivityPermissionCallback {
      * @return true if notification fiddling is granted
      */
     public boolean isActionNotificationPolicyGranted() {
+        return isActionNotificationPolicyGranted(context);
+    }
+
+    /**
+     * @return true if notification fiddling is granted
+     */
+    public static boolean isActionNotificationPolicyGranted(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).isNotificationPolicyAccessGranted();
         }
