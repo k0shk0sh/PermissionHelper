@@ -19,6 +19,32 @@ public class SamplePagerActivity extends BasePermissionActivity {
 
     @NonNull @Override protected List<PermissionModel> permissions() {
         List<PermissionModel> permissions = new ArrayList<>();
+
+        permissions.add(PermissionModelBuilder.withContext(this)
+                .withCanSkip(true)
+                .withTitle("WRITE_EXTERNAL_STORAGE")
+                .withPermissionName(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withMessage("PermissionHelper lets you customize all these stuff you are seeing!." +
+                        " if you ever thought of anything that improves the library please" +
+                        " suggest by filling up an issue in github https://github.com/k0shk0sh/PermissionHelper")
+                .withExplanationMessage("We need this permission to save your captured images and videos to your SD-Card")
+                .withFontType("my_font.ttf")
+                .withLayoutColorRes(R.color.blue)
+                .withImageResourceId(R.drawable.permission_one)
+                .build());
+
+        permissions.add(PermissionModelBuilder.withContext(this)
+                .withCanSkip(true)
+                .withTitle("meow")
+                .withPermissionName(Manifest.permission.ACCESS_NOTIFICATION_POLICY)
+                .withMessage("meow")
+                .withExplanationMessage("meow")
+                .withFontType("my_font.ttf")
+                .withLayoutColorRes(R.color.blue)
+                .withImageResourceId(R.drawable.permission_one)
+                .build());
+
+        /*
         permissions.add(PermissionModelBuilder.withContext(this)
                 .withCanSkip(true)
                 .withPermissionName(Manifest.permission.GET_ACCOUNTS)
@@ -59,14 +85,14 @@ public class SamplePagerActivity extends BasePermissionActivity {
 
         permissions.add(PermissionModelBuilder.withContext(this)
                 .withCanSkip(false) /*explanation only once will be called otherwise we will
-                            run into infinite request if the user never grant the permission.*/
+                            run into infinite request if the user never grant the permission.* /
                 .withTitle("SYSTEM_ALERT_WINDOW")
                 .withPermissionName(Manifest.permission.SYSTEM_ALERT_WINDOW)
                 .withMessage("PermissionHelper handles requesting SYSTEM_ALERT_WINDOW permission")
                 .withExplanationMessage("We need this permission to make our videoPlayer overlay on your screen.")
                 .withFontType("my_font.ttf")
                 .withLayoutColorRes(R.color.colorPrimaryDark)
-                .withImageResourceId(R.drawable.permission_two).build());
+                .withImageResourceId(R.drawable.permission_two).build());*/
         return permissions;
     }
 

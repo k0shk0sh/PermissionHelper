@@ -153,7 +153,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
                 if (!isActionNotificationPolicyGranted()) {
-                    Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS, Uri.parse("package:" + context.getPackageName()));
+                    Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
                     context.startActivityForResult(intent, NOTIFICATION_ACCESS_REQ_CODE);
                 } else {
                     permissionCallback.onPermissionPreGranted(Manifest.permission.ACCESS_NOTIFICATION_POLICY);
