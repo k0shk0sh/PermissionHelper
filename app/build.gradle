@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.github.dcendents.android-maven'
+
+group='com.github.rammadogs'
 
 android {
     compileSdkVersion 24
