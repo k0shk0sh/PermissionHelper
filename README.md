@@ -4,6 +4,8 @@ Android Library to help you with your runtime Permissions.
 Demo 
 ======
 
+This is a fork of <a href="https://github.com/k0shk0sh/PermissionHelper">k0shk0sh's Permission Helper</a>, licenced under an Apache-2.0 license. It has been modified to allow requesting of notification policy.
+
 **Android M** <a href="https://youtu.be/ypFH4yxjppQ">Watch it in action.</a>
 <br/>
 **Pre M** <a href="https://www.youtube.com/watch?v=n2dKAu5fR6M">Watch it in action.</a>
