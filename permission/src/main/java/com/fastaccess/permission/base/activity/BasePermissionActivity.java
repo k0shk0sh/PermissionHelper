@@ -263,6 +263,8 @@ public abstract class BasePermissionActivity extends AppCompatActivity implement
                     public void onClick(DialogInterface dialog, int which) {
                         if (model.getPermissionName().equalsIgnoreCase(Manifest.permission.SYSTEM_ALERT_WINDOW)) {
                             permissionHelper.requestSystemAlertPermission();
+                        } else if(model.getPermissionName().equalsIgnoreCase(Manifest.permission.ACCESS_NOTIFICATION_POLICY)) {
+                            permissionHelper.requestActionNotificationPolicy();
                         } else {
                             permissionHelper.requestAfterExplanation(model.getPermissionName());
                         }

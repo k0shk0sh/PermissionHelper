@@ -2,6 +2,7 @@ package com.fastaccess.permission.base;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -22,6 +23,7 @@ import java.util.List;
 
 public class PermissionHelper implements OnActivityPermissionCallback {
     private static final int OVERLAY_PERMISSION_REQ_CODE = 2;
+    private static final int NOTIFICATION_ACCESS_REQ_CODE = 3;
     private static final int REQUEST_PERMISSIONS = 1;
 
     @NonNull private final OnPermissionCallback permissionCallback;
@@ -85,9 +87,16 @@ public class PermissionHelper implements OnActivityPermissionCallback {
                 } else {
                     permissionCallback.onPermissionDeclined(new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW});
                 }
+            } else if(requestCode == NOTIFICATION_ACCESS_REQ_CODE) {
+                if(isActionNotificationPolicyGranted()) {
+                    permissionCallback.onPermissionGranted(new String[]{Manifest.permission.ACCESS_NOTIFICATION_POLICY});
+                } else {
+                    permissionCallback.onPermissionDeclined(new String[]{Manifest.permission.ACCESS_NOTIFICATION_POLICY});
+                }
             }
         } else {
             permissionCallback.onPermissionPreGranted(Manifest.permission.SYSTEM_ALERT_WINDOW);
+            permissionCallback.onPermissionPreGranted(Manifest.permission.ACCESS_NOTIFICATION_POLICY);
         }
     }
 
@@ -138,12 +147,34 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     }
 
     /**
+     * used only for notification fiddling
+     */
+    public void requestActionNotificationPolicy() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            try {
+                if (!isActionNotificationPolicyGranted()) {
+                    Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS, Uri.parse("package:" + context.getPackageName()));
+                    context.startActivityForResult(intent, NOTIFICATION_ACCESS_REQ_CODE);
+                } else {
+                    permissionCallback.onPermissionPreGranted(Manifest.permission.ACCESS_NOTIFICATION_POLICY);
+                }
+            } catch (Exception ignored) {}
+        } else {
+            permissionCallback.onPermissionPreGranted(Manifest.permission.ACCESS_NOTIFICATION_POLICY);
+        }
+    }
+
+    /**
      * internal usage.
      */
     private void handleSingle(@NonNull String permissionName) {
         if (permissionExists(permissionName)) {// android M throws exception when requesting
             // run time permission that does not exists in AndroidManifest.
-            if (!permissionName.equalsIgnoreCase(Manifest.permission.SYSTEM_ALERT_WINDOW)) {
+            if (permissionName.equalsIgnoreCase(Manifest.permission.SYSTEM_ALERT_WINDOW)) {
+                requestSystemAlertPermission();
+            } else if(permissionName.equalsIgnoreCase(Manifest.permission.ACCESS_NOTIFICATION_POLICY)) {
+                requestActionNotificationPolicy();
+            } else {
                 if (isPermissionDeclined(permissionName)) {
                     if (isExplanationNeeded(permissionName)) {
                         permissionCallback.onPermissionNeedExplanation(permissionName);
@@ -153,8 +184,6 @@ public class PermissionHelper implements OnActivityPermissionCallback {
                 } else {
                     permissionCallback.onPermissionPreGranted(permissionName);
                 }
-            } else {
-                requestSystemAlertPermission();
             }
         } else {
             permissionCallback.onPermissionDeclined(new String[]{permissionName});
@@ -276,6 +305,16 @@ public class PermissionHelper implements OnActivityPermissionCallback {
     public boolean isSystemAlertGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return Settings.canDrawOverlays(context);
+        }
+        return true;
+    }
+
+    /**
+     * @return true if notification fiddling is granted
+     */
+    public boolean isActionNotificationPolicyGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).isNotificationPolicyAccessGranted();
         }
         return true;
     }
