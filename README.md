@@ -112,6 +112,12 @@ permissionFragmentHelper
      .request(isSingle ? SINGLE_PERMISSION : MULTIPLE_PERMISSIONS);
 ```
 
+To request a permission without ask for explanation message even if the user press decline:
+```java
+permissionHelper
+     .setSkipExplanation(true)// true if you don't want to show expalanation message
+     .request(CAMERA_PERMISSION);
+
 
 and finally in your `Activity/Fragment`
 ```java
