@@ -27,6 +27,7 @@ public class PermissionFragmentHelper implements OnActivityPermissionCallback {
     @NonNull private final OnPermissionCallback permissionCallback;
     @NonNull private final Fragment context;
     private boolean forceAccepting;
+    private boolean skipExplanation;
 
     private PermissionFragmentHelper(@NonNull Fragment context) {
         this.context = context;
@@ -146,7 +147,7 @@ public class PermissionFragmentHelper implements OnActivityPermissionCallback {
             // run time permission that does not exists in AndroidManifest.
             if (!permissionName.equalsIgnoreCase(Manifest.permission.SYSTEM_ALERT_WINDOW)) {
                 if (isPermissionDeclined(permissionName)) {
-                    if (isExplanationNeeded(permissionName)) {
+                    if (isExplanationNeeded(permissionName) && !skipExplanation) {
                         permissionCallback.onPermissionNeedExplanation(permissionName);
                     } else {
                         context.requestPermissions(new String[]{permissionName}, REQUEST_PERMISSIONS);
@@ -419,5 +420,9 @@ public class PermissionFragmentHelper implements OnActivityPermissionCallback {
         if (!granted.isEmpty()) {
             models.removeAll(granted);
         }
+    }
+
+    public void setSkipExplanation(boolean skipExplanation) {
+        this.skipExplanation = skipExplanation;
     }
 }
